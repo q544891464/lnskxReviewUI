@@ -147,7 +147,7 @@
           <el-table-column
             show-overflow-tooltip
             prop="no"
-            label="工号"
+            label="编号"
             width="95"
           ></el-table-column>
 

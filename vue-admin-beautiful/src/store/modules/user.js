@@ -11,7 +11,10 @@ import {
   setAccessToken,
 } from "@/utils/accessToken";
 import { resetRouter } from "@/router";
-import { title, tokenName } from "@/config/settings";
+import { title, tokenName, loginRSA } from "@/config/settings";
+import { decryptedDes } from "@/utils/crypto/encrypt-des";
+import { register } from "../../api/user";
+
 const state = {
   accessToken: getAccessToken(),
   username: "",
@@ -50,7 +53,17 @@ const actions = {
   },
   async login({ commit }, userInfo) {
     const { data } = await login(userInfo);
-    const accessToken = data["token"];
+    let tmpData = data;
+    if (loginRSA) {
+      // 获得公钥
+      let publicKey = Vue.prototype.$getPublicKey();
+      // 解密数据
+      let decryptedStr = decryptedDes(tmpData, publicKey);
+      // 转换为Json
+      tmpData = JSON.parse(decryptedStr);
+    }
+
+    const accessToken = tmpData["token"];
     if (accessToken) {
       commit("setAccessToken", accessToken);
       const hour = new Date().getHours();
@@ -71,6 +84,41 @@ const actions = {
         "error"
       );
     }
+  },
+
+  async register({ commit }, userInfo) {
+    const { data } = await register(userInfo);
+    let tmpData = data;
+    // if (loginRSA) {
+    //   // 获得公钥
+    //   let publicKey = Vue.prototype.$getPublicKey();
+    //   // 解密数据
+    //   let decryptedStr = decryptedDes(tmpData, publicKey);
+    //   // 转换为Json
+    //   tmpData = JSON.parse(decryptedStr);
+    // }
+
+    // const accessToken = tmpData["token"];
+    // if (accessToken) {
+    //   commit("setAccessToken", accessToken);
+    //   const hour = new Date().getHours();
+    //   const thisTime =
+    //     hour < 8
+    //       ? "早上好"
+    //       : hour <= 11
+    //       ? "上午好"
+    //       : hour <= 13
+    //       ? "中午好"
+    //       : hour < 18
+    //       ? "下午好"
+    //       : "晚上好";
+    //   Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`);
+    // } else {
+    //   Vue.prototype.$baseMessage(
+    //     `登录接口异常，未正确返回${tokenName}...`,
+    //     "error"
+    //   );
+    // }
   },
   async getUserInfo({ commit, state }) {
     const { data } = await getUserInfo(state.accessToken);

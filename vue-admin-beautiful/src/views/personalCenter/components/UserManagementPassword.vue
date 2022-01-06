@@ -72,7 +72,7 @@
           ],
           newPassword: [
             { required: true, trigger: "blur", message: "请输入密码" },
-            { required: true, trigger: "blur", validator: validatorRule.IS_SECURITY_PASSWORD },
+            { required: true, trigger: "blur", validator: validatorRule.IS_GENERAL },
           ],
           verifyPassword: [
             { required: true, trigger: "blur", message: "请再次输入密码" },

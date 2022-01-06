@@ -50,7 +50,7 @@
         </el-col>
 
         <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-          <el-form-item label="工号" prop="no">
+          <el-form-item label="编号" prop="no">
             <el-input v-model.trim="form.no" autocomplete="off"></el-input>
           </el-form-item>
         </el-col>
@@ -163,7 +163,7 @@
           ],
           password: [
             { required: true, trigger: "blur", message: "请输入密码" },
-            { required: false, trigger: "blur", validator: validatorRule.IS_SECURITY_PASSWORD },
+            { required: false, trigger: "blur", validator: validatorRule.IS_GENERAL },
           ],
           verifyPassword: [
             { required: true, trigger: "blur", message: "请再次输入密码" },
@@ -174,7 +174,7 @@
             { required: false, trigger: "blur", validator: validatorRule.IS_GENERAL_WITH_CHINESE },
           ],
           no: [
-            { required: true, trigger: "blur", message: "请输入工号" },
+            { required: true, trigger: "blur", message: "请输入编号" },
             { required: true, trigger: "blur", validator: validatorRule.IS_GENERAL },
           ],
           mobile: [

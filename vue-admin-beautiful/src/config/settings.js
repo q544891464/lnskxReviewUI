@@ -16,10 +16,10 @@ module.exports = {
   // 默认的接口地址 如果是开发环境和生产环境走vab-mock-server，当然你也可以选择自己配置成需要的接口地址
   baseURL:
     process.env.NODE_ENV === "development"
-      ? "http://127.0.0.1:7000/opsli-boot"
-      : "/opsli-boot",
+      ? "http://127.0.0.1:7001/opsli-boot"
+      : "http://82.156.216.222:7001/opsli-boot",
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
-  title: "OPSLI 快速开发平台",
+  title: "评奖系统",
   //简写
   abbreviation: "opsli",
   //开发环境端口号
@@ -39,7 +39,7 @@ module.exports = {
   // 路由模式，可选值为 history 或 hash
   routerMode: "hash",
   //不经过token校验的路由
-  routesWhiteList: ["/login", "/register", "/404", "/401"],
+  routesWhiteList: ["/login", "/register", "/system/register", "/404", "/401"],
   //加载时显示文字
   loadingText: "正在加载中...",
   //token名称
@@ -57,7 +57,7 @@ module.exports = {
   //横纵布局 horizontal vertical
   layout: "vertical",
   //是否开启主题配置按钮
-  themeBar: true,
+  themeBar: false,
   //是否显示多标签页
   tagsBar: true,
   //是否显示骨架屏

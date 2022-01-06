@@ -1,14 +1,16 @@
 <template>
   <div class="login-container">
-    <el-alert
+<!--    <el-alert 默认带的广告栏 关闭了
       v-if="nodeEnv !== 'development'"
       title="beautiful boys and girls 欢迎加入 OPSLI 快速开发平台 QQ群：724850675 | API接口/数据库监控密码均为 admin : 123456 "
       type="success"
       :closable="false"
       style="position: fixed"
-    ></el-alert>
+    ></el-alert>  -->
+	
+
     <el-row>
-      <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
+     <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
         <div style="color: transparent">占位符</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
@@ -68,7 +70,7 @@
             <img
               class="captcha"
               style="float: right"
-              title="看不起，换一张"
+              title="看不清，换一张"
               alt="验证码"
               :src="captchaImg"
               @click="getCaptcha"
@@ -83,14 +85,15 @@
           >
             登录
           </el-button>
-          <!--          <router-link to="/register">-->
-          <!--            <div style="margin-top: 20px">注册</div>-->
-          <!--          </router-link>-->
+
+                  <router-link to="/register">
+                     <div style="margin-top: 20px">注册</div>
+                   </router-link>
         </el-form>
       </el-col>
     </el-row>
 
-    <login-tips ref="login-tips" @tipsClick="tipsClick"></login-tips>
+    <!-- <login-tips ref="login-tips" @tipsClick="tipsClick"></login-tips> -->
 
   </div>
 </template>
@@ -102,7 +105,7 @@
   import { captcha } from "@/api/user";
 
   // TODO 演示专用 开发记得删除
-  import LoginTips from "./components/LoginTips";
+  // import LoginTips from "./components/LoginTips";
 
   export default {
     name: "Login",
@@ -113,7 +116,8 @@
         },
       },
     },
-    components: { LoginTips },
+    // components: { LoginTips },
+    components: {  },
     data() {
 
       return {
@@ -131,7 +135,7 @@
           ],
           password: [
             { required: true, trigger: "blur", message: "请输入密码" },
-            { required: true, trigger: "blur", validator: validatorRule.IS_SECURITY_PASSWORD },
+            // { required: true, trigger: "blur", validator: validatorRule.IS_GENERAL },
           ],
           captcha: [
             { required: true, trigger: "blur", message: "请输入验证码" },
@@ -162,7 +166,7 @@
     },
     mounted() {
       // TODO 演示使用 开发手动删除
-      this.$refs["login-tips"].show();
+      // this.$refs["login-tips"].show();
     },
     methods: {
       // TODO 演示使用 开发手动删除

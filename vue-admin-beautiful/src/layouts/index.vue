@@ -43,7 +43,7 @@
           <nav-bar></nav-bar>
           <tags-bar v-if="tagsBar === 'true' || tagsBar === true" />
         </div>
-        <ad></ad>
+        <!-- <ad></ad> TODO:广告-->
         <app-main></app-main>
       </div>
     </div>

@@ -1,6 +1,6 @@
 const data = [
   {
-    title: "vue-admin-beautiful-pro beta版本已发布，点我提前体验",
+    title: "哈喽哈喽 听得见吗 聞こえていますか？",
     url: "https://chu1204505056.gitee.io/vue-admin-beautiful-pro/#/index",
   },
 ];

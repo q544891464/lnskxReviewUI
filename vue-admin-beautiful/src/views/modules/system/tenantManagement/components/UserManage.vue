@@ -28,7 +28,7 @@
                   <el-form-item>
                     <el-input
                       v-model.trim="queryForm.no_EQ"
-                      placeholder="请输入工号"
+                      placeholder="请输入编号"
                       clearable
                     />
                   </el-form-item>
@@ -132,7 +132,7 @@
           <el-table-column
             show-overflow-tooltip
             prop="no"
-            label="工号"
+            label="编号"
             width="95"
           ></el-table-column>
 

@@ -1,13 +1,16 @@
 import request from "@/utils/request";
 import { urlAddArgsByData } from "@/utils";
 const { baseURL } = require("@/config/settings");
-import { encryptedData } from "@/utils/encrypt";
+import { encryptedRsa } from "@/utils/crypto/encrypt-rsa";
 import { loginRSA, tokenName } from "@/config/settings";
+import Vue from "vue";
 
 export async function login(data) {
   if (loginRSA) {
+    // 获得公钥
+    let publicKey = Vue.prototype.$getPublicKey();
     // 加密数据
-    let encrypted = await encryptedData(data);
+    let encrypted = encryptedRsa(data, publicKey);
     data = {
       encryptData: encrypted,
     };
@@ -29,7 +32,7 @@ export function getSlipCount(data) {
 
 export function getUserInfo(accessToken) {
   return request({
-    url: "/api/system/user/v1/getInfo",
+    url: "/api/v1/system/user/getInfo",
     method: "get",
     headers: {
       [tokenName]: accessToken,
@@ -39,7 +42,7 @@ export function getUserInfo(accessToken) {
 
 export function getUserOrg(accessToken) {
   return request({
-    url: "/api/system/user/v1/getOrg",
+    url: "/api/v1/system/user/getOrg",
     method: "get",
     headers: {
       [tokenName]: accessToken,
@@ -54,10 +57,16 @@ export function logout() {
   });
 }
 
-export function register() {
+// TODO:暂时直接把XTOKEN写死
+export function register(data) {
   return request({
-    url: "/register",
+    url: "/system/register",
     method: "post",
+    data,
+    headers: {
+      "X-Token":
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0ZW5hbnRJZCI6IjAiLCJ0eXBlIjoic3lzdGVtIiwiZXhwIjoxNjU1NzE5NzY5LCJ1c2VySWQiOiIxIiwiYWNjb3VudCI6InN5c3RlbSIsInRpbWVzdGFtcCI6IjE2NTU3MTI1NjkyODAifQ.-4t67bFrggCffaXUqoxMOgW5vbFcvYpfkykan0U3muI",
+    },
   });
 }
 

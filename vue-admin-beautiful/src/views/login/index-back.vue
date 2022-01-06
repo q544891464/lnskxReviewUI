@@ -1,14 +1,14 @@
 <template>
   <div class="login-container">
-    <el-alert
+<!--    <el-alert
       v-if="nodeEnv !== 'development'"
       title="beautiful boys and girls 欢迎加入 OPSLI 快速开发平台 QQ群：724850675 | API接口/数据库监控密码均为 admin : 123456 "
       type="success"
       :closable="false"
       style="position: fixed"
-    ></el-alert>
+    ></el-alert> -->
     <el-row>
-      <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
+     <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
         <div style="color: transparent">占位符</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">

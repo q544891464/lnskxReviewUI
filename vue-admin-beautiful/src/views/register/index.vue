@@ -1,14 +1,14 @@
 <template>
   <div class="register-container">
-    <el-alert
+<!--    <el-alert
       v-if="nodeEnv !== 'development'"
       title="beautiful boys and girls欢迎加入vue-admin-beautifulQQ群：972435319"
       type="success"
       :closable="false"
       style="position: fixed"
-    ></el-alert>
+    ></el-alert> -->
     <el-row>
-      <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
+     <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
         <div style="color: transparent">占位符</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
@@ -31,7 +31,7 @@
               <vab-icon slot="prefix" :icon="['fas', 'user-alt']"></vab-icon>
             </el-input>
           </el-form-item>
-          <el-form-item prop="phone">
+<!--          <el-form-item prop="phone">
             <el-input
               v-model.trim="form.phone"
               type="text"
@@ -62,7 +62,7 @@
             >
               {{ phoneCode }}
             </el-button>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item prop="password">
             <el-input
               v-model.trim="form.password"
@@ -73,12 +73,42 @@
               <vab-icon slot="prefix" :icon="['fas', 'unlock']"></vab-icon>
             </el-input>
           </el-form-item>
+
+
+          <el-form-item v-if="captchaFlag" prop="captcha">
+            <span class="svg-container">
+              <i class="el-icon-warning" />
+            </span>
+            <el-input
+              ref="captcha"
+              v-model.trim="form.captcha"
+              placeholder="请输入验证码"
+              name="captcha"
+              type="text"
+              tabindex="1"
+              autocomplete="on"
+              maxlength="10"
+              style="width: calc(100% - 200px)"
+              @keyup.enter.native="handleLogin"
+            />
+            <img
+              class="captcha"
+              style="float: right"
+              title="看不清，换一张"
+              alt="验证码"
+              :src="captchaImg"
+              @click="getCaptcha"
+            />
+          </el-form-item>
+
           <el-form-item>
             <el-button
               class="register-btn"
               type="primary"
-              @click.native.prevent="handleReister"
+              @click="handleRegister"
+
             >
+            <!-- @click.native.prevent="handleReister" -->
               注册
             </el-button>
             <router-link to="/login">
@@ -91,8 +121,9 @@
   </div>
 </template>
 <script>
+  import { uuid } from "@/utils";
   import { isPassword, isPhone } from "@/utils/validate";
-  import { register } from "@/api/user";
+  import { register,captcha } from "@/api/user";
   export default {
     username: "Register",
     directives: {
@@ -126,12 +157,19 @@
       };
       return {
         isGetphone: false,
+        captchaFlag: true,
+        captchaImg: "",
         getPhoneIntval: null,
         phoneCode: "获取验证码",
         showRegister: false,
         nodeEnv: process.env.NODE_ENV,
         title: this.$baseTitle,
-        form: {},
+        form: {
+          username: "",
+          password: "",
+          captcha: "",
+          uuid: "",
+        },
         registerRules: {
           username: [
             { required: true, trigger: "blur", message: "请输入用户名" },
@@ -152,10 +190,22 @@
         },
         loading: false,
         passwordType: "password",
+        redirect: undefined,
       };
+    },
+
+    watch: {
+      $route: {
+        handler(route) {
+          this.redirect = (route.query && route.query.redirect) || "/";
+        },
+        immediate: true,
+      },
     },
     created() {
       document.body.style.overflow = "hidden";
+      this.form.uuid = uuid();
+      this.captchaImg = captcha(this.form.uuid);
     },
     beforeDestroy() {
       document.body.style.overflow = "auto";
@@ -163,32 +213,90 @@
       clearInterval(this.getPhoneIntval);
     },
     methods: {
-      getPhoneCode() {
-        this.isGetphone = true;
-        let n = 60;
-        this.getPhoneIntval = setInterval(() => {
-          if (n > 0) {
-            n--;
-            this.phoneCode = "重新获取(" + n + "s)";
-          } else {
-            this.getPhoneIntval = null;
-            clearInterval(this.getPhoneIntval);
-            this.phoneCode = "获取验证码";
-            this.isGetphone = false;
-          }
-        }, 1000);
+      // getPhoneCode() {
+      //   this.isGetphone = true;
+      //   let n = 60;
+      //   this.getPhoneIntval = setInterval(() => {
+      //     if (n > 0) {
+      //       n--;
+      //       this.phoneCode = "重新获取(" + n + "s)";
+      //     } else {
+      //       this.getPhoneIntval = null;
+      //       clearInterval(this.getPhoneIntval);
+      //       this.phoneCode = "获取验证码";
+      //       this.isGetphone = false;
+      //     }
+      //   }, 1000);
+      // },
+      getCaptcha() {
+        this.captchaImg = captcha(this.form.uuid);
       },
-      handleReister() {
-        this.$refs["registerForm"].validate(async (valid) => {
+      handleRegister() {
+        // this.$refs["registerForm"].validate(async (valid) => {
+        //   if (valid) {
+        //     const param = {
+        //       username: this.form.username,
+        //       phone: this.form.phone,
+        //       password: this.form.password,
+        //       phoneCode: this.form.phoneCode,
+        //     };
+        //     const { msg } = await register(param);
+        //     this.$baseMessage(msg, "success");
+        //   }
+        // });
+        this.$refs["registerForm"].validate( async(valid) =>  {
           if (valid) {
             const param = {
               username: this.form.username,
-              phone: this.form.phone,
               password: this.form.password,
-              phoneCode: this.form.phoneCode,
+              captcha: this.form.captcha,
+              uuid:this.form.uuid,
             };
-            const { msg } = await register(param);
-            this.$baseMessage(msg, "success");
+            const { success,msg } = await register(param);
+            console.log(msg,"response");
+            if(success){
+              this.$baseMessage("注册成功！", "success");
+              this.loading = true;
+              this.$store
+                .dispatch("user/login", this.form)
+                .then(() => {
+                  const routerPath =
+                    this.redirect === "/404" || this.redirect === "/401"
+                      ? "/"
+                      : this.redirect;
+                  this.$router.push(routerPath).catch(() => {});
+                  this.loading = false;
+                })
+            }
+            // this.loading = true;
+            // this.$store
+              // .dispatch("user/register", this.form)
+              // .then(() => {
+                // const routerPath =
+                //   this.redirect === "/404" || this.redirect === "/401"
+                //     ? "/"
+                //     : this.redirect;
+                // this.$router.push(routerPath).catch(() => {});
+                // this.loading = false;
+              // })
+              // .catch(() => {
+              //   // 获取当前失败次数
+              //   this.$store
+              //     .dispatch("user/getSlipCount", this.form)
+              //     .then((ret) => {
+              //       this.loading = false;
+              //       const { data } = ret;
+              //       if (!isNull(data) && data.curr >= data.base) {
+              //         // 失败次数大于系统规定阈值 开启验证码校验
+              //         this.captchaFlag = true;
+              //       }
+              //     })
+              //     .catch(() => {
+              //       this.loading = false;
+              //     });
+              // });
+          } else {
+            return false;
           }
         });
       },
@@ -311,6 +419,20 @@
       font-size: 16px;
       color: $base-font-color;
       cursor: pointer;
+      user-select: none;
+    }
+
+    .captcha {
+      position: absolute;
+      top: -2.5px;
+      right: 0;
+      width: 180px;
+      height: 58px;
+      margin-top: 2px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
       user-select: none;
     }
 
