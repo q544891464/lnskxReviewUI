@@ -11,22 +11,27 @@
       class="applyForm"
     >
       <el-row>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="成果名称" prop="applyName">
-            <el-input v-model="form.applyName" placeholder="成果名称" :maxlength="11" show-word-limit clearable
+            <el-input v-model="form.applyName" placeholder="成果名称" :maxlength="40" show-word-limit clearable
               :style="{width: '90%'}" v-bind:disabled="disabled"></el-input>
           </el-form-item>
         </el-col>
 
-        <el-col :span="12">
+<!--        <el-col :span="12">
 
           <el-form-item label="主要完成人" prop="mainAuthors">
             <el-input v-model="form.mainAuthors" placeholder="主要完成人" :maxlength="11" show-word-limit clearable
           :style="{width: '90%'}" v-bind:disabled="disabled"></el-input>
           </el-form-item>
 
-        </el-col>
+        </el-col> -->
     </el-row>
+
+    <el-form-item label-width="150px" label="发表日期/出版日期" prop="publicationDate">
+      <el-date-picker v-model="form.publicationDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+        :style="{width: '50%'}" placeholder="请选择发表日期/出版日期" clearable v-bind:disabled="disabled"></el-date-picker>
+    </el-form-item>
 
       <el-form-item label-width="150px" label="学科专业分类" prop="discipline">
         <el-cascader
@@ -34,47 +39,46 @@
         :options="disciplineOptions"
         :props="disciplineProps"
          @change="disciplinOptionChange"
-        :style="{width: '100%'}"
+        :style="{width: '50%'}"
         placeholder="请选择学科专业分类!"
         v-bind:disabled='disabled'></el-cascader>
       </el-form-item>
 
       <el-form-item label="成果类别" prop="applyType">
-        <el-select v-model="form.applyType" placeholder="请选择成果类别" clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-select v-model="form.applyType" placeholder="请选择成果类别" clearable :style="{width: '50%'}" v-bind:disabled="disabled">
           <el-option v-for="(item, index) in applyTypeOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled" ></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label-width="150px" label="发表日期/出版日期" prop="publicationDate">
-        <el-date-picker v-model="form.publicationDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-          :style="{width: '100%'}" placeholder="请选择发表日期/出版日期" clearable v-bind:disabled="disabled"></el-date-picker>
-      </el-form-item>
 
 
+<!--
       <el-form-item label="关键词" prop="keywords">
         <el-input v-model="form.keywords" :style="{width: '50%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item>
 
       <el-form-item label="具体计划、基金名称和编号" prop="fundName">
         <el-input v-model="form.fundName" :style="{width: '80%'}" v-bind:disabled="disabled"></el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item label="成果简介" prop="introduction">
-        <el-input v-model="form.introduction" type="textarea" v-bind:disabled="disabled"></el-input>
+        <el-input v-model="form.introduction" type="textarea"
+          placeholder="500个汉字以内，英文成果需给出500字以内的中文简介" :maxlength="500" show-word-limit
+          :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item>
 
-      <el-form-item label="成果原创性、前沿性、突破性创新内容和学术贡献" prop="innovation">
+<!--      <el-form-item label="成果原创性、前沿性、突破性创新内容和学术贡献" prop="innovation">
         <el-input v-model="form.innovation" type="textarea" v-bind:disabled="disabled"></el-input>
       </el-form-item>
 
       <el-form-item label="成果应用情况" prop="application">
         <el-input v-model="form.application" type="textarea" v-bind:disabled='disabled'></el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item label="第一作者" prop="firstAuthor">
         <el-input v-model="form.firstAuthor" placeholder="请输入第一作者姓名" show-word-limit clearable
-          :style="{width: '100%'}" v-bind:disabled="disabled"></el-input>
+          :style="{width: '50%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item>
           <el-form-item label="性别" prop="firstAuthorSex">
             <el-select v-model="form.firstAuthorSex" placeholder="请选择性别" clearable :style="{width: '50%'}" v-bind:disabled="disabled">
@@ -84,31 +88,31 @@
           </el-form-item>
       <el-form-item label="身份证号" prop="firstAuthorId">
         <el-input v-model="form.firstAuthorId" placeholder="身份证号仅用于本系统查重" show-word-limit clearable
-          :style="{width: '100%'}" v-bind:disabled="disabled"></el-input>
+          :style="{width: '50%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="地域" prop="firstAuthorRegion">
-        <el-select v-model="form.firstAuthorRegion" clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-select v-model="form.firstAuthorRegion" clearable :style="{width: '50%'}" v-bind:disabled="disabled">
           <el-option v-for="(item, index) in firstAuthorRegionOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="工作单位" prop="firstAuthorWorkplace">
-        <el-input v-model="form.firstAuthorWorkplace" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-input v-model="form.firstAuthorWorkplace" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="firstAuthorMail">
-        <el-input v-model="form.firstAuthorMail" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-input v-model="form.firstAuthorMail" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
       <el-form-item label="手机号" prop="firstAuthorTel">
-        <el-input v-model="form.firstAuthorTel" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled"></el-input>
+        <el-input v-model="form.firstAuthorTel" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="职务" prop="firstAuthorPost" >
-        <el-input v-model="form.firstAuthorPost" placeholder="没有填无" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-input v-model="form.firstAuthorPost" placeholder="没有填无" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
       <el-form-item label="职称" prop="firstAuthorTitle" >
-        <el-input v-model="form.firstAuthorTitle" placeholder="没有填无" show-word-limit clearable :style="{width: '100%'}"  v-bind:disabled="disabled">
+        <el-input v-model="form.firstAuthorTitle" placeholder="没有填无" show-word-limit clearable :style="{width: '50%'}"  v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
       <el-form-item label="职称级别" prop="firstAuthorTitleLevel">
@@ -127,7 +131,7 @@
       </el-form-item> -->
       <el-form-item label="学历" prop="firstAuthorEdu">
         <el-select v-model="form.firstAuthorEdu" placeholder="请选择学历" clearable
-          :style="{width: '100%'}" v-bind:disabled="disabled">
+          :style="{width: '50%'}" v-bind:disabled="disabled">
           <el-option v-for="(item, index) in firstAuthorEduOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
@@ -135,29 +139,29 @@
 
       <el-form-item label="学位" prop="firstAuthorDegree">
         <el-select v-model="form.firstAuthorDegree" placeholder="请选择学位" clearable
-          :style="{width: '100%'}" v-bind:disabled="disabled">
+          :style="{width: '50%'}" v-bind:disabled="disabled">
           <el-option v-for="(item, index) in firstAuthorDegreeOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="毕业院校" prop="firstAuthorSchool">
-        <el-input v-model="form.firstAuthorSchool" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-input v-model="form.firstAuthorSchool" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
 
       <el-form-item label="专业" prop="firstAuthorProfess">
-        <el-input v-model="form.firstAuthorProfess" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+        <el-input v-model="form.firstAuthorProfess" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
 
-      <el-form-item label="第一作者地址" prop="firstAuthorAddress">
+      <el-form-item label="地址" prop="firstAuthorAddress">
         <el-input v-model="form.firstAuthorAddress" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
 
-      <el-form-item label="第一作者邮编" prop="firstAuthorCode">
-        <el-input v-model="form.firstAuthorCode" show-word-limit clearable :style="{width: '100%'}" v-bind:disabled="disabled">
+      <el-form-item label="邮编" prop="firstAuthorCode">
+        <el-input v-model="form.firstAuthorCode" show-word-limit clearable :style="{width: '50%'}" v-bind:disabled="disabled">
         </el-input>
       </el-form-item>
 
@@ -166,6 +170,73 @@
           placeholder="500个汉字以内，本人获得的科技奖励、学术成果及参与的技术研发、工程项目情况简介" :maxlength="500" show-word-limit
           :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item>
+
+
+      <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse-item title="其他作者信息" name="1">
+          <el-form-item label="第二作者" prop="author2">
+            <el-input v-model="form.author2" placeholder="请输入第二作者" clearable :style="{width: '100%'}"></el-input>
+          </el-form-item>
+          <el-form-item label="第二作者性别" prop="author2Sex">
+            <el-select v-model="form.author2Sex" placeholder="请选择第二作者性别" clearable :style="{width: '100%'}">
+              <el-option v-for="(item, index) in firstAuthorSexOptions" :key="index" :label="item.label"
+                :value="item.value" :disabled="item.disabled"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="第二作者工作单位" prop="author2Workplace">
+            <el-input v-model="form.author2Workplace" placeholder="请输入第二作者工作单位" clearable
+              :style="{width: '100%'}"></el-input>
+          </el-form-item>
+          <el-form-item label="第二作者手机号" prop="author2Tel">
+            <el-input v-model="form.author2Tel" placeholder="请输入第二作者手机号" clearable :style="{width: '100%'}">
+            </el-input>
+          </el-form-item>
+
+          <el-divider></el-divider>
+
+          <el-form-item label="第三作者" prop="author3">
+            <el-input v-model="form.author3" placeholder="请输入第三作者" clearable :style="{width: '100%'}"></el-input>
+          </el-form-item>
+          <el-form-item label="第三作者性别" prop="author3Sex">
+            <el-select v-model="form.author3Sex" placeholder="请选择第三作者性别" clearable :style="{width: '100%'}">
+              <el-option v-for="(item, index) in firstAuthorSexOptions" :key="index" :label="item.label"
+                :value="item.value" :disabled="item.disabled"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="第三作者工作单位" prop="author3Workplace">
+            <el-input v-model="form.author3Workplace" placeholder="请输入第三作者工作单位" clearable
+              :style="{width: '100%'}"></el-input>
+          </el-form-item>
+          <el-form-item label="第三作者手机号" prop="author3Tel">
+            <el-input v-model="form.author3Tel" placeholder="请输入第三作者手机号" clearable :style="{width: '100%'}">
+            </el-input>
+          </el-form-item>
+
+          <el-divider></el-divider>
+
+          <el-form-item label="第四作者" prop="author4">
+            <el-input v-model="form.author4" placeholder="请输入第四作者" clearable :style="{width: '100%'}"></el-input>
+          </el-form-item>
+          <el-form-item label="第四作者性别" prop="author4Sex">
+            <el-select v-model="form.author4Sex" placeholder="请选择第四作者性别" clearable :style="{width: '100%'}">
+              <el-option v-for="(item, index) in firstAuthorSexOptions" :key="index" :label="item.label"
+                :value="item.value" :disabled="item.disabled"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="第四作者工作单位" prop="author4Workplace">
+            <el-input v-model="form.author4Workplace" placeholder="请输入第四作者工作单位" clearable
+              :style="{width: '100%'}"></el-input>
+          </el-form-item>
+          <el-form-item label="第四作者手机号" prop="author4Tel">
+            <el-input v-model="form.author4Tel" placeholder="请输入第四作者手机号" clearable :style="{width: '100%'}">
+            </el-input>
+          </el-form-item>
+        </el-collapse-item>
+      </el-collapse>
+
+      <el-divider></el-divider>
+
+
 
       <el-form-item label="论文pdf上传" prop="uploadFile">
         <el-upload
@@ -218,47 +289,47 @@
       </el-form-item>
 
       <el-form-item label="刊物影响因子" prop="impactFactor">
-        <el-input v-model="form.impactFactor" placeholder="请输入刊物影响因子" clearable :style="{width: '100%'}">
+        <el-input v-model="form.impactFactor" placeholder="请输入刊物影响因子" clearable :style="{width: '30%'}">
         </el-input>
       </el-form-item>
       <el-form-item label="检索收录情况" prop="retrieval">
-        <el-select v-model="form.retrieval" placeholder="请选择检索收录情况" clearable :style="{width: '100%'}">
+        <el-select v-model="form.retrieval" placeholder="请选择检索收录情况" clearable :style="{width: '50%'}">
           <el-option v-for="(item, index) in retrievalOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="被引用次数" prop="citations">
-        <el-select v-model="form.citations" placeholder="请选择被引用次数" clearable :style="{width: '100%'}">
+        <el-select v-model="form.citations" placeholder="请选择被引用次数" clearable :style="{width: '50%'}">
           <el-option v-for="(item, index) in citationsOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="论文类型" prop="paperType">
-        <el-select v-model="form.paperType" placeholder="请选择论文类型" clearable :style="{width: '100%'}">
+        <el-select v-model="form.paperType" placeholder="请选择论文类型" clearable :style="{width: '50%'}">
           <el-option v-for="(item, index) in paperTypeOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="相关系列成果" prop="relatedAchievements">
         <el-select v-model="form.relatedAchievements" placeholder="请选择相关系列成果" clearable
-          :style="{width: '100%'}">
+          :style="{width: '50%'}">
           <el-option v-for="(item, index) in relatedAchievementsOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="产生该成果的项目名称" prop="projectName">
-        <el-input v-model="form.projectName" placeholder="请输入产生该成果的项目名称" clearable :style="{width: '100%'}">
+        <el-input v-model="form.projectName" placeholder="请输入产生该成果的项目名称(没有填无)" clearable :style="{width: '80%'}">
         </el-input>
       </el-form-item>
       <el-form-item label="项目级别" prop="projectLevel">
-        <el-select v-model="form.projectLevel" placeholder="请选择项目级别" clearable :style="{width: '100%'}">
+        <el-select v-model="form.projectLevel" placeholder="请选择项目级别" clearable :style="{width: '50%'}">
           <el-option v-for="(item, index) in projectLevelOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="自主创新情况" prop="projectInnovation">
         <el-select v-model="form.projectInnovation" placeholder="请选择自主创新情况" clearable
-          :style="{width: '100%'}">
+          :style="{width: '50%'}">
           <el-option v-for="(item, index) in projectInnovationOptions" :key="index" :label="item.label"
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
@@ -361,6 +432,7 @@
           firstAuthor: "",
           firstAuthorSex: "",
           firstAuthorId: "",
+          firstAuthorBirth: "",
           firstAuthorRegion: "",
           firstAuthorWorkplace: "",
           firstAuthorMail: "",
@@ -376,6 +448,18 @@
           firstAuthorAdminLevel: "",
           firstAuthorTitleLevel: "",
           firstAuthorIntro:"",
+          author2: "",
+          author2Sex: "",
+          author2Workplace: "",
+          author2Tel: "",
+          author3: "",
+          author3Sex: "",
+          author3Workplace: "",
+          author3Tel: "",
+          author4: "",
+          author4Sex: "",
+          author4Workplace: "",
+          author4Tel: "",
           filePath:"",
           wordPath:"",
           otherFilePath:"",
@@ -419,6 +503,11 @@
             message: '请选择成果类别',
             trigger: 'change'
           }],
+          publicationDate: [{
+            required: true,
+            message: '请选择发表日期/出版日期',
+            trigger: 'change'
+          }],
 
           applyName: [
             { required: true, message: "请输入成果名称", trigger: "blur" },
@@ -429,7 +518,11 @@
               trigger: "blur",
             },
           ],
-
+          introduction: [{
+            required: true,
+            message: '请输入成果简介',
+            trigger: 'blur'
+          }],
           firstAuthor: [{
             required: true,
             message: '请输入第一作者姓名',
@@ -478,6 +571,16 @@
             required: true,
             message: '请选择学位',
             trigger: 'change'
+          }],
+          firstAuthorSchool: [{
+            required: true,
+            message: '请输入毕业院校',
+            trigger: 'blur'
+          }],
+          firstAuthorProfess: [{
+            required: true,
+            message: '请输入专业',
+            trigger: 'blur'
           }],
           firstAuthorTitleLevel: [{
             required: true,
@@ -1117,7 +1220,16 @@
         }
       },
 
+
       handlerFormData(formData){
+        //解析身份证号得到出生年月日
+        let iden = this.form.firstAuthorId;
+        if(iden.length == 18){
+          this.form.firstAuthorBirth = iden.substring(6,10)+"-"+iden.substring(10,12)+"-"+iden.substring(12,14);
+        }
+        if(iden.length == 15){
+          this.form.firstAuthorBirth = "19"+iden.substring(6,8)+"-"+iden.substring(8,10)+"-"+iden.substring(10,12);
+        }
         if(!isNull(formData)){
           for(let key in formData){
             // 对于时间类进行处理

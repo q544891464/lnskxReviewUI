@@ -9,6 +9,14 @@ export function getList(data) {
   });
 }
 
+export function getListAll(data) {
+  return request({
+    url: "/api/v1/system/apply/findPageAll",
+    method: "get",
+    params: data,
+  });
+}
+
 export function getListByOrg(data) {
   return request({
     url: "/api/v1/system/apply/findPageByOrg",

@@ -38,7 +38,8 @@ export function isExternal(path) {
  */
 export function isPassword(str) {
   // const reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,20}$/;
-  const reg = /[^]{6,20}$/;
+  str = str + "";
+  const reg = /^\w+$/;
   return reg.test(str);
 }
 

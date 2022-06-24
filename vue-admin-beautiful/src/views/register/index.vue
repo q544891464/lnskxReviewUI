@@ -143,7 +143,7 @@
       };
       const validatePassword = (rule, value, callback) => {
         if (!isPassword(value)) {
-          callback(new Error("密码不能少于6位"));
+          callback(new Error("密码只能为数字、字母、下划线"));
         } else {
           callback();
         }
@@ -264,7 +264,8 @@
                     this.redirect === "/404" || this.redirect === "/401"
                       ? "/"
                       : this.redirect;
-                  this.$router.push(routerPath).catch(() => {});
+                  // this.$router.push(routerPath).catch(() => {});
+                  this.$router.push("/createApply").catch(() => {});
                   this.loading = false;
                 })
             }

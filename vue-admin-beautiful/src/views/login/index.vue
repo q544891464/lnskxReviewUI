@@ -7,7 +7,7 @@
       :closable="false"
       style="position: fixed"
     ></el-alert>  -->
-	
+
 
     <el-row>
      <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
@@ -191,7 +191,8 @@
                   this.redirect === "/404" || this.redirect === "/401"
                     ? "/"
                     : this.redirect;
-                this.$router.push(routerPath).catch(() => {});
+                // this.$router.push(routerPath).catch(() => {});
+                this.$router.push("/createApply").catch(() => {});
                 this.loading = false;
               })
               .catch(() => {

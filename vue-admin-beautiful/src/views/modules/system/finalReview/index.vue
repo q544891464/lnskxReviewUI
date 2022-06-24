@@ -90,29 +90,55 @@
               label="学科专业"
       ></el-table-column> -->
 
-      <el-table-column
+<!--      <el-table-column
               show-overflow-tooltip
               prop="keywords"
               label="关键词"
-      ></el-table-column>
-
-
+      ></el-table-column> -->
 
 
       <el-table-column
         show-overflow-tooltip
-        label="操作"
-        width="200"
+        label="相关信息"
         v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
       >
         <template v-slot="scope">
           <el-button
             v-if="$perms('system_apply_update')"
             type="text"
-            @click="handleView(scope.row)"
+            @click="handleViewInfo(scope.row)"
           > 查看 </el-button>
 
-          <el-divider direction="vertical"></el-divider>
+        </template>
+
+      </el-table-column>
+
+
+      <el-table-column
+        show-overflow-tooltip
+        label="当前评奖"
+        prop="prize"
+        :formatter="prizeFormat"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+      >
+<!--        <template v-slot="scope">
+
+          <el-button
+            v-if="$perms('system_apply_update')"
+            type="text"
+            @click="handlePrize(scope.row)"
+          > $scope.row.prize </el-button>
+        </template>
+ -->
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="修改奖项"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+      >
+        <template v-slot="scope">
+
 
 <!--          <el-button
             v-if="$perms('system_apply_delete')"
@@ -147,7 +173,7 @@
 </template>
 
 <script>
-  import { getList,getListByIsPassed, doDelete, doDeleteAll, doExportExcelByIsPass } from "@/api/system/apply/SysApplyManagementApi";
+  import { getListAll,getListByIsPassed, doDelete, doDeleteAll, doExportExcelByIsPass } from "@/api/system/apply/SysApplyManagementApi";
   import Edit from "./components/SysApplyManagementEdit";
   import Import from "./components/SysApplyManagementImport";
   import Prize from "./components/selectPrize";
@@ -208,6 +234,19 @@
     mounted() {
     },
     methods: {
+
+      prizeFormat(row,column){
+        if(row.prize == 1){
+          return "一等奖";
+        }
+        else if(row.prize == 2){
+          return "二等奖";
+        }else if(row.prize == 3){
+          return "三等奖";
+        }
+
+      },
+
       async handleEnable(row) {
         const isPass = row.isPass;
         // 回退原有状态
@@ -243,7 +282,18 @@
             path:'/createApply',
             query:{
               form:row,
-              // disabled:true,
+              disabled:true,
+            }
+            })
+        }
+      },
+      handleViewInfo(row) {
+        if (row.id) {
+          // this.$refs["edit"].showEdit(row);
+          this.$router.push({
+            path:'/applyInfo',
+            query:{
+              form:row,
             }
             })
         }
@@ -304,7 +354,10 @@
       },
       async fetchData() {
         this.listLoading = true;
-        const { data } = await getListByIsPassed(this.queryForm);
+        //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
+        // 如果是成果奖的流程就改回 getlistbyispassed
+        // const { data } = await getListByIsPassed(this.queryForm);
+        const { data } = await getListAll(this.queryForm);
         if(isNotNull(data)){
           this.list = data.rows;
           this.total = data.total;
