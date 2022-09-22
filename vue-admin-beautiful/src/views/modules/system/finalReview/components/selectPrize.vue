@@ -73,7 +73,8 @@ export default {
       this.$refs['elForm'].resetFields()
     },
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('update:visible', false);
+      this.$emit('refresh');
       this.dialogFormVisible = false;
     },
     handelConfirm() {
@@ -91,7 +92,8 @@ export default {
           prize: this.formData.setPrize,
         });
         this.$baseMessage(msg, "success");
-        this.close()
+        this.close(this.formData.setPrize);
+
       })
     },
   }

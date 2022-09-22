@@ -10,10 +10,10 @@
 
 
     <el-row>
-     <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
+     <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6">
         <div style="color: transparent">占位符</div>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <el-form
           ref="form"
           :model="form"
@@ -21,8 +21,10 @@
           class="login-form"
           label-position="left"
         >
-          <div class="title">hello !</div>
-          <div class="title-tips">欢迎来到{{ title }}！</div>
+          <div class="title">
+            <img src="~@/assets/login_images/title.png" alt="">
+          </div>
+          <div class="title-tips">{{ title }}</div>
           <el-form-item style="margin-top: 40px" prop="username">
             <span class="svg-container svg-container-admin">
               <vab-icon :icon="['fas', 'user']" />
@@ -192,7 +194,7 @@
                     ? "/"
                     : this.redirect;
                 // this.$router.push(routerPath).catch(() => {});
-                this.$router.push("/createApply").catch(() => {});
+                this.$router.push("/index").catch(() => {});
                 this.loading = false;
               })
               .catch(() => {
@@ -223,7 +225,7 @@
 <style lang="scss" scoped>
   .login-container {
     height: 100vh;
-    background: url("~@/assets/login_images/background.jpg") center center fixed
+    background: url("~@/assets/login_images/background2.jpg") center center fixed
       no-repeat;
     background-size: cover;
 
@@ -235,9 +237,11 @@
 
     .title-tips {
       margin-top: 29px;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 400;
-      color: rgba(14, 18, 26, 1);
+      
+      // color: rgba(14, 18, 26, 1);
+      color: #d7dee3;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -255,10 +259,14 @@
     }
 
     .login-form {
+      background-color: #00000060;
       position: relative;
       max-width: 100%;
-      margin: calc((100vh - 425px) / 2) 10% 10%;
+      // margin: calc((100vh - 425px) / 2) 10% 10%;
+      margin: 10% 10%;
+      // margin: 50px 90px;
       overflow: hidden;
+      padding: 2rem 4rem;
 
       .forget-password {
         width: 100%;

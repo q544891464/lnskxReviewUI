@@ -25,6 +25,14 @@ export function getListByOrg(data) {
   });
 }
 
+export function getListByDiscipline(data) {
+  return request({
+    url: "/api/v1/system/apply/findPageByDiscipline",
+    method: "get",
+    params: data,
+  });
+}
+
 export function getListByIsPassed(data) {
   return request({
     url: "/api/v1/system/apply/findPageByIsPassed",
@@ -44,6 +52,38 @@ export function doIsPassApply(data) {
 export function doSetPrize(data) {
   return request({
     url: "/api/v1/system/apply/setPrize",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doSetCompletedFile(data) {
+  return request({
+    url: "/api/v1/system/apply/setCompletedFile",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doSetDisciplineReviewPrize(data) {
+  return request({
+    url: "/api/v1/system/apply/setDisciplineReviewPrize",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doSetSubjectGroup(data) {
+  return request({
+    url: "/api/v1/system/apply/setSubjectGroup",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doSetSubjectGroupAll(data) {
+  return request({
+    url: "/api/v1/system/apply/setSubjectGroupAll",
     method: "post",
     params: data,
   });

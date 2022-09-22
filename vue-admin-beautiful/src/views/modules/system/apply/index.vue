@@ -1,3 +1,4 @@
+<!-- 已提交申请表 -->
 <template>
   <div class="tenantManagement-container">
 
@@ -113,6 +114,18 @@
 
       </el-table-column>
 
+      <el-table-column show-overflow-tooltip label="上传申报表"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')">
+        <template v-slot="scope">
+          <el-button
+          v-if="$perms('system_apply_update')"
+          type="text"
+           @click="handleUpload(scope.row)"> 上传申报表 </el-button>
+
+        </template>
+
+      </el-table-column>
+
 
 
 
@@ -158,6 +171,7 @@
 
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData"></import>
+    <upload ref="upload" @fetchData="fetchData" ></upload>
 
   </div>
 </template>
@@ -171,6 +185,7 @@
   } from "@/api/system/apply/SysApplyManagementApi";
   import Edit from "./components/SysApplyManagementEdit";
   import Import from "./components/SysApplyManagementImport";
+  import Upload from "./components/upload";
 
   import {
     vueButtonClickBan
@@ -186,7 +201,8 @@
     name: "SysApplyManagement",
     components: {
       Edit,
-      Import
+      Import,
+      Upload
     },
     data() {
       return {
@@ -271,6 +287,10 @@
         }
       },
 
+      async handleUpload(row) {
+        await this.$refs["upload"].show(row);
+      },
+
       handleUpdate(row) {
         if (row.id) {
           // this.$refs["edit"].showEdit(row);
@@ -282,6 +302,19 @@
           })
         }
       },
+
+      // handleUpload(row) {
+      //   if (row.id) {
+      //     // this.$refs["edit"].showEdit(row);
+      //     this.$router.push({
+      //       path: '/createApply',
+      //       query: {
+      //         form: row,
+      //       }
+      //     })
+      //   }
+      // },
+
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm("你确定要删除当前项吗", null, async () => {

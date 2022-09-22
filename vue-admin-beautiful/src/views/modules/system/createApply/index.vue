@@ -418,6 +418,7 @@
           mainAuthors: "",
           discipline: [],
           disciplineName: "",
+          subjectGroup:"",
           applyType: "",
           publicationDate: null,
           keywords:"",
@@ -1220,6 +1221,26 @@
         }
       },
 
+      subjectGroupFormat(disciplineSubject){
+        if(disciplineSubject == "理科"){
+          return 1;
+        }else if(disciplineSubject == "农科"){
+          return 2;
+        }else if(disciplineSubject == "医药"){
+          return 3;
+        }else if(disciplineSubject == "生命科学与基础医学"){
+          return 4;
+        }else if(disciplineSubject == "机械、材料、矿山、冶金"){
+          return 5;
+        }else if(disciplineSubject == "电气、电子与信息技术"){
+          return 6;
+        }else if(disciplineSubject == "能源、化工与环境"){
+          return 7;
+        }else if(disciplineSubject == "交通与基建"){
+          return 8;
+        }
+      },
+
 
       handlerFormData(formData){
         //解析身份证号得到出生年月日
@@ -1230,6 +1251,12 @@
         if(iden.length == 15){
           this.form.firstAuthorBirth = "19"+iden.substring(6,8)+"-"+iden.substring(8,10)+"-"+iden.substring(10,12);
         }
+
+        this.form.disciplineName = this.form.discipline[1];
+
+        this.form.subjectGroup = this.subjectGroupFormat(this.form.discipline[0]);
+
+
         if(!isNull(formData)){
           for(let key in formData){
             // 对于时间类进行处理

@@ -20,12 +20,11 @@
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
-        <el-button
-            v-if="$perms('system_apply_insert')"
-            icon="el-icon-plus"
-            type="primary"
-            @click="handleInsert"
-        > 添加 </el-button>
+       <el-button
+            v-if="$perms('system_apply_export')"
+            type="warning"
+            @click="fetchData"
+        > 刷新 </el-button>
 
 <!--        <el-button
             v-if="$perms('system_apply_import')"
@@ -84,6 +83,23 @@
               label="成果名称"
       ></el-table-column>
 
+      <el-table-column
+              show-overflow-tooltip
+              prop="firstAuthorWorkplace"
+              label="工作单位"
+      ></el-table-column>
+      <el-table-column
+              show-overflow-tooltip
+              prop="firstAuthor"
+              label="第一作者"
+      ></el-table-column>
+
+      <el-table-column
+              show-overflow-tooltip
+              prop="firstAuthorTel"
+              label="联系电话"
+      ></el-table-column>
+
 <!--      <el-table-column
               show-overflow-tooltip
               prop="discipline"
@@ -113,6 +129,24 @@
 
       </el-table-column>
 
+
+      <el-table-column
+        show-overflow-tooltip
+        label="学科组评奖"
+        prop="disciplineReviewPrize"
+        :formatter="disciplineReviewPrizeFormat"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+      >
+<!--        <template v-slot="scope">
+
+          <el-button
+            v-if="$perms('system_apply_update')"
+            type="text"
+            @click="handlePrize(scope.row)"
+          > $scope.row.prize </el-button>
+        </template>
+ -->
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -167,13 +201,13 @@
 
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData" ></import>
-    <prize ref="prize" @fetchData="fetchData" ></prize>
+    <prize ref="prize" @fetchData="fetchData" @refresh="fetchData"></prize>
 
   </div>
 </template>
 
 <script>
-  import { getListAll,getListByIsPassed, doDelete, doDeleteAll, doExportExcelByIsPass } from "@/api/system/apply/SysApplyManagementApi";
+  import { getListAll,getListByIsPassed, doDelete, doDeleteAll, doExportExcel } from "@/api/system/apply/SysApplyManagementApi";
   import Edit from "./components/SysApplyManagementEdit";
   import Import from "./components/SysApplyManagementImport";
   import Prize from "./components/selectPrize";
@@ -247,6 +281,18 @@
 
       },
 
+      disciplineReviewPrizeFormat(row,column){
+        if(row.disciplineReviewPrize == 1){
+          return "一等奖";
+        }
+        else if(row.disciplineReviewPrize == 2){
+          return "二等奖";
+        }else if(row.disciplineReviewPrize == 3){
+          return "三等奖";
+        }
+
+      },
+
       async handleEnable(row) {
         const isPass = row.isPass;
         // 回退原有状态
@@ -298,8 +344,8 @@
             })
         }
       },
-      handlePrize(row) {
-        this.$refs["prize"].show(row);
+      async handlePrize(row) {
+        await this.$refs["prize"].show(row);
       },
       handleDelete(row) {
         if (row.id) {
@@ -328,7 +374,7 @@
         vueButtonClickBan(el, 10);
 
         // 执行导出
-        doExportExcelByIsPass(this.queryForm);
+        doExportExcel(this.queryForm);
       },
       // 导入excel
       handleImportExcel(){

@@ -8,10 +8,10 @@
       style="position: fixed"
     ></el-alert> -->
     <el-row>
-     <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
+     <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6">
         <div style="color: transparent">占位符</div>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <el-form
           ref="registerForm"
           :model="form"
@@ -307,7 +307,7 @@
 <style lang="scss" scoped>
   .register-container {
     height: 100vh;
-    background: url("~@/assets/login_images/background.jpg") center center fixed
+    background: url("~@/assets/login_images/background2.jpg") center center fixed
       no-repeat;
     background-size: cover;
 
@@ -339,10 +339,18 @@
     }
 
     .register-form {
+      // position: relative;
+      // max-width: 100%;
+      // margin: calc((100vh - 499px) / 2) 10% 10%;
+      // overflow: hidden;
+      background-color: #00000060;
       position: relative;
       max-width: 100%;
-      margin: calc((100vh - 499px) / 2) 10% 10%;
+      // margin: calc((100vh - 425px) / 2) 10% 10%;
+      margin: 10% 10%;
+      // margin: 50px 90px;
       overflow: hidden;
+      padding: 2rem 4rem;
 
       .forget-password {
         width: 100%;
