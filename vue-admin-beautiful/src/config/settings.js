@@ -17,9 +17,9 @@ module.exports = {
   baseURL:
     process.env.NODE_ENV === "development"
       ? "http://127.0.0.1:7001/opsli-boot"
-      : "http://42.101.40.191:7000/opsli-boot",
+      : "http://82.156.216.222:7001/opsli-boot",
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
-  title: "2022年学会优秀论文评奖系统",
+  title: "2022年辽宁省自然科学学术成果奖",
   //简写
   abbreviation: "opsli",
   //开发环境端口号
@@ -51,7 +51,8 @@ module.exports = {
   //token失效回退到登录页时是否记录本次的路由
   recordRoute: true,
   //是否显示logo，不显示时设置false，显示时请填写remixIcon图标名称，暂时只支持设置remixIcon
-  logo: "logo",
+  // TODO:暂时不显示logo
+  logo: "false",
   //是否国定头部 固定fixed 不固定noFixed
   header: "fixed",
   //横纵布局 horizontal vertical

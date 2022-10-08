@@ -119,32 +119,46 @@
 
           <el-dropdown trigger="click">
             <span class="el-dropdown-link">
+              删除
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+
+              <el-dropdown-item v-if="$perms('system_apply_delete')" type="text"
+                @click.native="handleDelete(scope.row)"> 确认删除 </el-dropdown-item>
+
+
+            </el-dropdown-menu>
+          </el-dropdown>
+
+<!--          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
               更多
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu
               slot="dropdown"
-            >
+            > -->
               <!-- 添加下级 只有上级为 菜单是才可以 -->
               <!-- v-if="$perms('system_apply_setpass')" -->
-              <el-dropdown-item
+<!--              <el-dropdown-item
                 type="text"
                 @click.native="setPass(scope.row)"
-              > 设置通过 </el-dropdown-item>
+              > 设置通过 </el-dropdown-item> -->
 
-              <el-dropdown-item
+<!--              <el-dropdown-item
               v-if="$perms('system_apply_delete')"
               type="text"
               @click.native="handleDelete(scope.row)"
               > 删除 </el-dropdown-item>
-
-              <el-button
+ -->
+<!--              <el-button
                 type="text"
                 @click="handleViewFile(scope.row)"
-              > 查看附件 </el-button>
-
+              > 查看附件 </el-button> -->
+<!--
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
 
         </template>
 
@@ -271,12 +285,11 @@
         if (row.id) {
           // this.$refs["edit"].showEdit(row);
           this.$router.push({
-            path:'/createApply',
-            query:{
-              form:row,
-              disabled:true,
+            path: '/applyInfo',
+            query: {
+              form: row,
             }
-            })
+          })
         }
       },
       handleDelete(row) {

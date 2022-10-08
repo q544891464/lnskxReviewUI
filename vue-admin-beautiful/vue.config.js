@@ -28,6 +28,7 @@ const date = dayjs().format("YYYY_M_D");
 const time = dayjs().format("YYYY-M-D HH:mm:ss");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const productionGzipExtensions = ["html", "js", "css", "svg"];
+// const Timestamp = new Date.getTime() //加速用
 process.env.VUE_APP_TITLE = title || "opsli-boot";
 process.env.VUE_APP_AUTHOR = "chuzhixin 1204505056@qq.com";
 process.env.VUE_APP_UPDATE_TIME = time;
@@ -80,6 +81,16 @@ module.exports = {
   chainWebpack(config) {
     /* config.plugins.delete("preload");
     config.plugins.delete("prefetch"); */
+
+// 添加压缩插件 减小dist包大小
+    // config.plugin('compression-webpack-plugin').use(new CompressionWebpackPlugin({
+    //         test: /\.(js|css|scss)$/, // 匹配文件名
+    //         threshold: 20480, // 对超过20k的数据压缩
+    //         minRatio: 0.8,
+    //         deleteOriginalAssets: true // 删除源文件
+    //       }))
+
+
     config.module
       .rule("svg")
       .exclude.add(resolve("src/remixIcon"))

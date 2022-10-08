@@ -21,9 +21,9 @@
           class="login-form"
           label-position="left"
         >
-          <div class="title">
+<!--         <div class="title">
             <img src="~@/assets/login_images/title.png" alt="">
-          </div>
+          </div> -->
           <div class="title-tips">{{ title }}</div>
           <el-form-item style="margin-top: 40px" prop="username">
             <span class="svg-container svg-container-admin">
@@ -239,7 +239,7 @@
       margin-top: 29px;
       font-size: 28px;
       font-weight: 400;
-      
+
       // color: rgba(14, 18, 26, 1);
       color: #d7dee3;
       text-overflow: ellipsis;

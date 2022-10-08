@@ -402,8 +402,8 @@
         this.listLoading = true;
         //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
         // 如果是成果奖的流程就改回 getlistbyispassed
-        // const { data } = await getListByIsPassed(this.queryForm);
-        const { data } = await getListAll(this.queryForm);
+        const { data } = await getListByIsPassed(this.queryForm);
+        // const { data } = await getListAll(this.queryForm);
         if(isNotNull(data)){
           this.list = data.rows;
           this.total = data.total;
