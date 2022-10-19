@@ -1,4 +1,3 @@
-<!-- 已提交申请表 -->
 <template>
   <div class="tenantManagement-container">
     <el-collapse-transition>
@@ -17,15 +16,11 @@
       </div>
     </el-collapse-transition>
 
-    <h3>
-        填写完申报表后，请在本页导出为word并打印，在学术诚信承诺书上签字后，将申报表报送所在单位审核，合格后加盖单位公章或科技部门公章，将签字、盖章后申报表扫描PDF，在本页上传。
-      </h3>
-
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
         <el-button
-          v-if="$perms('system_apply_insert')"
+          v-if="$perms('system_orginfo_insert')"
           icon="el-icon-plus"
           type="primary"
           @click="handleInsert"
@@ -33,18 +28,35 @@
           添加
         </el-button>
 
-        <!--       <el-button
-            v-if="$perms('system_apply_import')"
-            icon="el-icon-upload2"
-            type="warning"
-            @click="handleImportExcel"
-        > 导入 </el-button> -->
+        <el-button
+          v-if="$perms('system_orginfo_import')"
+          icon="el-icon-upload2"
+          type="warning"
+          @click="handleImportExcel"
+        >
+          导入
+        </el-button>
 
-        <!--        <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
-          @click="handleExportExcel"> 导出 </el-button> -->
+        <el-button icon="el-icon-upload2" type="warning" @click="handleImport">
+          导入到组织里
+        </el-button>
+
+
+        <el-button icon="el-icon-upload2" type="warning" @click="handleImportUser">
+          导入到用户里
+        </el-button>
 
         <el-button
-          v-if="$perms('system_apply_delete')"
+          v-if="$perms('system_orginfo_export')"
+          icon="el-icon-download"
+          type="warning"
+          @click="handleExportExcel"
+        >
+          导出
+        </el-button>
+
+        <el-button
+          v-if="$perms('system_orginfo_delete')"
           :disabled="!selectRows.length > 0"
           icon="el-icon-delete"
           type="danger"
@@ -56,9 +68,25 @@
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
           <el-form-item>
-            <!--            <el-button icon="el-icon-search" type="primary" @click="queryData">
+            <el-input
+              v-model.trim="queryForm.unitName_LIKE"
+              placeholder="请输入单位名称"
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-input
+              v-model.trim="queryForm.unitHead_LIKE"
+              placeholder="请输入单位负责人"
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
-            </el-button> -->
+            </el-button>
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -80,119 +108,110 @@
 
       <el-table-column
         show-overflow-tooltip
-        prop="applyName"
-        label="申请项目名称"
-      ></el-table-column>
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="org"
-              label="推荐单位"
-      ></el-table-column> -->
-
-      <el-table-column show-overflow-tooltip prop="info" label="详细信息">
-        <template v-slot="scope">
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handleViewInfo(scope.row)"
-          >
-            查看
-          </el-button>
-        </template>
-      </el-table-column>
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="mainAuthors"
-              label="主要完成人"
-      ></el-table-column> -->
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="keywords"
-              label="关键词"
-      ></el-table-column> -->
-
-      <el-table-column
-        show-overflow-tooltip
-        label="编辑"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        label="操作"
+        v-if="
+          $perms('system_orginfo_update') || $perms('system_orginfo_delete')
+        "
       >
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_apply_update')"
+          v-if="$perms('system_orginfo_update')"
             type="text"
             @click="handleUpdate(scope.row)"
           >
             编辑
           </el-button>
-        </template>
-      </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="导出"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
-      >
-        <template v-slot="scope">
-          <el-button type="text" @click.native="handleViewFile(scope.row)">
-            导出为word
-          </el-button>
-        </template>
-      </el-table-column>
+          <el-divider direction="vertical"></el-divider>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="上传申报表"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
-      >
-        <template v-slot="scope">
           <el-button
-            v-if="$perms('system_apply_update')"
+            v-if="$perms('system_orginfo_delete')"
             type="text"
-            @click="handleUpload(scope.row)"
+            @click="handleDelete(scope.row)"
           >
-            上传申报表
+            删除
           </el-button>
         </template>
       </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
-        label="删除"
-        width="200"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
-      >
-        <template v-slot="scope">
-          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              删除
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <!--            <el-dropdown-item
-              v-if="$perms('system_apply_delete')"
-              type="text"
-              @click.native="handleViewFile(scope.row)"
-            > 导出为word </el-dropdown-item> -->
+        prop="unitName"
+        label="单位名称"
+        width="135"
+      ></el-table-column>
 
-              <!--            <el-dropdown-item
-              type="text"
-              @click.native="handleViewFile(scope.row)"
-            > 上传附件 </el-dropdown-item> -->
+      <el-table-column
+        show-overflow-tooltip
+        prop="unitHead"
+        label="单位负责人"
+      ></el-table-column>
 
-              <el-dropdown-item
-                v-if="$perms('system_apply_delete')"
-                type="text"
-                @click.native="handleDelete(scope.row)"
-              >
-                确认删除
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="headPosition"
+        label="单位负责人职位"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="headPhone"
+        label="单位负责人电话"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="headMobile"
+        label="单位负责人手机"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="unitContact"
+        label="单位联系人"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="contPosition"
+        label="单位联系人职位"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="contPhone"
+        label="单位联系人电话"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="contMobile"
+        label="单位联系人手机"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="contEmail"
+        label="单位联系人邮箱"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="unitCode"
+        label="单位编码"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="unitAddress"
+        label="单位地址"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="unitZipcode"
+        label="单位邮编"
+      ></el-table-column>
     </el-table>
     <el-pagination
       background
@@ -206,7 +225,6 @@
 
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData"></import>
-    <upload ref="upload" @fetchData="fetchData"></upload>
   </div>
 </template>
 
@@ -215,23 +233,20 @@ import {
   getList,
   doDelete,
   doDeleteAll,
-  doExportExcelById,
-} from "@/api/system/apply/SysApplyManagementApi";
-import Edit from "./components/SysApplyManagementEdit";
-import Import from "./components/SysApplyManagementImport";
-import Upload from "./components/upload";
+  doExportExcel,
+  doImportOrg,
+  doImportUser
+} from "@/api/system/orgInfo/OrgInfoManagementApi";
+import Edit from "./components/OrgInfoManagementEdit";
+import Import from "./components/OrgInfoManagementImport";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
 import { formateDate } from "@/utils/format";
 
 export default {
-  name: "SysApplyManagement",
-  components: {
-    Edit,
-    Import,
-    Upload,
-  },
+  name: "OrgInfoManagement",
+  components: { Edit, Import },
   data() {
     return {
       list: null,
@@ -244,6 +259,8 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
+        unitName_LIKE: "",
+        unitHead_LIKE: "",
       },
       dict: {},
       pickerOptions: {
@@ -288,71 +305,17 @@ export default {
       this.selectRows = val;
     },
     handleInsert(row) {
-      // this.$refs["edit"].showEdit();
-      this.$router.push({
-        path: "/createApply",
-      });
+      this.$refs["edit"].showEdit();
     },
-    //查看 将元素设置为不可修改
-    handleView(row) {
-      if (row.id) {
-        // this.$refs["edit"].showEdit(row);
-        this.$router.push({
-          path: "/createApply",
-          query: {
-            form: row,
-            disabled: true,
-          },
-        });
-      }
-    },
-
-    handleViewInfo(row) {
-      if (row.id) {
-        // this.$refs["edit"].showEdit(row);
-        this.$router.push({
-          path: "/applyInfo",
-          query: {
-            form: row,
-          },
-        });
-      }
-    },
-
-    async handleUpload(row) {
-      await this.$refs["upload"].show(row);
-    },
-
     handleUpdate(row) {
       if (row.id) {
-        // this.$refs["edit"].showEdit(row);
-        this.$router.push({
-          path: "/createApply",
-          query: {
-            form: row,
-          },
-        });
+        this.$refs["edit"].showEdit(row);
       }
     },
-
-    // handleUpload(row) {
-    //   if (row.id) {
-    //     // this.$refs["edit"].showEdit(row);
-    //     this.$router.push({
-    //       path: '/createApply',
-    //       query: {
-    //         form: row,
-    //       }
-    //     })
-    //   }
-    // },
-
     handleDelete(row) {
       if (row.id) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const { msg } = await doDelete({
-            id: row.id,
-          });
+          const { msg } = await doDelete({ id: row.id });
           this.$baseMessage(msg, "success");
           await this.fetchData();
         });
@@ -360,9 +323,7 @@ export default {
         if (this.selectRows.length > 0) {
           const ids = this.selectRows.map((item) => item.id).join();
           this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const { msg } = await doDeleteAll({
-              ids,
-            });
+            const { msg } = await doDeleteAll({ ids });
             this.$baseMessage(msg, "success");
             await this.fetchData();
           });
@@ -372,23 +333,45 @@ export default {
         }
       }
     },
-
-    handleViewFile(row) {
-      if (row.wordPath) {
-        window.open(row.wordPath, "_blank");
-      } else {
-        this.$baseMessage("请先上传文件", "error");
-      }
-    },
-
     // 导出excel
     handleExportExcel(el) {
       // 导出按钮防抖处理 默认限制为10秒
       vueButtonClickBan(el, 10);
 
       // 执行导出
-      doExportExcelById(this.queryForm);
+      doExportExcel(this.queryForm);
     },
+
+    // 测试方法 将推荐单位导入到组织里
+    handleImport() {
+      if (this.selectRows.length > 0) {
+        const ids = this.selectRows.map((item) => item.id).join();
+        this.$baseConfirm("你确定要导入选中项吗", null, async () => {
+          const { msg } = await doImportOrg({ ids });
+          this.$baseMessage(msg, "success");
+          await this.fetchData();
+        });
+      } else {
+        this.$baseMessage("未选中任何行", "error");
+        return false;
+      }
+    },
+
+    handleImportUser() {
+      if (this.selectRows.length > 0) {
+        const ids = this.selectRows.map((item) => item.id).join();
+        this.$baseConfirm("你确定要导入选中项吗", null, async () => {
+          const { msg } = await doImportUser({ ids });
+          this.$baseMessage(msg, "success");
+          await this.fetchData();
+        });
+      } else {
+        this.$baseMessage("未选中任何行", "error");
+        return false;
+      }
+    },
+
+
     // 导入excel
     handleImportExcel() {
       this.$refs["import"].show();

@@ -1,6 +1,14 @@
 import request from "@/utils/request";
 import { downloadFileByData } from "@/utils/download";
 
+export function getCount(data) {
+  return request({
+    url: "/api/v1/system/apply/getCount",
+    method: "get",
+    params: data,
+  });
+}
+
 export function getList(data) {
   return request({
     url: "/api/v1/system/apply/findPage",
@@ -44,6 +52,14 @@ export function getListByIsPassed(data) {
 export function doIsPassApply(data) {
   return request({
     url: "/api/v1/system/apply/isPassApply",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doSetPreRank(data) {
+  return request({
+    url: "/api/v1/system/apply/setPreRank",
     method: "post",
     params: data,
   });

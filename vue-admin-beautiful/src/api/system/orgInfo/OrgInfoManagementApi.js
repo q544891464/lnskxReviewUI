@@ -3,15 +3,7 @@ import { downloadFileByData } from "@/utils/download";
 
 export function getList(data) {
   return request({
-    url: "/api/v1/system/options/findPage",
-    method: "get",
-    params: data,
-  });
-}
-
-export function getByCode(data) {
-  return request({
-    url: "/api/v1/system/options/getByCode",
+    url: "/api/v1/system/orgInfo/findPage",
     method: "get",
     params: data,
   });
@@ -19,7 +11,7 @@ export function getByCode(data) {
 
 export function doInsert(data) {
   return request({
-    url: "/api/v1/system/options/insert",
+    url: "/api/v1/system/orgInfo/insert",
     method: "post",
     data,
   });
@@ -27,7 +19,7 @@ export function doInsert(data) {
 
 export function doUpdate(data) {
   return request({
-    url: "/api/v1/system/options/update",
+    url: "/api/v1/system/orgInfo/update",
     method: "post",
     data,
   });
@@ -35,7 +27,7 @@ export function doUpdate(data) {
 
 export function doDelete(data) {
   return request({
-    url: "/api/v1/system/options/del",
+    url: "/api/v1/system/orgInfo/del",
     method: "post",
     params: data,
   });
@@ -43,7 +35,23 @@ export function doDelete(data) {
 
 export function doDeleteAll(data) {
   return request({
-    url: "/api/v1/system/options/delAll",
+    url: "/api/v1/system/orgInfo/delAll",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doImportOrg(data) {
+  return request({
+    url: "/api/v1/system/orgInfo/importOrg",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doImportUser(data) {
+  return request({
+    url: "/api/v1/system/orgInfo/importUser",
     method: "post",
     params: data,
   });
@@ -55,7 +63,7 @@ export function doDeleteAll(data) {
  * @returns file
  */
 export function doExportExcel(data) {
-  let requestURL = "/api/v1/system/options/exportExcel";
+  let requestURL = "/api/v1/system/orgInfo/exportExcel";
   // 下载文件
   downloadFileByData(requestURL, data);
 }
@@ -66,7 +74,7 @@ export function doExportExcel(data) {
  */
 export function doDownloadTemplate() {
   let data = {};
-  let requestURL = "/api/v1/system/options/importExcel/template";
+  let requestURL = "/api/v1/system/orgInfo/importExcel/template";
   // 下载文件
   downloadFileByData(requestURL, data);
 }
@@ -77,7 +85,7 @@ export function doDownloadTemplate() {
  */
 export function doImportExcel(data) {
   return request({
-    url: "/api/v1/system/options/importExcel",
+    url: "/api/v1/system/orgInfo/importExcel",
     method: "post",
     // 最长超时时间 3 分钟
     timeout: 180000,

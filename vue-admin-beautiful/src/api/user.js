@@ -40,6 +40,14 @@ export function getUserInfo(accessToken) {
   });
 }
 
+export function getOrgInfoByCode(data) {
+  return request({
+    url: "/api/v1/system/orgInfo/getByCode",
+    method: "get",
+    params: data,
+  });
+}
+
 export function getUserOrg(accessToken) {
   return request({
     url: "/api/v1/system/user/getOrg",

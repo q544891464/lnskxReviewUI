@@ -12,7 +12,6 @@
           </el-form>
         </vab-query-form-left-panel>
 
-
       </vab-query-form>
       <el-divider></el-divider>
     </div>
@@ -22,28 +21,28 @@
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
         <el-button
-            v-if="$perms('system_apply_insert')"
+            v-if="$perms('system_gradingstandard_insert')"
             icon="el-icon-plus"
             type="primary"
             @click="handleInsert"
         > 添加 </el-button>
 
-<!--        <el-button
-            v-if="$perms('system_apply_import')"
+        <el-button
+            v-if="$perms('system_gradingstandard_import')"
             icon="el-icon-upload2"
             type="warning"
             @click="handleImportExcel"
-        > 导入 </el-button> -->
+        > 导入 </el-button>
 
         <el-button
-            v-if="$perms('system_apply_export')"
+            v-if="$perms('system_gradingstandard_export')"
             icon="el-icon-download"
             type="warning"
             @click="handleExportExcel"
         > 导出 </el-button>
 
         <el-button
-            v-if="$perms('system_apply_delete')"
+            v-if="$perms('system_gradingstandard_delete')"
             :disabled="!selectRows.length > 0"
             icon="el-icon-delete"
             type="danger"
@@ -55,9 +54,9 @@
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
 
           <el-form-item>
-<!--            <el-button icon="el-icon-search" type="primary" @click="queryData">
+            <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
-            </el-button> -->
+            </el-button>
 
 
           </el-form-item>
@@ -81,96 +80,50 @@
 
       <el-table-column
               show-overflow-tooltip
-              prop="applyName"
-              label="申请项目名称"
-
+              prop="standardContent"
+              label="细则名称"
+              width="400"
       ></el-table-column>
 
       <el-table-column
-        show-overflow-tooltip
-        prop="enable"
-        label="初评排序"
-      >
-        <template slot-scope="scope" >
-          <el-input v-model="scope.row.preRank" type='number' style="width: 80px;" @change="handleRankChange(scope.row)"></el-input>
-        </template>
-      </el-table-column>
+              show-overflow-tooltip
+              prop="standardScore"
+              label="分值"
+      ></el-table-column>
 
       <el-table-column
-        show-overflow-tooltip
-        prop="enable"
-        label="是否通过"
+              show-overflow-tooltip
+              prop="year"
+              label="细则年份"
+      ></el-table-column>
 
-      >
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.isPass"
-            active-value="1"
-            inactive-value="0"
-            @change="handleEnable(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
+      <el-table-column
+              show-overflow-tooltip
+              prop="remarks"
+              label="备注"
+      ></el-table-column>
 
 
       <el-table-column
         show-overflow-tooltip
         label="操作"
         width="200"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete') ||  $perms('system_apply_setpass')"
+        v-if="$perms('system_gradingstandard_update') || $perms('system_gradingstandard_delete')"
       >
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_apply_update')"
+            v-if="$perms('system_gradingstandard_update')"
             type="text"
-            @click="handleView(scope.row)"
-          > 查看 </el-button>
-
+            @click="handleUpdate(scope.row)"
+          > 编辑 </el-button>
+          
           <el-divider direction="vertical"></el-divider>
-
-          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              删除
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-
-              <el-dropdown-item v-if="$perms('system_apply_delete')" type="text"
-                @click.native="handleDelete(scope.row)"> 确认删除 </el-dropdown-item>
-
-
-            </el-dropdown-menu>
-          </el-dropdown>
-
-<!--          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              更多
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu
-              slot="dropdown"
-            > -->
-              <!-- 添加下级 只有上级为 菜单是才可以 -->
-              <!-- v-if="$perms('system_apply_setpass')" -->
-<!--              <el-dropdown-item
-                type="text"
-                @click.native="setPass(scope.row)"
-              > 设置通过 </el-dropdown-item> -->
-
-<!--              <el-dropdown-item
-              v-if="$perms('system_apply_delete')"
-              type="text"
-              @click.native="handleDelete(scope.row)"
-              > 删除 </el-dropdown-item>
- -->
-<!--              <el-button
-                type="text"
-                @click="handleViewFile(scope.row)"
-              > 查看附件 </el-button> -->
-<!--
-            </el-dropdown-menu>
-          </el-dropdown> -->
-
+          
+          <el-button
+            v-if="$perms('system_gradingstandard_delete')"
+            type="text"
+            @click="handleDelete(scope.row)"
+          > 删除 </el-button>
         </template>
 
       </el-table-column>
@@ -192,16 +145,16 @@
 </template>
 
 <script>
-  import { getList, getListByOrg,doIsPassApply,doSetPreRank, doDelete, doDeleteAll, doExportExcelByOrg } from "@/api/system/apply/SysApplyManagementApi";
-  import Edit from "./components/SysApplyManagementEdit";
-  import Import from "./components/SysApplyManagementImport";
+  import { getList, doDelete, doDeleteAll, doExportExcel } from "@/api/system/gradingStandard/SkxGradingStandardManagementApi";
+  import Edit from "./components/SkxGradingStandardManagementEdit";
+  import Import from "./components/SkxGradingStandardManagementImport";
 
   import { vueButtonClickBan } from "@/utils";
   import { isNotNull } from "@/utils/valiargs";
   import { formateDate } from "@/utils/format";
 
   export default {
-    name: "SysApplyManagement",
+    name: "SkxGradingStandardManagement",
     components: { Edit, Import },
     data() {
       return {
@@ -252,70 +205,15 @@
     mounted() {
     },
     methods: {
-      async handleEnable(row) {
-        const isPass = row.isPass;
-        // 回退原有状态
-        if(row.isPass === "0") row.isPass = "1"
-        else if(row.isPass === "1") row.isPass = "0"
-
-        if (row.id) {
-          const { msg } = await doIsPassApply({
-            applyId: row.id,
-            isPass: isPass
-          });
-          row.isPass = isPass;
-          this.$baseMessage(msg, "success");
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-        }
-      },
-
-      handleRankChange(row){
-        const preRank = row.preRank;
-
-        if (row.id) {
-          const { msg } =  doSetPreRank({
-            applyId: row.id,
-            preRank: preRank
-          });
-          row.preRank = preRank;
-          // this.$baseMessage(msg, "success");
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-        }
-      },
-      setPass(row) {
-        // this.selectRows = val;
-        this.$baseMessage("还没做", "error");
-      },
       setSelectRows(val) {
         this.selectRows = val;
       },
       handleInsert(row) {
-        // this.$refs["edit"].showEdit();
-        this.$router.push({ path:'/createApply'  })
+        this.$refs["edit"].showEdit();
       },
       handleUpdate(row) {
         if (row.id) {
-          // this.$refs["edit"].showEdit(row);
-          this.$router.push({
-            path:'/createApply',
-            query:{
-              form:row,
-            }
-            })
-        }
-      },
-      //查看申请详情
-      handleView(row){
-        if (row.id) {
-          // this.$refs["edit"].showEdit(row);
-          this.$router.push({
-            path: '/applyInfo',
-            query: {
-              form: row,
-            }
-          })
+          this.$refs["edit"].showEdit(row);
         }
       },
       handleDelete(row) {
@@ -339,22 +237,13 @@
           }
         }
       },
-
-      handleViewFile(row){
-        if(row.filePath){
-          window.open(row.filePath,'_blank');
-
-        }else{
-          this.$baseMessage("请先上传文件", "error");
-        }
-      },
       // 导出excel
       handleExportExcel(el){
         // 导出按钮防抖处理 默认限制为10秒
         vueButtonClickBan(el, 10);
 
         // 执行导出
-        doExportExcelByOrg(this.queryForm);
+        doExportExcel(this.queryForm);
       },
       // 导入excel
       handleImportExcel(){
@@ -380,7 +269,7 @@
       },
       async fetchData() {
         this.listLoading = true;
-        const { data } = await getListByOrg(this.queryForm);
+        const { data } = await getList(this.queryForm);
         if(isNotNull(data)){
           this.list = data.rows;
           this.total = data.total;

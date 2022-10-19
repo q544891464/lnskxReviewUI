@@ -12,7 +12,6 @@
           </el-form>
         </vab-query-form-left-panel>
 
-
       </vab-query-form>
       <el-divider></el-divider>
     </div>
@@ -21,12 +20,12 @@
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
-        <el-button
+<!--        <el-button
             v-if="$perms('system_apply_insert')"
             icon="el-icon-plus"
             type="primary"
             @click="handleInsert"
-        > 添加 </el-button>
+        > 添加 </el-button> -->
 
 <!--        <el-button
             v-if="$perms('system_apply_import')"
@@ -35,12 +34,16 @@
             @click="handleImportExcel"
         > 导入 </el-button> -->
 
-        <el-button
-            v-if="$perms('system_apply_export')"
-            icon="el-icon-download"
+       <el-button
             type="warning"
-            @click="handleExportExcel"
-        > 导出 </el-button>
+            @click="fetchData"
+        > 刷新 </el-button>
+
+        <el-button
+            :disabled="!selectRows.length > 0"
+            type="primary"
+            @click="handlePrize"
+        > 批量设置学科组 </el-button>
 
         <el-button
             v-if="$perms('system_apply_delete')"
@@ -82,98 +85,81 @@
       <el-table-column
               show-overflow-tooltip
               prop="applyName"
-              label="申请项目名称"
-
+              label="成果名称"
       ></el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="enable"
-        label="初评排序"
-      >
-        <template slot-scope="scope" >
-          <el-input v-model="scope.row.preRank" type='number' style="width: 80px;" @change="handleRankChange(scope.row)"></el-input>
-        </template>
-      </el-table-column>
+<!--      <el-table-column
+              show-overflow-tooltip
+              prop="discipline"
+              label="学科专业"
+      ></el-table-column> -->
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="enable"
-        label="是否通过"
-
-      >
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.isPass"
-            active-value="1"
-            inactive-value="0"
-            @change="handleEnable(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
+<!--      <el-table-column
+              show-overflow-tooltip
+              prop="keywords"
+              label="关键词"
+      ></el-table-column> -->
 
 
       <el-table-column
         show-overflow-tooltip
-        label="操作"
-        width="200"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete') ||  $perms('system_apply_setpass')"
+        label="详细信息"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
       >
         <template v-slot="scope">
           <el-button
             v-if="$perms('system_apply_update')"
             type="text"
-            @click="handleView(scope.row)"
+            @click="handleViewInfo(scope.row)"
           > 查看 </el-button>
-
-          <el-divider direction="vertical"></el-divider>
-
-          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              删除
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-
-              <el-dropdown-item v-if="$perms('system_apply_delete')" type="text"
-                @click.native="handleDelete(scope.row)"> 确认删除 </el-dropdown-item>
-
-
-            </el-dropdown-menu>
-          </el-dropdown>
-
-<!--          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              更多
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu
-              slot="dropdown"
-            > -->
-              <!-- 添加下级 只有上级为 菜单是才可以 -->
-              <!-- v-if="$perms('system_apply_setpass')" -->
-<!--              <el-dropdown-item
-                type="text"
-                @click.native="setPass(scope.row)"
-              > 设置通过 </el-dropdown-item> -->
-
-<!--              <el-dropdown-item
-              v-if="$perms('system_apply_delete')"
-              type="text"
-              @click.native="handleDelete(scope.row)"
-              > 删除 </el-dropdown-item>
- -->
-<!--              <el-button
-                type="text"
-                @click="handleViewFile(scope.row)"
-              > 查看附件 </el-button> -->
-<!--
-            </el-dropdown-menu>
-          </el-dropdown> -->
 
         </template>
 
       </el-table-column>
+
+
+      <el-table-column
+        show-overflow-tooltip
+        label="当前学科组"
+        prop="subjectGroup"
+        :formatter="subjectGroupFormat"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+      >
+<!--        <template v-slot="scope">
+
+          <el-button
+            v-if="$perms('system_apply_update')"
+            type="text"
+            @click="handlePrize(scope.row)"
+          > $scope.row.prize </el-button>
+        </template>
+ -->
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="修改学科组"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+      >
+        <template v-slot="scope">
+
+
+<!--          <el-button
+            v-if="$perms('system_apply_delete')"
+            type="text"
+            @click="handleDelete(scope.row)"
+          > 删除 </el-button> -->
+
+          <el-button
+            v-if="$perms('system_apply_update')"
+            type="text"
+            @click="handlePrize(scope.row)"
+          > 设置学科组 </el-button>
+        </template>
+
+      </el-table-column>
+
+
     </el-table>
     <el-pagination
       background
@@ -187,14 +173,16 @@
 
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData" ></import>
+    <prize ref="prize" @fetchData="fetchData" ></prize>
 
   </div>
 </template>
 
 <script>
-  import { getList, getListByOrg,doIsPassApply,doSetPreRank, doDelete, doDeleteAll, doExportExcelByOrg } from "@/api/system/apply/SysApplyManagementApi";
+  import { getListAll,getListByIsPassed, doDelete, doDeleteAll, doExportExcel } from "@/api/system/apply/SysApplyManagementApi";
   import Edit from "./components/SysApplyManagementEdit";
   import Import from "./components/SysApplyManagementImport";
+  import Prize from "./components/selectSubjectGroup";
 
   import { vueButtonClickBan } from "@/utils";
   import { isNotNull } from "@/utils/valiargs";
@@ -202,7 +190,7 @@
 
   export default {
     name: "SysApplyManagement",
-    components: { Edit, Import },
+    components: { Edit, Import ,Prize},
     data() {
       return {
         list: null,
@@ -252,42 +240,30 @@
     mounted() {
     },
     methods: {
-      async handleEnable(row) {
-        const isPass = row.isPass;
-        // 回退原有状态
-        if(row.isPass === "0") row.isPass = "1"
-        else if(row.isPass === "1") row.isPass = "0"
 
-        if (row.id) {
-          const { msg } = await doIsPassApply({
-            applyId: row.id,
-            isPass: isPass
-          });
-          row.isPass = isPass;
-          this.$baseMessage(msg, "success");
-        } else {
-          this.$baseMessage("未选中任何行", "error");
+      subjectGroupFormat(row,column){
+        if(row.subjectGroup == 1){
+          return "学科一组";
         }
-      },
-
-      handleRankChange(row){
-        const preRank = row.preRank;
-
-        if (row.id) {
-          const { msg } =  doSetPreRank({
-            applyId: row.id,
-            preRank: preRank
-          });
-          row.preRank = preRank;
-          // this.$baseMessage(msg, "success");
-        } else {
-          this.$baseMessage("未选中任何行", "error");
+        else if(row.subjectGroup == 2){
+          return "学科二组";
+        }else if(row.subjectGroup == 3){
+          return "学科三组";
+        }else if(row.subjectGroup == 4){
+          return "学科四组";
+        }else if(row.subjectGroup == 5){
+          return "学科五组";
+        }else if(row.subjectGroup == 6){
+          return "学科六组";
+        }else if(row.subjectGroup == 7){
+          return "学科七组";
+        }else if(row.subjectGroup == 8){
+          return "学科八组";
         }
+
       },
-      setPass(row) {
-        // this.selectRows = val;
-        this.$baseMessage("还没做", "error");
-      },
+
+
       setSelectRows(val) {
         this.selectRows = val;
       },
@@ -295,28 +271,42 @@
         // this.$refs["edit"].showEdit();
         this.$router.push({ path:'/createApply'  })
       },
-      handleUpdate(row) {
+      handleView(row) {
         if (row.id) {
           // this.$refs["edit"].showEdit(row);
           this.$router.push({
             path:'/createApply',
             query:{
               form:row,
+              disabled:true,
             }
             })
         }
       },
-      //查看申请详情
-      handleView(row){
+      handleViewInfo(row) {
         if (row.id) {
           // this.$refs["edit"].showEdit(row);
           this.$router.push({
-            path: '/applyInfo',
-            query: {
-              form: row,
+            path:'/applyInfo',
+            query:{
+              form:row,
             }
-          })
+            })
         }
+      },
+      handlePrize(row) {
+        if(row.id){
+          console.log("单条");
+          this.$refs["prize"].show(row);
+        }else{
+          if(this.selectRows.length>0){
+            console.log("多条");
+            const ids = this.selectRows.map((item) => item.id).join();
+            console.log(ids);
+            this.$refs["prize"].show(ids);
+          }
+        }
+        // this.fetchData();
       },
       handleDelete(row) {
         if (row.id) {
@@ -339,22 +329,13 @@
           }
         }
       },
-
-      handleViewFile(row){
-        if(row.filePath){
-          window.open(row.filePath,'_blank');
-
-        }else{
-          this.$baseMessage("请先上传文件", "error");
-        }
-      },
       // 导出excel
       handleExportExcel(el){
         // 导出按钮防抖处理 默认限制为10秒
         vueButtonClickBan(el, 10);
 
         // 执行导出
-        doExportExcelByOrg(this.queryForm);
+        doExportExcel(this.queryForm);
       },
       // 导入excel
       handleImportExcel(){
@@ -380,7 +361,7 @@
       },
       async fetchData() {
         this.listLoading = true;
-        const { data } = await getListByOrg(this.queryForm);
+        const { data } = await getListAll(this.queryForm);
         if(isNotNull(data)){
           this.list = data.rows;
           this.total = data.total;
