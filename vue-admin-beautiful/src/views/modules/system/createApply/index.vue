@@ -11,9 +11,9 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form-item label="推荐单位选择" prop="orgSelect">
+          <el-form-item label="推荐单位选择" prop="orgId">
             <el-select
-              v-model="valueMeta"
+              v-model="form.orgId"
               :collapse-tags="false"
               @visible-change="clearDrop($event)"
               placeholder="请选择推荐单位"
@@ -36,14 +36,15 @@
                   prefix-icon="el-icon-search"
                   v-model="dropDownValue"
                   @input="dropDownSearch"
-                  clearable
+                  clearableoption
                 ></el-input>
                 <p>无搜索内容</p>
               </div>
               <el-option
-                v-for="item in optionsMetaShow"
-                :key="item"
-                :value="item"
+                v-for="(item, index) in optionsMetaShow"
+                :key="index"
+                :label="item.unitName"
+                :value="item.orgId"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -395,7 +396,7 @@
 
       <el-divider>其他作者信息</el-divider>
 
-      <el-collapse v-model="activeNames" @change="handleChange">
+      <el-collapse v-model="activeNames" >
         <el-collapse-item title=" " class="collapseTitle" name="1">
           <el-form-item label="第二作者" prop="author2">
             <el-input
@@ -967,6 +968,7 @@ export default {
             params: "",
           },
         ],
+        
 
         applyName: "",
         mainAuthors: "",
@@ -1568,13 +1570,14 @@ export default {
   },
   methods: {
 
+
     dropDownSearch () {
       var _this = this;
       // _this.valueMeta = [];
       _this.optionsMetaShow = _this.optionsMetaAll.filter(_this.filterSearch);
     },
     filterSearch (item) {
-      return item.includes(this.dropDownValue);
+      return item.unitName.includes(this.dropDownValue);
     },
     clearDrop($event ){ //此处的clearDrop用于解决搜索内容不存在时，所有内容无法显示的bug
       if($event){
