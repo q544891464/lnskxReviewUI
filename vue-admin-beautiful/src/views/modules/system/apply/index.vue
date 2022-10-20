@@ -18,7 +18,7 @@
     </el-collapse-transition>
 
     <h3>
-        填写完申报表后，请在本页导出为word并打印，在学术诚信承诺书上签字后，将申报表报送所在单位审核，合格后加盖单位公章或科技部门公章，将签字、盖章后申报表扫描PDF，在本页上传。
+      填写完申报表后，请在本页点击《导出为word》并打印，在学术诚信承诺书上签字后，将申报表报送所在单位审核，合格后加盖单位公章或科技部门公章，将签字、盖章后的申报表扫描成PDF电子版，并点击《上传申报表》进行上传，上传成功后，如点击详细信息《查看》可查看已上传文件，说明申报表上传成功。
       </h3>
 
     <!-- 主要操作  -->
@@ -309,7 +309,15 @@ export default {
 
     handleViewInfo(row) {
       if (row.id) {
-        // this.$refs["edit"].showEdit(row);
+      //   let newpage = this.$router.resolve({ 
+      //   name: '/applyInfo',
+      //   form:{
+      //     row
+      //   }   
+      // }) 
+      
+      // window.open(newpage.href, '_blank');
+        this.$refs["edit"].showEdit(row);
         this.$router.push({
           path: "/applyInfo",
           query: {

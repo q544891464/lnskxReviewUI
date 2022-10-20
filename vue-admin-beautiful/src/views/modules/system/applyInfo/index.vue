@@ -58,11 +58,10 @@
           this.tableData[2].info = this.form.citations;
           this.tableData[3].info = paperTypeMap.get(this.form.paperType);
           this.tableData[4].info = relatedAchievementsMap.get(this.form.relatedAchievements);
-          this.tableData[5].info = this.form.projectName;
-          this.tableData[6].info = this.form.introduction;
-          this.tableData[7].info = projectLevelMap.get(this.form.projectLevel);
-          this.tableData[8].url = this.form.filePath;
-          this.tableData[9].url = this.form.completedFilePath;
+          this.tableData[5].info = this.form.introduction;
+          this.tableData[6].info = projectLevelMap.get(this.form.projectLevel);
+          this.tableData[7].url = this.form.filePath;
+          this.tableData[8].url = this.form.completedFilePath;
         }
     },
 
@@ -83,9 +82,6 @@
           info: '',
         },{
           prop: '相关系列成果：',
-          info: '',
-        },{
-          prop: '产生该成果的项目名称：',
           info: '',
         },{
           prop: '成果简介：',

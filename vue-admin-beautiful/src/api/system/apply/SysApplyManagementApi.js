@@ -9,6 +9,13 @@ export function getCount(data) {
   });
 }
 
+export function getIsDeadLine() {
+  return request({
+    url: "/api/v1/system/apply/getIsDeadLine",
+    method: "get",
+  });
+}
+
 export function getList(data) {
   return request({
     url: "/api/v1/system/apply/findPage",

@@ -331,7 +331,7 @@
 
       <el-form-item
         label-width="150px"
-        label="申报人简介"
+        label="第一作者简介"
         prop="firstAuthorIntro"
       >
         <el-input
@@ -349,7 +349,7 @@
       <el-divider>其他作者信息</el-divider>
 
       <el-collapse v-model="activeNames" @change="handleChange">
-        <el-collapse-item title="其他作者信息" class="collapseTitle" name="1">
+        <el-collapse-item title=" " class="collapseTitle" name="1">
           <el-form-item label="第二作者" prop="author2">
             <el-input
               v-model="form.author2"
@@ -749,7 +749,7 @@
 
       <el-divider></el-divider>
 
-      <el-form-item label="相关系列成果" prop="relatedAchievements">
+      <!-- <el-form-item label="相关系列成果" prop="relatedAchievements">
         <el-select
           v-model="form.relatedAchievements"
           placeholder="请选择相关系列成果"
@@ -804,7 +804,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
       <!-- <el-form-item label="申报表材料" prop="uploadFileCompleted">
         <el-upload
@@ -861,6 +861,7 @@ import {
   doUpload,
   doInsert,
   doUpdate,
+  getIsDeadLine,
 } from "@/api/system/apply/SysApplyManagementApi";
 import { getTreeAll } from "@/api/system/discipline/disciplineManagement";
 import { isNull } from "@/utils/validate";
@@ -870,6 +871,7 @@ import { validatorRule } from "@/utils/validateRlue";
 export default {
   name: "Form",
   created() {
+    this.getIsDeadLine();
     if (this.$route.query.form) {
       this.form = this.$route.query.form;
       // console.log(this.form.discipline,"this.form.discipline");
@@ -881,12 +883,15 @@ export default {
       }
       // 如果是查看 则令全部表单不可编辑
       this.disabled = this.$route.query.disabled;
+      
     }
 
     // console.log(this.fieldOptions);
   },
 
   mounted() {
+    // this.getIsDeadLine();
+
     // 调用方法获取所有学科专业数据
     this.getDisciplineList();
   },
@@ -1518,6 +1523,14 @@ export default {
       }
       // console.log(this.disciplineOptions,"this.disciplineOptions");
       // console.log(success,"success");
+    },
+
+    async getIsDeadLine(){
+      const { success, msg, data } = await getIsDeadLine();
+      if(!success){
+        this.disabled = true;
+        this.$baseMessage(msg, "error");
+      }
     },
 
     disciplinOptionChange(val) {
