@@ -35,10 +35,12 @@
                 label="单位名称："
                 prop="unitName"
                 style="font-weight: bold"
+                
               >
                 <el-input
                   v-model.trim="baseForm.unitName"
                   autocomplete="off"
+                  disabled=true
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -264,6 +266,7 @@
       };
     },
     created() {
+
       // 加载用户信息
       this.fetchData();
       // 加载用户组织机构
