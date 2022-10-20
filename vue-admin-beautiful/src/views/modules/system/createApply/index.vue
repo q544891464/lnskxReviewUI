@@ -16,7 +16,7 @@
               v-model="valueMeta"
               :collapse-tags="false"
               @visible-change="clearDrop($event)"
-              placeholder="请选择标签"
+              placeholder="请选择推荐单位"
             >
               <div class="search-input">
                 <el-input
@@ -946,9 +946,9 @@ export default {
   data() {
     return {
       dropDownValue: '',
-      optionsMetaAll: ['黄金糕', '双皮奶', '蚵仔煎', '双皮奶2', '龙须面', '北京烤鸭'],
-      optionsMetaShow: ['黄金糕', '双皮奶', '蚵仔煎', '双皮奶2', '龙须面', '北京烤鸭'],
-      valueMeta: '',
+      optionsMetaAll: [],
+      optionsMetaShow: [],
+      valueMeta: [],
       activeNames: "1",
       loadProgress: 0, // 动态显示进度条
       progressFlag: false, // 关闭进度条,
