@@ -153,6 +153,18 @@
         ></el-input>
       </el-form-item>
 
+      <el-form-item label="其他支撑材料的支撑关系" prop="application">
+        <el-input
+          v-model="form.application"
+          type="textarea"
+          v-bind:disabled="disabled"
+          :autosize="{ minRows: 4, maxRows: 4 }"
+          :maxlength="500"
+          show-word-limit
+          placeholder="其他支撑材料（论文、著作、专利、项目）与代表性作品的支撑关系"
+        ></el-input>
+      </el-form-item>
+
       <el-form-item label="成果相关其它价值" prop="innovation">
         <el-input
           v-model="form.innovation"
@@ -165,10 +177,6 @@
           :style="{ width: '100%' }"
         ></el-input>
       </el-form-item>
-
-      <!-- <el-form-item label="成果应用情况" prop="application">
-        <el-input v-model="form.application" type="textarea" v-bind:disabled='disabled'></el-input>
-      </el-form-item> -->
 
       <el-form-item label="第一作者" prop="firstAuthor">
         <el-input
@@ -396,7 +404,7 @@
 
       <el-divider>其他作者信息</el-divider>
 
-      <el-collapse v-model="activeNames" >
+      <el-collapse v-model="activeNames">
         <el-collapse-item title=" " class="collapseTitle" name="1">
           <el-form-item label="第二作者" prop="author2">
             <el-input
@@ -653,40 +661,7 @@
 
       <el-divider>相关证明材料</el-divider>
 
-      <!-- <el-form-item label="证明材料上传" prop="uploadFileOther">
-            <el-upload
-              ref="fileimport2"
-              accept=".pdf"
-              :action="uploadFileOther"
-              :multiple="false"
-              :auto-upload="true"
-              :show-file-list="true"
-              :before-upload="beforeUploadOther"
-              :file-list="fileListOther"
-              :http-request="handleImportOther"
-              :on-success="onSuccess"
-              :on-error="onError"
-            >
-              <el-button
-                slot="trigger"
-                type="danger"
-                icon="el-icon-upload2"
-                v-bind:disabled="disabled"
-              >
-                选取文件
-              </el-button>
-              <el-button
-                type="danger"
-                @click="viewFileOther"
-                icon="el-icon-view"
-              >
-                预览
-              </el-button>
-              <div slot="tip" class="el-upload__tip">
-                如检索收录情况、被引用次数、会议交流的证明材料、有关部门提供的鉴定意见和取得效益的证明等能证明成果价值的相关证明材料。
-              </div>
-            </el-upload>
-          </el-form-item> -->
+      <el-divider>论文</el-divider>
 
       <el-form-item label="论文发表刊物名称" prop="publicationName">
         <el-input
@@ -738,6 +713,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
+        <div>（排除本人及本机构引用次数）</div>
       </el-form-item>
 
       <el-form-item label="论文类型" prop="paperType">
@@ -755,6 +731,81 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
+      </el-form-item>
+
+      <el-divider>专著</el-divider>
+      <el-form-item label="出版社名称" prop="publicationPublisherName">
+        <el-input
+          v-model="form.publicationPublisherName"
+          placeholder="请输入专著发表刊物名称"
+          clearable
+          :style="{ width: '100%' }"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="出版数量" prop="publicationNumber">
+        <el-input
+          v-model="form.publicationNumber"
+          placeholder="请输入专著出版数量(册)"
+          clearable
+          :style="{ width: '50%' }"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="著作类型" prop="publicationType">
+        <el-select
+          v-model="form.publicationType"
+          placeholder="请选择著作类型"
+          clearable
+          :style="{ width: '50%' }"
+        >
+          <el-option
+            v-for="(item, index) in publicationTypeOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="被引用次数" prop="publicationCitations">
+        <el-select
+          v-model="form.publicationCitations"
+          placeholder="请选择被引用次数"
+          clearable
+          :style="{ width: '50%' }"
+        >
+          <el-option
+            v-for="(item, index) in citationsOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+        <div>（排除本人及本机构引用次数）</div>
+      </el-form-item>
+
+      <el-form-item
+        label="图书馆收藏或学术机构使用"
+        prop="publicationInstitutionalUse"
+      >
+        <el-select
+          v-model="form.publicationInstitutionalUse"
+          placeholder="请选择"
+          clearable
+          :style="{ width: '50%' }"
+        >
+          <el-option
+            v-for="(item, index) in publicationInstitutionalUseOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+        <div>（可用该机构网页证明）</div>
       </el-form-item>
 
       <el-form-item label="论文及证明材料上传" prop="uploadFile">
@@ -794,9 +845,9 @@
         </el-upload>
       </el-form-item>
 
-      <el-divider></el-divider>
+      <el-divider>其它相关证明材料</el-divider>
 
-      <!-- <el-form-item label="相关系列成果" prop="relatedAchievements">
+      <el-form-item label="相关系列成果" prop="relatedAchievements">
         <el-select
           v-model="form.relatedAchievements"
           placeholder="请选择相关系列成果"
@@ -851,7 +902,95 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
-      </el-form-item> -->
+      </el-form-item>
+
+      <el-form-item label="专利名称" prop="patentName">
+        <el-input
+          v-model="form.patentName"
+          placeholder="请输入专利名称(没有填无)"
+          clearable
+          :style="{ width: '80%' }"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="专利类型" prop="patentType">
+        <el-select
+          v-model="form.patentType"
+          placeholder="请选择专利类型"
+          clearable
+          :style="{ width: '50%' }"
+        >
+          <el-option
+            v-for="(item, index) in patentTypeOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label-width="150px" label="专利获得时间" prop="patentDate">
+        <el-date-picker
+          v-model="form.patentDate"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+          :style="{ width: '50%' }"
+          placeholder="请选择专利获得时间"
+          clearable
+          v-bind:disabled="disabled"
+        ></el-date-picker>
+      </el-form-item>
+
+      <el-form-item label="专利应用证明" prop="patentApplication">
+        <el-input
+          v-model="form.patentApplication"
+          placeholder="请输入专利应用证明"
+          clearable
+          :style="{ width: '80%' }"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="产值或经济效益" prop="patentValue">
+        <el-input
+          v-model="form.patentApplication"
+          placeholder="请填写产值或经济效益"
+          clearable
+          :style="{ width: '80%' }"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="其它支撑材料及证明材料上传" prop="uploadFileOther">
+        <el-upload
+          ref="fileimport2"
+          accept=".pdf"
+          :action="uploadFileOther"
+          :multiple="false"
+          :auto-upload="true"
+          :show-file-list="true"
+          :before-upload="beforeUploadOther"
+          :file-list="fileListOther"
+          :http-request="handleImportOther"
+          :on-success="onSuccess"
+          :on-error="onError"
+        >
+          <el-button
+            slot="trigger"
+            type="danger"
+            icon="el-icon-upload2"
+            v-bind:disabled="disabled"
+          >
+            选取文件
+          </el-button>
+          <el-button type="danger" @click="viewFileOther" icon="el-icon-view">
+            预览
+          </el-button>
+          <div slot="tip" class="el-upload__tip">
+            如检索收录情况、被引用次数、会议交流的证明材料、有关部门提供的鉴定意见和取得效益的证明等能证明成果价值的相关证明材料。
+            且盖相关部门或申报人所在单位科技部门公章方为有效
+          </div>
+        </el-upload>
+      </el-form-item>
 
       <!-- <el-form-item label="申报表材料" prop="uploadFileCompleted">
         <el-upload
@@ -911,7 +1050,7 @@ import {
   getIsDeadLine,
 } from "@/api/system/apply/SysApplyManagementApi";
 import { getTreeAll } from "@/api/system/discipline/disciplineManagement";
-import {getUnitNames} from "@/api/system/orgInfo/OrgInfoManagementApi";
+import { getUnitNames } from "@/api/system/orgInfo/OrgInfoManagementApi";
 import { isNull } from "@/utils/validate";
 import { formateDate } from "@/utils/format";
 import { validatorRule } from "@/utils/validateRlue";
@@ -946,7 +1085,7 @@ export default {
 
   data() {
     return {
-      dropDownValue: '',
+      dropDownValue: "",
       optionsMetaAll: [],
       optionsMetaShow: [],
       valueMeta: [],
@@ -968,7 +1107,6 @@ export default {
             params: "",
           },
         ],
-        
 
         applyName: "",
         mainAuthors: "",
@@ -1507,6 +1645,38 @@ export default {
           value: "其他",
         },
       ],
+      publicationTypeOptions: [
+        {
+          label: "专著",
+          value: "A",
+        },
+        {
+          label: "编著",
+          value: "B",
+        },
+        {
+          label: "译著",
+          value: "C",
+        },
+      ],
+      publicationInstitutionalUseOptions: [
+        {
+          label: "5家或5家机构以上",
+          value: "A",
+        },
+        {
+          label: "3-4家机构",
+          value: "B",
+        },
+        {
+          label: "1-2家机构",
+          value: "C",
+        },
+        {
+          label: "无",
+          value: "无",
+        },
+      ],
       relatedAchievementsOptions: [
         {
           label:
@@ -1566,33 +1736,46 @@ export default {
           value: "C",
         },
       ],
+      patentTypeOptions: [
+        {
+          label: "实用新型专利",
+          value: "B",
+        },
+        {
+          label: "外观设计专利",
+          value: "C",
+        },
+        {
+          label: "发明专利",
+          value: "A",
+        },
+      ],
     };
   },
   methods: {
-
-
-    dropDownSearch () {
+    dropDownSearch() {
       var _this = this;
       // _this.valueMeta = [];
       _this.optionsMetaShow = _this.optionsMetaAll.filter(_this.filterSearch);
     },
-    filterSearch (item) {
+    filterSearch(item) {
       return item.unitName.includes(this.dropDownValue);
     },
-    clearDrop($event ){ //此处的clearDrop用于解决搜索内容不存在时，所有内容无法显示的bug
-      if($event){
+    clearDrop($event) {
+      //此处的clearDrop用于解决搜索内容不存在时，所有内容无法显示的bug
+      if ($event) {
         // alert('active')
-        this.dropDownValue=''
-        this.optionsMetaShow=this.optionsMetaAll
+        this.dropDownValue = "";
+        this.optionsMetaShow = this.optionsMetaAll;
       }
     },
     // 获取推荐单位名字列表
-    async getUnitNames(){
-      const { success,msg,data } = await getUnitNames();
-      if(success){
+    async getUnitNames() {
+      const { success, msg, data } = await getUnitNames();
+      if (success) {
         this.optionsMetaAll = data;
         this.optionsMetaShow = data;
-      }else{
+      } else {
         this.$message.error(msg);
       }
     },
