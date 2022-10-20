@@ -9,6 +9,14 @@ export function getList(data) {
   });
 }
 
+export function getUnitNames(data) {
+  return request({
+    url: "/api/v1/system/orgInfo/getUnitNames",
+    method: "get",
+    params: data,
+  });
+}
+
 export function doInsert(data) {
   return request({
     url: "/api/v1/system/orgInfo/insert",

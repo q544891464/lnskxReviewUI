@@ -11,6 +11,56 @@
     >
       <el-row>
         <el-col :span="24">
+          <el-form-item label="推荐单位选择" prop="orgSelect">
+            <el-select
+              v-model="valueMeta"
+              :collapse-tags="false"
+              @visible-change="clearDrop($event)"
+              placeholder="请选择标签"
+            >
+              <div class="search-input">
+                <el-input
+                  placeholder="请输入内容"
+                  size="mini"
+                  prefix-icon="el-icon-search"
+                  v-model="dropDownValue"
+                  @input="dropDownSearch"
+                  clearable
+                ></el-input>
+                <!-- <input type="text" placeholder="请输入" class="el-input__inner" v-model="dropDownValue" @keyup="dropDownSearch" clearable> -->
+              </div>
+              <div slot="empty" class="search-input">
+                <el-input
+                  placeholder="请输入内容"
+                  size="mini"
+                  prefix-icon="el-icon-search"
+                  v-model="dropDownValue"
+                  @input="dropDownSearch"
+                  clearable
+                ></el-input>
+                <p>无搜索内容</p>
+              </div>
+              <el-option
+                v-for="item in optionsMetaShow"
+                :key="item"
+                :value="item"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <!--        <el-col :span="12">
+
+          <el-form-item label="主要完成人" prop="mainAuthors">
+            <el-input v-model="form.mainAuthors" placeholder="主要完成人" :maxlength="11" show-word-limit clearable
+          :style="{width: '90%'}" v-bind:disabled="disabled"></el-input>
+          </el-form-item>
+
+        </el-col> -->
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
           <el-form-item label="成果名称" prop="applyName">
             <el-input
               v-model="form.applyName"
@@ -102,10 +152,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item
-        label="成果相关其它价值"
-        prop="innovation"
-      >
+      <el-form-item label="成果相关其它价值" prop="innovation">
         <el-input
           v-model="form.innovation"
           type="textarea"
@@ -591,7 +638,6 @@
         </el-collapse-item>
       </el-collapse>
 
-
       <!-- <el-collapse v-model="activeNames" @change="handleChange">
         <el-collapse-item
           title="论文一信息"
@@ -864,6 +910,7 @@ import {
   getIsDeadLine,
 } from "@/api/system/apply/SysApplyManagementApi";
 import { getTreeAll } from "@/api/system/discipline/disciplineManagement";
+import {getUnitNames} from "@/api/system/orgInfo/OrgInfoManagementApi";
 import { isNull } from "@/utils/validate";
 import { formateDate } from "@/utils/format";
 import { validatorRule } from "@/utils/validateRlue";
@@ -871,6 +918,7 @@ import { validatorRule } from "@/utils/validateRlue";
 export default {
   name: "Form",
   created() {
+    this.getUnitNames();
     this.getIsDeadLine();
     if (this.$route.query.form) {
       this.form = this.$route.query.form;
@@ -883,7 +931,6 @@ export default {
       }
       // 如果是查看 则令全部表单不可编辑
       this.disabled = this.$route.query.disabled;
-      
     }
 
     // console.log(this.fieldOptions);
@@ -898,6 +945,10 @@ export default {
 
   data() {
     return {
+      dropDownValue: '',
+      optionsMetaAll: ['黄金糕', '双皮奶', '蚵仔煎', '双皮奶2', '龙须面', '北京烤鸭'],
+      optionsMetaShow: ['黄金糕', '双皮奶', '蚵仔煎', '双皮奶2', '龙须面', '北京烤鸭'],
+      valueMeta: '',
       activeNames: "1",
       loadProgress: 0, // 动态显示进度条
       progressFlag: false, // 关闭进度条,
@@ -1152,13 +1203,13 @@ export default {
           },
         ],
 
-        firstAuthorAddress:[
+        firstAuthorAddress: [
           {
             required: true,
             message: "请输入第一作者地址",
             trigger: "blur",
-        }
-      ],
+          },
+        ],
         publicationName: [
           {
             required: true,
@@ -1201,13 +1252,15 @@ export default {
             trigger: "change",
           },
         ],
-        projectName: [{
-          required: true,
+        projectName: [
+          {
+            required: true,
             message: "请输入产生该成果的项目名称",
             trigger: "change",
-        }],
+          },
+        ],
         projectLevel: [
-        {
+          {
             required: true,
             message: "请选择项目级别",
             trigger: "change",
@@ -1514,6 +1567,32 @@ export default {
     };
   },
   methods: {
+
+    dropDownSearch () {
+      var _this = this;
+      // _this.valueMeta = [];
+      _this.optionsMetaShow = _this.optionsMetaAll.filter(_this.filterSearch);
+    },
+    filterSearch (item) {
+      return item.includes(this.dropDownValue);
+    },
+    clearDrop($event ){ //此处的clearDrop用于解决搜索内容不存在时，所有内容无法显示的bug
+      if($event){
+        // alert('active')
+        this.dropDownValue=''
+        this.optionsMetaShow=this.optionsMetaAll
+      }
+    },
+    // 获取推荐单位名字列表
+    async getUnitNames(){
+      const { success,msg,data } = await getUnitNames();
+      if(success){
+        this.optionsMetaAll = data;
+        this.optionsMetaShow = data;
+      }else{
+        this.$message.error(msg);
+      }
+    },
     //获取专业学科列表
     async getDisciplineList() {
       const { success, msg, data } = await getTreeAll();
@@ -1525,9 +1604,9 @@ export default {
       // console.log(success,"success");
     },
 
-    async getIsDeadLine(){
+    async getIsDeadLine() {
       const { success, msg, data } = await getIsDeadLine();
-      if(!success){
+      if (!success) {
         this.disabled = true;
         this.$baseMessage(msg, "error");
       }
