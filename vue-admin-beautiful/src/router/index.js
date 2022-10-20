@@ -27,6 +27,21 @@ export const constantRoutes = [
     hidden: true,
   },
   {
+    path: "/applyInfo",
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: "applyInfo",
+        name: "applyInfo",
+        component: () => import("@/views/modules/system/applyInfo/index"),
+        meta: {
+          title: "详细信息",
+        },
+      },
+    ],
+  },
+  {
     path: "/personal",
     component: Layout,
     hidden: true,
