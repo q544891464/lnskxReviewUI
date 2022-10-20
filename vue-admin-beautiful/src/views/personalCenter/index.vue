@@ -1,14 +1,14 @@
 <template>
   <div class="personalCenter-container">
     <el-row :gutter="10">
-      <el-tabs :tab-position="tabPosition">
-        <el-tab-pane label="基本设置">
+      <el-tabs :tab-position="tabPosition" v-model="activeTab">
+        <el-tab-pane label="基本设置" name="base">
           <profile-base ref="profile-base" />
         </el-tab-pane>
-        <el-tab-pane label="安全设置">
+        <el-tab-pane label="安全设置" name="security">
           <profile-security ref="profile-security" />
         </el-tab-pane>
-        <el-tab-pane label="推荐单位资料修改" v-if="$perms('system_orginfo_view')">
+        <el-tab-pane label="推荐单位资料修改" v-if="$perms('system_orginfo_view')" name="org">
           <profile-org-info ref="profile-org-info" />
         </el-tab-pane>
 
@@ -28,10 +28,14 @@ export default {
   components: { ProfileBase, ProfileSecurity, ProfileOrgInfo },
   data() {
     return {
+      activeTab: "base",
       tabPosition: "top",
     };
   },
   created() {
+    if(this.$route.params.activeTab){
+      this.activeTab = this.$route.params.activeTab;
+      }
     // 如果大于 992 就显示 宽屏模式
     this.screenWidth($store.state.realTime.screenWidth);
   },

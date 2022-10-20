@@ -240,6 +240,7 @@
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
         ></el-input>
+        <div style="font-size: small;color:red">（请填写单位的全称）</div>
       </el-form-item>
       <el-form-item label="邮箱" prop="firstAuthorMail">
         <el-input
@@ -953,7 +954,7 @@
 
       <el-form-item label="产值或经济效益" prop="patentValue">
         <el-input
-          v-model="form.patentApplication"
+          v-model="form.patentValue"
           placeholder="请填写产值或经济效益"
           clearable
           :style="{ width: '80%' }"
