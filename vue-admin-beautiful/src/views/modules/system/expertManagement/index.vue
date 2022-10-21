@@ -27,6 +27,10 @@
             @click="handleInsert"
         > 添加 </el-button>
 
+        <el-button icon="el-icon-upload2" type="warning" @click="handleImportUser">
+          导入到用户里
+        </el-button>
+
         <el-button
             v-if="$perms('system_expertmanagement_import')"
             icon="el-icon-upload2"
