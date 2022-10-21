@@ -22,21 +22,21 @@ export const constantRoutes = [
     hidden: true,
   },
 
-  {
-    path: "/orgInfoEdit",
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: "center",
-        name: "center",
-        component: () => import("@/views/personalCenter/index"),
-        meta: {
-          title: "单位信息维护",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/orgInfoEdit",
+  //   component: Layout,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: "center",
+  //       name: "center",
+  //       component: () => import("@/views/personalCenter/index"),
+  //       meta: {
+  //         title: "单位信息维护",
+  //       },
+  //     },
+  //   ],
+  // },
 
   {
     path: "/applyInfo",
