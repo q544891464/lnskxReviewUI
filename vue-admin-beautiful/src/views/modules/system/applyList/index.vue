@@ -19,14 +19,15 @@
     </el-collapse-transition>
 
     <!-- 主要操作  -->
+    <!-- v-if="$perms('system_apply_insert')" -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
-        <el-button
-            v-if="$perms('system_apply_insert')"
+        <!-- <el-button
+            
             icon="el-icon-plus"
             type="primary"
             @click="handleInsert"
-        > 添加 </el-button>
+        > 添加 </el-button> -->
 
 <!--        <el-button
             v-if="$perms('system_apply_import')"
@@ -35,7 +36,7 @@
             @click="handleImportExcel"
         > 导入 </el-button> -->
 
-        <el-button
+        <!-- <el-button
             v-if="$perms('system_apply_export')"
             icon="el-icon-download"
             type="warning"
@@ -48,7 +49,7 @@
             icon="el-icon-delete"
             type="danger"
             @click="handleDelete"
-        > 批量删除 </el-button>
+        > 批量删除 </el-button> -->
 
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
@@ -112,35 +113,36 @@
         </template>
       </el-table-column>
 
-
+      <!-- v-if="$perms('system_apply_update') || $perms('system_apply_delete') ||  $perms('system_apply_setpass')" -->
       <el-table-column
         show-overflow-tooltip
         label="操作"
         width="200"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete') ||  $perms('system_apply_setpass')"
+        
       >
+      <!-- v-if="$perms('system_apply_update')" -->
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_apply_update')"
+            
             type="text"
             @click="handleView(scope.row)"
           > 查看 </el-button>
 
           <el-divider direction="vertical"></el-divider>
 
-          <el-dropdown trigger="click">
+          <!-- <el-dropdown trigger="click">
             <span class="el-dropdown-link">
               删除
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-
-              <el-dropdown-item v-if="$perms('system_apply_delete')" type="text"
+             
+              <el-dropdown-item type="text"
                 @click.native="handleDelete(scope.row)"> 确认删除 </el-dropdown-item>
 
 
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
 
 <!--          <el-dropdown trigger="click">
             <span class="el-dropdown-link">
@@ -311,7 +313,7 @@
         if (row.id) {
           // this.$refs["edit"].showEdit(row);
           this.$router.push({
-            path: '/applyInfo',
+            path: '/applyInfo/applyInfo',
             query: {
               form: row,
             }

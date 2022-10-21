@@ -77,8 +77,8 @@
 
           <el-form-item>
             <el-input
-              v-model.trim="queryForm.unitHead_LIKE"
-              placeholder="请输入单位负责人"
+              v-model.trim="queryForm.unitCode_LIKE"
+              placeholder="请输入单位编码"
               clearable
             />
           </el-form-item>
@@ -112,6 +112,7 @@
         v-if="
           $perms('system_orginfo_update') || $perms('system_orginfo_delete')
         "
+        width="100"
       >
         <template v-slot="scope">
           <el-button
@@ -139,6 +140,12 @@
         prop="unitName"
         label="单位名称"
         width="135"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="unitCode"
+        label="单位编码"
       ></el-table-column>
 
       <el-table-column
@@ -195,11 +202,7 @@
         label="单位联系人邮箱"
       ></el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="unitCode"
-        label="单位编码"
-      ></el-table-column>
+
 
       <el-table-column
         show-overflow-tooltip
@@ -260,7 +263,7 @@ export default {
         pageNo: 1,
         pageSize: 10,
         unitName_LIKE: "",
-        unitHead_LIKE: "",
+        unitCode_LIKE: "",
       },
       dict: {},
       pickerOptions: {

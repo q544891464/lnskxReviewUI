@@ -287,7 +287,7 @@
         if (row.id) {
           // this.$refs["edit"].showEdit(row);
           this.$router.push({
-            path:'/applyInfo',
+            path:'/applyInfo/applyInfo',
             query:{
               form:row,
             }
