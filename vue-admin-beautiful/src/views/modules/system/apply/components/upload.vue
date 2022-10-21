@@ -79,6 +79,7 @@ export default {
       form: {
         completedFilePath: "",
       },
+      fileListCompleted:[],
       addFormCompleted: {
         file: null,
         fileName: "",
@@ -105,6 +106,11 @@ export default {
       this.dialogFormVisible = true;
     },
     onOpen() {},
+        // 上传成功
+    onSuccess(response, file, fileList) {
+      this.successProcess(file.uid);
+      this.$emit("fetchData");
+    },
     onClose() {
       this.$refs["elForm"].resetFields();
     },
