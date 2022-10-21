@@ -23,8 +23,18 @@ export const constantRoutes = [
   },
   {
     path: "/applyInfo",
-    component: () => import("@/views/modules/system/applyInfo/index"),
+    component: Layout,
     hidden: true,
+    children: [
+      {
+        path: "applyInfo",
+        name: "applyInfo",
+        component: () => import("@/views/modules/system/applyInfo/index"),
+        meta: {
+          title: "详细信息",
+        },
+      },
+    ],
   },
   {
     path: "/personal",

@@ -74,6 +74,7 @@ export default {
   data() {
     return {
       id: "",
+      fileListCompleted: [],
       dialogFormVisible: false,
       uploadFileCompleted: "",
       form: {
