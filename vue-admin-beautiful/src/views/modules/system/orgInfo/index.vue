@@ -146,6 +146,7 @@
         show-overflow-tooltip
         prop="unitCode"
         label="单位编码"
+        
       ></el-table-column>
 
       <el-table-column

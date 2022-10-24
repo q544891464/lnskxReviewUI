@@ -81,7 +81,7 @@
       <el-table-column
         show-overflow-tooltip
         prop="applyName"
-        label="申请项目名称"
+        label="成果名称"
       ></el-table-column>
 
       <!--      <el-table-column

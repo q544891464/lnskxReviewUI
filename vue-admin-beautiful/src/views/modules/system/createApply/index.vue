@@ -1060,7 +1060,11 @@ export default {
   name: "Form",
   created() {
     this.getUnitNames();
-    this.getIsDeadLine();
+    // this.getIsDeadLine();
+    if(!this.getIsDeadLine()){
+       this.disabled = true;
+       
+    }
     if (this.$route.query.form) {
       this.form = this.$route.query.form;
       // console.log(this.form.discipline,"this.form.discipline");
@@ -1797,6 +1801,7 @@ export default {
         this.disabled = true;
         this.$baseMessage(msg, "error");
       }
+      return success;
     },
 
     disciplinOptionChange(val) {

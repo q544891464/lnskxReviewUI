@@ -50,12 +50,13 @@
 
         <el-button type="warning" @click="fetchData">刷新</el-button>
 
-        <el-button type="warning" @click="exportExpertWord">导出汇总表</el-button>
+        <el-button type="warning" @click="exportExpertWord">
+          导出汇总表
+        </el-button>
 
-        <el-button type="warning" @click="uploadExpertWord">上传汇总表</el-button>
-
-        
-
+        <el-button type="warning" @click="uploadExpertWord">
+          上传汇总表
+        </el-button>
 
         <!-- <el-button
           v-if="$perms('system_apply_delete')"
@@ -70,9 +71,25 @@
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
           <el-form-item>
-            <!--            <el-button icon="el-icon-search" type="primary" @click="queryData">
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.applyName_LIKE"
+                placeholder="请输入成果名称"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
+                placeholder="请输入工作单位名称"
+                clearable
+              />
+            </el-form-item>
+
+            <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
-            </el-button> -->
+            </el-button>
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -217,7 +234,7 @@ import { get } from "sortablejs";
 
 export default {
   name: "SysApplyManagement",
-  components: { Edit, Import, Prize, Detail,Upload},
+  components: { Edit, Import, Prize, Detail, Upload },
   data() {
     return {
       list: [],
@@ -385,7 +402,6 @@ export default {
       doExportExcelByIsPass(this.queryForm);
     },
 
-
     // 导出专家评分表
     async exportExpertWord() {
       const { code, msg, data } = await doExportExpertWord();
@@ -396,7 +412,7 @@ export default {
       }
     },
 
-        // 导出专家评分表
+    // 导出专家评分表
     async uploadExpertWord() {
       this.$refs["upload"].show();
     },

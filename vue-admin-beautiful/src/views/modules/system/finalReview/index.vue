@@ -56,10 +56,27 @@
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
+
           <el-form-item>
-            <!--            <el-button icon="el-icon-search" type="primary" @click="queryData">
+              <el-input
+                v-model.trim="queryForm.applyName_LIKE"
+                placeholder="请输入成果名称"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
+                placeholder="请输入工作单位名称"
+                clearable
+              />
+            </el-form-item>
+
+          <el-form-item>
+                       <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
-            </el-button> -->
+            </el-button>
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>

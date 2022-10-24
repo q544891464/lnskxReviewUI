@@ -11,11 +11,11 @@
             ref="baseForm"
             :model="baseForm"
             :rules="baseRules"
-            label-width="100px"
+            label-width="150px"
           >
             <el-col :span="24" class="line" v-if="baseFormOrgInput !== ''">
               <el-form-item
-                label="组织机构："
+                label="组织机构"
                 prop="username"
                 style="font-weight: bold"
               >
@@ -32,7 +32,7 @@
   
             <el-col :span="24" class="line">
               <el-form-item
-                label="单位名称："
+                label="单位名称"
                 prop="unitName"
                 style="font-weight: bold"
                 
@@ -47,7 +47,7 @@
   
             <el-col :span="24" class="line">
               <el-form-item
-                label="单位负责人："
+                label="单位负责人"
                 prop="unitHead"
                 style="font-weight: bold"
                 
@@ -61,7 +61,7 @@
 
             <el-col :span="24" class="line">
               <el-form-item
-                label="单位负责人职位："
+                label="单位负责人职位"
                 prop="headPosition"
                 style="font-weight: bold"
                 

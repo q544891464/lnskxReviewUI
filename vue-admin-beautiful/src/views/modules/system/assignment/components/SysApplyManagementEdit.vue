@@ -9,7 +9,7 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="105px">
       <el-row :gutter="10" >
         <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-          <el-form-item label="申请项目名称" prop="applyName">
+          <el-form-item label="成果名称" prop="applyName">
             <el-input v-model="form.applyName" autocomplete="off"></el-input>
           </el-form-item>
         </el-col>

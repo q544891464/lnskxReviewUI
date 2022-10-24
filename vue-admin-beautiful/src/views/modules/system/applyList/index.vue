@@ -56,9 +56,18 @@
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
 
           <el-form-item>
-<!--            <el-button icon="el-icon-search" type="primary" @click="queryData">
+
+            <el-form-item>
+            <el-input
+                    v-model.trim="queryForm.applyName_LIKE"
+                    placeholder="请输入成果名称"
+                    clearable
+            />
+          </el-form-item>
+
+           <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
-            </el-button> -->
+            </el-button>
 
 
           </el-form-item>
@@ -83,7 +92,20 @@
       <el-table-column
               show-overflow-tooltip
               prop="applyName"
-              label="申请项目名称"
+              label="成果名称"
+
+      ></el-table-column>
+
+      <el-table-column
+              show-overflow-tooltip
+              prop="firstAuthor"
+              label="申报人"
+
+      ></el-table-column>
+      <el-table-column
+              show-overflow-tooltip
+              prop="firstAuthorWorkplace"
+              label="工作单位"
 
       ></el-table-column>
 
