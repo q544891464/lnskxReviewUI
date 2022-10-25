@@ -216,6 +216,7 @@ import {
   doDelete,
   doDeleteAll,
   doExportExcelById,
+  getIsDeadLine,
 } from "@/api/system/apply/SysApplyManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
@@ -234,6 +235,7 @@ export default {
   },
   data() {
     return {
+      disabled: true,
       list: null,
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
@@ -280,6 +282,7 @@ export default {
     };
   },
   created() {
+
     this.fetchData();
   },
   mounted() {},
@@ -328,7 +331,14 @@ export default {
     },
 
     async handleUpload(row) {
-      await this.$refs["upload"].show(row);
+      if(this.disabled){
+        this.$baseMessage("截止时间已到", "warning");
+        console.log("截止时间已到");
+      }else{
+        await this.$refs["upload"].show(row);
+        console.log("截止时间未到");
+
+      }
     },
 
     handleUpdate(row) {
@@ -338,6 +348,8 @@ export default {
           path: "/createApply",
           query: {
             form: row,
+            disabled: true,
+
           },
         });
       }
@@ -415,9 +427,22 @@ export default {
     },
     queryData() {
       this.queryForm.pageNo = 1;
-      this.fetchData();
+      this.fetchData(); 
     },
+
+    async getIsDeadLine() {
+      const { success, msg, data } = await getIsDeadLine();
+      if (!success) {
+        this.disabled = true;
+        this.$baseMessage(msg, "error");
+      } else {
+        this.disabled = false;
+      }
+      return success;
+    },
+
     async fetchData() {
+      this.getIsDeadLine();
       this.listLoading = true;
       const { data } = await getList(this.queryForm);
       if (isNotNull(data)) {
