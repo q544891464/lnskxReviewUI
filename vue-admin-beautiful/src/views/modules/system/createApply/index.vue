@@ -771,7 +771,7 @@
       <el-form-item label="出版社名称" prop="publicationPublisherName">
         <el-input
           v-model="form.publicationPublisherName"
-          placeholder="请输入专著发表刊物名称"
+          placeholder="请输入出版社名称名称"
           clearable
           :style="{ width: '100%' }"
           v-bind:disabled="disabled"
