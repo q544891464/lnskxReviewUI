@@ -17,6 +17,7 @@
               :collapse-tags="false"
               @visible-change="clearDrop($event)"
               placeholder="请选择推荐单位"
+              v-bind:disabled="disabled"
             >
               <div class="search-input">
                 <el-input
@@ -139,6 +140,7 @@
       <el-form-item label="具体计划、基金名称和编号" prop="fundName">
         <el-input v-model="form.fundName" :style="{width: '80%'}" v-bind:disabled="disabled"></el-input>
       </el-form-item> -->
+      <el-divider>申报成果简介</el-divider>
 
       <el-form-item label="成果简介" prop="introduction">
         <el-input
@@ -178,10 +180,13 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="第一作者" prop="firstAuthor">
+      <el-divider>申报人简介</el-divider>
+
+
+      <el-form-item label="申报人" prop="firstAuthor">
         <el-input
           v-model="form.firstAuthor"
-          placeholder="请输入第一作者姓名"
+          placeholder="请输入申报人姓名"
           show-word-limit
           clearable
           :style="{ width: '50%' }"
@@ -240,7 +245,7 @@
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
         ></el-input>
-        <div style="font-size: small;color:red">（请填写单位的全称）</div>
+        <div style="font-size: small; color: red">（请填写单位的全称）</div>
       </el-form-item>
       <el-form-item label="邮箱" prop="firstAuthorMail">
         <el-input
@@ -388,7 +393,7 @@
 
       <el-form-item
         label-width="150px"
-        label="第一作者简介"
+        label="申报人简介"
         prop="firstAuthorIntro"
       >
         <el-input
@@ -413,6 +418,7 @@
               placeholder="请输入第二作者姓名"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <!-- <el-form-item label="第二作者性别" prop="author2Sex">
@@ -437,6 +443,7 @@
               placeholder="请输入第二作者身份证"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第二作者工作单位" prop="author2Workplace">
@@ -445,6 +452,7 @@
               placeholder="请输入第二作者工作单位"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第二作者职务" prop="author2Position">
@@ -453,6 +461,7 @@
               placeholder="请输入第二作者职务"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第二作者手机号" prop="author2Tel">
@@ -461,6 +470,7 @@
               placeholder="请输入第二作者手机号"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -472,6 +482,7 @@
               placeholder="请输入第三作者姓名"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第三作者身份证" prop="author2">
@@ -480,6 +491,7 @@
               placeholder="请输入第三作者身份证"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <!-- <el-form-item label="第三作者性别" prop="author3Sex">
@@ -504,6 +516,7 @@
               placeholder="请输入第三作者工作单位"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -513,6 +526,7 @@
               placeholder="请输入第三作者职务"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -522,6 +536,7 @@
               placeholder="请输入第三作者手机号"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -533,6 +548,7 @@
               placeholder="请输入第四作者姓名"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <!-- <el-form-item label="第四作者性别" prop="author4Sex">
@@ -557,6 +573,7 @@
               placeholder="请输入第四作者身份证"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第四作者工作单位" prop="author4Workplace">
@@ -565,6 +582,7 @@
               placeholder="请输入第四作者工作单位"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -574,6 +592,7 @@
               placeholder="请输入第四作者职务"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -583,6 +602,7 @@
               placeholder="请输入第四作者手机号"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -594,6 +614,7 @@
               placeholder="请输入第五作者姓名"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第五作者身份证" prop="author2">
@@ -602,6 +623,7 @@
               placeholder="请输入第五作者身份证"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <!-- <el-form-item label="第五作者性别" prop="author5Sex">
@@ -626,6 +648,7 @@
               placeholder="请输入第五作者工作单位"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
 
@@ -635,6 +658,7 @@
               placeholder="请输入第五作者职务"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
           <el-form-item label="第五作者手机号" prop="author5Tel">
@@ -643,6 +667,7 @@
               placeholder="请输入第五作者手机号"
               clearable
               :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
         </el-collapse-item>
@@ -670,6 +695,7 @@
           placeholder="请输入论文发表刊物名称"
           clearable
           :style="{ width: '100%' }"
+          v-bind:disabled="disabled"
         ></el-input>
       </el-form-item>
 
@@ -679,6 +705,7 @@
           placeholder="请输入刊物影响因子"
           clearable
           :style="{ width: '30%' }"
+          v-bind:disabled="disabled"
         ></el-input>
       </el-form-item>
 
@@ -688,6 +715,8 @@
           placeholder="请选择检索收录情况"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in retrievalOptions"
@@ -705,6 +734,8 @@
           placeholder="请选择被引用次数"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in citationsOptions"
@@ -723,6 +754,8 @@
           placeholder="请选择论文类型"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in paperTypeOptions"
@@ -741,6 +774,8 @@
           placeholder="请输入专著发表刊物名称"
           clearable
           :style="{ width: '100%' }"
+          v-bind:disabled="disabled"
+
         ></el-input>
       </el-form-item>
 
@@ -750,6 +785,8 @@
           placeholder="请输入专著出版数量(册)"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         ></el-input>
       </el-form-item>
 
@@ -759,6 +796,8 @@
           placeholder="请选择著作类型"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in publicationTypeOptions"
@@ -776,6 +815,8 @@
           placeholder="请选择被引用次数"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in citationsOptions"
@@ -797,6 +838,7 @@
           placeholder="请选择"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
         >
           <el-option
             v-for="(item, index) in publicationInstitutionalUseOptions"
@@ -854,6 +896,8 @@
           placeholder="请选择相关系列成果"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in relatedAchievementsOptions"
@@ -870,6 +914,8 @@
           placeholder="请输入产生该成果的项目名称(没有填无)"
           clearable
           :style="{ width: '80%' }"
+          v-bind:disabled="disabled"
+
         ></el-input>
       </el-form-item>
       <el-form-item label="项目级别" prop="projectLevel">
@@ -878,6 +924,8 @@
           placeholder="请选择项目级别"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in projectLevelOptions"
@@ -894,6 +942,8 @@
           placeholder="请选择自主创新情况"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in projectInnovationOptions"
@@ -911,6 +961,8 @@
           placeholder="请输入专利名称(没有填无)"
           clearable
           :style="{ width: '80%' }"
+          v-bind:disabled="disabled"
+
         ></el-input>
       </el-form-item>
 
@@ -920,6 +972,8 @@
           placeholder="请选择专利类型"
           clearable
           :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+
         >
           <el-option
             v-for="(item, index) in patentTypeOptions"
@@ -949,6 +1003,8 @@
           placeholder="请输入专利应用证明"
           clearable
           :style="{ width: '80%' }"
+          v-bind:disabled="disabled"
+
         ></el-input>
       </el-form-item>
 
@@ -958,6 +1014,8 @@
           placeholder="请填写产值或经济效益"
           clearable
           :style="{ width: '80%' }"
+          v-bind:disabled="disabled"
+          
         ></el-input>
       </el-form-item>
 
@@ -1060,11 +1118,6 @@ export default {
   name: "Form",
   created() {
     this.getUnitNames();
-    // this.getIsDeadLine();
-    if(!this.getIsDeadLine()){
-       this.disabled = true;
-       
-    }
     if (this.$route.query.form) {
       this.form = this.$route.query.form;
       // console.log(this.form.discipline,"this.form.discipline");
@@ -1082,7 +1135,7 @@ export default {
   },
 
   mounted() {
-    // this.getIsDeadLine();
+    this.getIsDeadLine();
 
     // 调用方法获取所有学科专业数据
     this.getDisciplineList();
@@ -1105,7 +1158,7 @@ export default {
       fileListOther: [],
       fileListCompleted: [],
       uuid: "",
-      disabled: false,
+      disabled: true,
       form: {
         dynamicItem: [
           {
@@ -1355,55 +1408,55 @@ export default {
             trigger: "blur",
           },
         ],
-        publicationName: [
-          {
-            required: true,
-            message: "请输入论文发表刊物名称",
-            trigger: "blur",
-          },
-        ],
-        impactFactor: [
-          {
-            required: true,
-            message: "请输入刊物影响因子",
-            trigger: "blur",
-          },
-        ],
-        retrieval: [
-          {
-            required: true,
-            message: "请选择检索收录情况",
-            trigger: "change",
-          },
-        ],
-        citations: [
-          {
-            required: true,
-            message: "请选择被引用次数",
-            trigger: "change",
-          },
-        ],
-        paperType: [
-          {
-            required: true,
-            message: "请选择论文类型",
-            trigger: "change",
-          },
-        ],
-        relatedAchievements: [
-          {
-            required: true,
-            message: "请选择相关系列成果",
-            trigger: "change",
-          },
-        ],
-        projectName: [
-          {
-            required: true,
-            message: "请输入产生该成果的项目名称",
-            trigger: "change",
-          },
-        ],
+        // publicationName: [
+        //   {
+        //     required: true,
+        //     message: "请输入论文发表刊物名称",
+        //     trigger: "blur",
+        //   },
+        // ],
+        // impactFactor: [
+        //   {
+        //     required: true,
+        //     message: "请输入刊物影响因子",
+        //     trigger: "blur",
+        //   },
+        // ],
+        // retrieval: [
+        //   {
+        //     required: true,
+        //     message: "请选择检索收录情况",
+        //     trigger: "change",
+        //   },
+        // ],
+        // citations: [
+        //   {
+        //     required: true,
+        //     message: "请选择被引用次数",
+        //     trigger: "change",
+        //   },
+        // ],
+        // paperType: [
+        //   {
+        //     required: true,
+        //     message: "请选择论文类型",
+        //     trigger: "change",
+        //   },
+        // ],
+        // relatedAchievements: [
+        //   {
+        //     required: true,
+        //     message: "请选择相关系列成果",
+        //     trigger: "change",
+        //   },
+        // ],
+        // projectName: [
+        //   {
+        //     required: true,
+        //     message: "请输入产生该成果的项目名称",
+        //     trigger: "change",
+        //   },
+        // ],
         projectLevel: [
           {
             required: true,
@@ -1800,6 +1853,8 @@ export default {
       if (!success) {
         this.disabled = true;
         this.$baseMessage(msg, "error");
+      } else {
+        this.disabled = false;
       }
       return success;
     },
