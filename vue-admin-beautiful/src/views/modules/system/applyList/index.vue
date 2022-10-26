@@ -16,6 +16,13 @@
       </div>
     </el-collapse-transition>
 
+    <!-- 避免超级管理员查看时出现bug -->
+    <el-row v-if="this.orgInfo!= null">
+      <h3>
+        本单位推荐名额为：{{this.orgInfo.quota}}。
+      </h3>
+    </el-row>
+
     <!-- 主要操作  -->
     <!-- v-if="$perms('system_apply_insert')" -->
     <vab-query-form>
@@ -26,6 +33,13 @@
             type="primary"
             @click="handleInsert"
         > 添加 </el-button> -->
+
+        <el-button
+            
+            
+            type="primary"
+            @click="handleSubmit"
+        > 提交 </el-button>
 
         <!--        <el-button
             v-if="$perms('system_apply_import')"
@@ -138,6 +152,7 @@
             type="number"
             style="width: 80px"
             @change="handleRankChange(scope.row)"
+            v-bind:disabled="disabled"
           ></el-input>
         </template>
       </el-table-column>
@@ -149,6 +164,7 @@
             active-value="1"
             inactive-value="0"
             @change="handleEnable(scope.row)"
+            v-bind:disabled="disabled"
           ></el-switch>
         </template>
       </el-table-column>
@@ -200,7 +216,7 @@ import {
   doDeleteAll,
   doExportExcelByOrg,
 } from "@/api/system/apply/SysApplyManagementApi";
-import { getByCurrentUser } from "@/api/system/orgInfo/OrgInfoManagementApi";
+import { getByCurrentUser,doUpdate } from "@/api/system/orgInfo/OrgInfoManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
 
@@ -213,6 +229,7 @@ export default {
   components: { Edit, Import },
   data() {
     return {
+      disabled : false,
       list: null,
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
@@ -220,7 +237,9 @@ export default {
       selectRows: "",
       elementLoadingText: "正在加载...",
       moreQueryFlag: false,
-      orgInfo: null,
+      orgInfo: {
+        quota: 0,
+      },
       queryForm: {
         pageNo: 1,
         pageSize: 10,
@@ -360,6 +379,21 @@ export default {
       }
     },
 
+    handleSubmit() {
+      this.$baseConfirm("你确定要提交吗", null, async () => {
+            // const { msg } = await doDeleteAll({ ids });
+            this.orgInfo.hasReport = "1";
+            const{success,msg} = await doUpdate(this.orgInfo);
+            if(success){
+              this.$baseMessage("已提交", "success");
+              this.disabled = true;
+              await this.fetchData();
+            }
+
+          });
+
+    },
+
 
 
     handleViewFile(row) {
@@ -401,6 +435,9 @@ export default {
     async getOrgInfo(){
       const { data } = await getByCurrentUser();
       this.orgInfo = data;
+      if(data.hasReport === "1"){
+        this.disabled = true;
+      }
     },
 
     async fetchData() {
