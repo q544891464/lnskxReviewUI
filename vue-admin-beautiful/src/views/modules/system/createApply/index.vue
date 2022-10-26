@@ -15,7 +15,7 @@
             <el-input
               v-model="form.applyName"
               placeholder="成果名称"
-              :maxlength="40"
+              :maxlength="100"
               show-word-limit
               clearable
               :style="{ width: '90%' }"
