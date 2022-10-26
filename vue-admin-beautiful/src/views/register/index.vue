@@ -24,7 +24,7 @@
               v-model.trim="form.username"
               v-focus
               style="margin-top: 20px"
-              type="text"
+
               placeholder="请输入用户名"
               auto-complete="off"
             >
@@ -123,9 +123,10 @@
 <script>
   import { uuid } from "@/utils";
   import { isPassword, isPhone } from "@/utils/validate";
+  import { isGeneral } from "@/utils/valiargs";
   import { register,captcha } from "@/api/user";
   export default {
-    username: "Register",
+    username: "",
     directives: {
       focus: {
         inserted(el) {
@@ -135,8 +136,9 @@
     },
     data() {
       const validateusername = (rule, value, callback) => {
+        // if ("" == value) {
         if ("" == value) {
-          callback(new Error("用户名不能为空"));
+          callback(new Error("用户名只能为数字、字母、下划线"));
         } else {
           callback();
         }

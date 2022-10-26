@@ -63,45 +63,46 @@ export default {
       .set("B", "集成创新")
       .set("C", "引进消化吸收再创新");
     if (this.$route.query.form) {
+      let i = 0;
       this.form = this.$route.query.form;
-      this.tableData[0].info = this.form.applyName;
-      this.tableData[1].info = this.form.publicationDate;
-      this.tableData[2].info = this.form.firstAuthor;
-      this.tableData[3].info = this.form.firstAuthorWorkplace;
-      this.tableData[4].info = this.form.introduction;
-      this.tableData[5].info = this.form.innovation;
-      this.tableData[6].info = this.form.application;
-      this.tableData[7].info = this.form.publicationName;
-      this.tableData[8].info = this.form.publicationDate;
-      this.tableData[9].info = this.form.impactFactor;
-      this.tableData[10].info = retrievalMap.get(this.form.retrieval);
-      this.tableData[11].info = this.form.citations;
+      this.tableData[i].info = this.form.applyName; i++;
+      this.tableData[i].info = this.form.publicationDate; i++;
+      this.tableData[i].info = this.form.firstAuthor;i++;
+      this.tableData[i].info = this.form.firstAuthorWorkplace;i++;
+      this.tableData[i].info = this.form.introduction;i++;
+      this.tableData[i].info = this.form.innovation;i++;
+      this.tableData[i].info = this.form.application;i++;
+      this.tableData[i].info = this.form.publicationName;i++;
+      this.tableData[i].info = this.form.publicationDate;i++;
+      this.tableData[i].info = this.form.impactFactor;i++;
+      this.tableData[i].info = retrievalMap.get(this.form.retrieval);i++;
+      this.tableData[i].info = this.form.citations;i++;
       // this.tableData[12].info = relatedAchievementsMap.get(this.form.relatedAchievements);
-      this.tableData[12].info = paperTypeMap.get(this.form.paperType);
+      this.tableData[i].info = paperTypeMap.get(this.form.paperType);i++;
       // 出版社名称
-      this.tableData[13].info = this.form.publicationPublisherName;
-      this.tableData[14].info = this.form.publicationPublishDate;
-      this.tableData[15].info = this.form.publicationNumber;
-      this.tableData[16].info = this.form.publicationType;
-      this.tableData[17].info = this.form.publicationCitations;
-      this.tableData[18].info = this.form.publicationInstitutionalUse;
+      this.tableData[i].info = this.form.publicationPublisherName;i++;
+      this.tableData[i].info = this.form.publicationPublishDate;i++;
+      this.tableData[i].info = this.form.publicationNumber;i++;
+      this.tableData[i].info = this.form.publicationType;i++;
+      this.tableData[i].info = this.form.publicationCitations;i++;
+      this.tableData[i].info = this.form.publicationInstitutionalUse;i++;
 
-      this.tableData[19].info = relatedAchievementsMap.get(this.form.relatedAchievements);
-      this.tableData[20].info = this.form.projectName;
-      this.tableData[21].info = projectLevelMap.get(this.form.projectLevel);
-      this.tableData[22].info = projectInnovationMap.get(this.form.projectInnovation);
+      this.tableData[i].info = relatedAchievementsMap.get(this.form.relatedAchievements);i++;
+      this.tableData[i].info = this.form.projectName;i++;
+      this.tableData[i].info = projectLevelMap.get(this.form.projectLevel);i++;
+      this.tableData[i].info = projectInnovationMap.get(this.form.projectInnovation);i++;
 
-      this.tableData[23].info = this.form.patentName;
-      this.tableData[24].info = this.form.patentType;
-      this.tableData[25].info = this.form.patentDate;
-      this.tableData[26].info = this.form.patentApplication;
-      this.tableData[27].info = this.form.patentValue;
+      this.tableData[i].info = this.form.patentName;i++;
+      this.tableData[i].info = this.form.patentType;i++;
+      this.tableData[i].info = this.form.patentDate;i++;
+      this.tableData[i].info = this.form.patentApplication;i++;
+      this.tableData[i].info = this.form.patentValue;i++;
 
-      this.tableData[28].url = this.form.filePath;
-      this.tableData[28].view = true;
+      this.tableData[i].url = this.form.filePath;
+      this.tableData[i].view = true;i++;
 
-      this.tableData[29].url = this.form.otherFilePath;
-      this.tableData[29].view = true;
+      this.tableData[i].url = this.form.otherFilePath;
+      this.tableData[i].view = true;i++;
 
 
 

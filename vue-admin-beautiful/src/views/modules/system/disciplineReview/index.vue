@@ -23,11 +23,11 @@
         }}分为二等奖； {{ this.prize3 }}分-{{ this.prize2 }}分为三等奖；
       </h3>
       <h3>
-        评审项目数量：{{ this.totalCount }} 当前{{ this.prize1 }}分以上数量：{{
+        评审项目数量：{{ this.totalCount }} 。当前{{ this.prize1 }}分以上数量：{{
           this.prize1Count
-        }}； {{ this.prize2 }}分-{{ this.prize1 }}分数量：{{
+        }}； {{ this.prize2 }}分-{{ this.prize1 - 1}}分数量：{{
           this.prize2Count
-        }}； {{ this.prize3 }}分-{{ this.prize2 }}分数量：{{
+        }}； {{ this.prize3 }}分-{{ this.prize2 - 1}}分数量：{{
           this.prize3Count
         }}； {{ this.prize3 }}分以下数量：{{
           this.totalCount -

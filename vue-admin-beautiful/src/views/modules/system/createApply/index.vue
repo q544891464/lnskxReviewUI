@@ -142,7 +142,7 @@
       </el-form-item> -->
       <el-divider>申报成果简介</el-divider>
 
-      <el-form-item label="成果简介" prop="introduction">
+      <el-form-item label="代表性作品简介" prop="introduction">
         <el-input
           v-model="form.introduction"
           type="textarea"
@@ -685,7 +685,7 @@
 
       <!-- 分割线 -->
 
-      <el-divider>相关证明材料</el-divider>
+      <el-divider>代表性作品证明材料</el-divider>
 
       <el-divider>论文</el-divider>
 
