@@ -104,6 +104,9 @@ export default {
       this.tableData[i].url = this.form.otherFilePath;
       this.tableData[i].view = true;i++;
 
+      this.tableData[i].url = this.form.completedFilePath;
+      this.tableData[i].view = true;i++;
+
 
 
 

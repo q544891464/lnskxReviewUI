@@ -9,8 +9,8 @@
     >
       <h3>
         {{ this.prize1 }}分以上为一等奖； {{ this.prize2 }}分-{{
-          this.prize1
-        }}分为二等奖； {{ this.prize3 }}分-{{ this.prize2 }}分为三等奖；
+          this.prize1 -1
+        }}分为二等奖； {{ this.prize3 }}分-{{ this.prize2 -1 }}分为三等奖；
       </h3>
       <el-table :data="tableData" stripe style="width: 100%">
         <!-- <el-table-column prop="id" label="序号" width="80"></el-table-column> -->
@@ -27,7 +27,7 @@
         ></el-table-column>
         <el-table-column prop="standardScore" label="评分">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.getScore" @change="scoreChange">
+            <el-input type="number" v-model="scope.row.getScore" @change="scoreChange(scope.$index,scope.row.getScore,scope.row.standardScore)">
               0
             </el-input>
           </template>
@@ -169,7 +169,15 @@ export default {
       }
     },
 
-    scoreChange() {
+    scoreChange(index,getScore,standardScore) {
+      if(getScore>standardScore){
+        this.$baseMessage("评分不能大于满分", "error");
+        this.tableData[index].getScore=standardScore;
+      }
+      if(getScore<0){
+        this.$baseMessage("评分不能小于0", "error");
+        this.tableData[index].getScore=0;
+      }
       this.form.totalScore = 0;
       for (let i = 0; i < this.tableData.length; i++) {
         if (isNotNull(this.tableData[i].getScore)) {

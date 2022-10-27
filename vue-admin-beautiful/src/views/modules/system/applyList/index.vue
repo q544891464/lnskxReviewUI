@@ -35,11 +35,11 @@
         > 添加 </el-button> -->
 
         <el-button
-            
-            
             type="primary"
             @click="handleSubmit"
+            v-bind:disabled= disabled
         > 提交 </el-button>
+
 
         <!--        <el-button
             v-if="$perms('system_apply_import')"

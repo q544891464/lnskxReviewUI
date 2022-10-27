@@ -113,6 +113,7 @@
         show-overflow-tooltip
         prop="applyName"
         label="成果名称"
+        width="200"
       ></el-table-column>
 
       <!--      <el-table-column

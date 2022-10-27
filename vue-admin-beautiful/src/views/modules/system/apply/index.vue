@@ -18,8 +18,11 @@
     </el-collapse-transition>
 
     <h3>
-      填写完申报表后，请在本页点击《导出为word》并打印，在学术诚信承诺书上签字后，将申报表报送所在单位审核，合格后加盖单位公章或科技部门公章，将签字、盖章后的申报表扫描成PDF电子版，并点击《上传申报表》进行上传，上传成功后，如点击详细信息《查看》可查看已上传文件，说明申报表上传成功。
+      填写完申报表后，请在本页点击《导出申报表》并打印，在学术诚信承诺书上签字后，将申报表报送所在单位审核，合格后加盖单位公章或科技部门公章，将签字、盖章后的申报表扫描成PDF电子版，并点击《上传申报表》进行上传，上传成功后，如点击详细信息《查看》可查看已上传文件，说明申报表上传成功。
       </h3>
+    <h4 style="color:red">
+      上传申报表后将无法编辑,请确认无误后再上传。
+    </h4>
 
     <!-- 主要操作  -->
     <vab-query-form>
@@ -124,6 +127,7 @@
             v-if="$perms('system_apply_update')"
             type="text"
             @click="handleUpdate(scope.row)"
+            v-bind:disabled = "scope.row.completedFilePath != '' && scope.row.completedFilePath != null"
           >
             编辑
           </el-button>
@@ -137,7 +141,7 @@
       >
         <template v-slot="scope">
           <el-button type="text" @click.native="handleViewFile(scope.row)">
-            导出为word
+            导出申报表
           </el-button>
         </template>
       </el-table-column>
@@ -175,7 +179,7 @@
               v-if="$perms('system_apply_delete')"
               type="text"
               @click.native="handleViewFile(scope.row)"
-            > 导出为word </el-dropdown-item> -->
+            > 导出申报表 </el-dropdown-item> -->
 
               <!--            <el-dropdown-item
               type="text"
