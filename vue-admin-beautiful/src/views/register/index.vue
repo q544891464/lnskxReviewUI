@@ -125,6 +125,7 @@
   import { isPassword, isPhone } from "@/utils/validate";
   import { isGeneral } from "@/utils/valiargs";
   import { register,captcha } from "@/api/user";
+  import {doRegister} from"@/api/system/user/userManagement";
   export default {
     username: "",
     directives: {
@@ -255,6 +256,8 @@
               uuid:this.form.uuid,
             };
             const { success,msg } = await register(param);
+            // const { success,msg } = await doRegister(param);
+
             console.log(msg,"response");
             if(success){
               this.$baseMessage("注册成功！", "success");
