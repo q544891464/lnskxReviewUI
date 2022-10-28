@@ -62,6 +62,19 @@ export default {
       .set("A", "原始创新")
       .set("B", "集成创新")
       .set("C", "引进消化吸收再创新");
+    let patentTypeMap = new Map()
+      .set("A", "发明专利")
+      .set("B", "实用新型专利")
+      .set("C", "外观设计专利");
+    let publicationTypeMap = new Map()
+      .set("A", "专著")
+      .set("B", "编著")
+      .set("C", "译著");
+    let publicationInstitutionalUseMap = new Map()
+      .set("A", "5家或5家机构以上")
+      .set("B", "4家机构")
+      .set("C", "2家机构")
+      .set("无", "无");
     if (this.$route.query.form) {
       let i = 0;
       this.form = this.$route.query.form;
@@ -83,9 +96,9 @@ export default {
       this.tableData[i].info = this.form.publicationPublisherName;i++;
       this.tableData[i].info = this.form.publicationPublishDate;i++;
       this.tableData[i].info = this.form.publicationNumber;i++;
-      this.tableData[i].info = this.form.publicationType;i++;
+      this.tableData[i].info = publicationTypeMap.get(this.form.publicationType);i++;
       this.tableData[i].info = this.form.publicationCitations;i++;
-      this.tableData[i].info = this.form.publicationInstitutionalUse;i++;
+      this.tableData[i].info = publicationInstitutionalUseMap.get(this.form.publicationInstitutionalUse);i++;
 
       this.tableData[i].info = relatedAchievementsMap.get(this.form.relatedAchievements);i++;
       this.tableData[i].info = this.form.projectName;i++;
@@ -93,7 +106,7 @@ export default {
       this.tableData[i].info = projectInnovationMap.get(this.form.projectInnovation);i++;
 
       this.tableData[i].info = this.form.patentName;i++;
-      this.tableData[i].info = this.form.patentType;i++;
+      this.tableData[i].info = patentTypeMap.get(this.form.patentType);i++;
       this.tableData[i].info = this.form.patentDate;i++;
       this.tableData[i].info = this.form.patentApplication;i++;
       this.tableData[i].info = this.form.patentValue;i++;

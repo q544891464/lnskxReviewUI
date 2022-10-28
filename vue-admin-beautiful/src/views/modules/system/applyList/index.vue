@@ -47,14 +47,14 @@
             type="warning"
             @click="handleImportExcel"
         > 导入 </el-button> -->
-
-        <!-- <el-button
-            v-if="$perms('system_apply_export')"
+<!-- v-if="$perms('system_apply_export')" -->
+        <el-button
+            
             icon="el-icon-download"
             type="warning"
             @click="handleExportExcel"
         > 导出 </el-button>
-
+<!-- 
         <el-button
             v-if="$perms('system_apply_delete')"
             :disabled="!selectRows.length > 0"

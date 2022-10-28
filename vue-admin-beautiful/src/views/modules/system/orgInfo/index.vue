@@ -41,8 +41,11 @@
           导入到组织里
         </el-button>
 
-
-        <el-button icon="el-icon-upload2" type="warning" @click="handleImportUser">
+        <el-button
+          icon="el-icon-upload2"
+          type="warning"
+          @click="handleImportUser"
+        >
           导入到用户里
         </el-button>
 
@@ -116,7 +119,7 @@
       >
         <template v-slot="scope">
           <el-button
-          v-if="$perms('system_orginfo_update')"
+            v-if="$perms('system_orginfo_update')"
             type="text"
             @click="handleUpdate(scope.row)"
           >
@@ -146,7 +149,6 @@
         show-overflow-tooltip
         prop="unitCode"
         label="单位编码"
-        
       ></el-table-column>
 
       <el-table-column
@@ -203,8 +205,6 @@
         label="单位联系人邮箱"
       ></el-table-column>
 
-
-
       <el-table-column
         show-overflow-tooltip
         prop="unitAddress"
@@ -239,7 +239,7 @@ import {
   doDeleteAll,
   doExportExcel,
   doImportOrg,
-  doImportUser
+  doImportUser,
 } from "@/api/system/orgInfo/OrgInfoManagementApi";
 import Edit from "./components/OrgInfoManagementEdit";
 import Import from "./components/OrgInfoManagementImport";
@@ -374,7 +374,6 @@ export default {
         return false;
       }
     },
-
 
     // 导入excel
     handleImportExcel() {

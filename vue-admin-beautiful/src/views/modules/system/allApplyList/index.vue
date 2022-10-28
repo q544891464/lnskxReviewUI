@@ -99,12 +99,22 @@
           prop="applyName"
           label="成果名称"
         ></el-table-column>
-  
-        <!--      <el-table-column
+
+          <el-table-column
                 show-overflow-tooltip
-                prop="org"
+                prop="orgName"
                 label="推荐单位"
-        ></el-table-column> -->
+        >
+      </el-table-column>
+
+      <el-table-column
+                show-overflow-tooltip
+                label="专业"
+        >
+        <template v-slot="scope" >
+          <span v-if="scope.row.discipline!=null">{{ scope.row.discipline.split(',')[1].substring(1,scope.row.discipline.split(',')[1].length-2) }}</span>
+        </template>
+      </el-table-column>
   
         <el-table-column show-overflow-tooltip prop="info" label="详细信息">
           <template v-slot="scope">
@@ -169,6 +179,16 @@
             </el-button>
           </template>
         </el-table-column>
+
+        <el-table-column
+          show-overflow-tooltip
+          label="申报表上传状态"
+        >
+        <template v-slot="scope">
+
+              {{scope.row.completedFilePath == null || scope.row.completedFilePath == '' ? '未上传':'已上传'}}
+          </template>
+      </el-table-column>
 
         <el-table-column
           show-overflow-tooltip

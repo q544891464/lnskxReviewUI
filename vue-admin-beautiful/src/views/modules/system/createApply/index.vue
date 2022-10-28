@@ -1796,6 +1796,10 @@ export default {
       ],
       patentTypeOptions: [
         {
+          label: "发明专利",
+          value: "A",
+        },
+        {
           label: "实用新型专利",
           value: "B",
         },
@@ -1803,10 +1807,7 @@ export default {
           label: "外观设计专利",
           value: "C",
         },
-        {
-          label: "发明专利",
-          value: "A",
-        },
+
       ],
     };
   },
