@@ -15,7 +15,7 @@
             <el-input
               v-model="form.applyName"
               placeholder="成果名称"
-              :maxlength="100"
+              :maxlength="150"
               show-word-limit
               clearable
               :style="{ width: '90%' }"
@@ -1023,8 +1023,8 @@ export default {
           { required: true, message: "请输入成果名称", trigger: "blur" },
           {
             min: 3,
-            max: 100,
-            message: "长度在 3 到 100 个字符",
+            max: 150,
+            message: "长度在 3 到 150 个字符",
             trigger: "blur",
           },
         ],
