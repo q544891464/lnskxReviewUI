@@ -72,11 +72,11 @@
     >
       <el-table-column show-overflow-tooltip type="selection"></el-table-column>
 
-      <el-table-column show-overflow-tooltip label="序号" width="95">
+      <!-- <el-table-column show-overflow-tooltip label="序号" width="95">
         <template slot-scope="scope">
           {{(queryForm.pageNo - 1) * queryForm.pageSize + scope.$index + 1}}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
               show-overflow-tooltip

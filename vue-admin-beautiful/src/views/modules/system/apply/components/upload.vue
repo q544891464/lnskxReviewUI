@@ -51,7 +51,7 @@
               提示上传成功后再选择确定即可
             </div>
             <div slot="tip" class="el-upload__tip" style="color:red">
-              上传申报表后将无法编辑,请确认后再上传
+              申报表盖章上传完成后不能再进行申报内容的修改操作，请确保申报内容无误再进行上传。
             </div>
           </el-upload>
         </el-form-item>

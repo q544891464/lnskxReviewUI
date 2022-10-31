@@ -86,9 +86,18 @@
               show-overflow-tooltip
               prop="applyName"
               label="成果名称"
+              width="400"
       ></el-table-column>
 
-<!--      <el-table-column
+      <el-table-column
+                show-overflow-tooltip
+                label="专业"
+        >
+        <template v-slot="scope" >
+          <span v-if="scope.row.discipline!=null">{{ scope.row.discipline.split(',')[1].substring(1,scope.row.discipline.split(',')[1].length-2) }}</span>
+        </template>
+      </el-table-column>
+     <!-- <el-table-column
               show-overflow-tooltip
               prop="discipline"
               label="学科专业"

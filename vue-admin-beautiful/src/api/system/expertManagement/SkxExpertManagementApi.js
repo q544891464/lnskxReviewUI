@@ -17,7 +17,7 @@ export function getListRef(data) {
   });
 }
 
-export function setSubjectGroup(data) {
+export function doSetSubjectGroup(data) {
   return request({
     url: "/api/v1/system/expertManagement/setSubjectGroup",
     method: "post",

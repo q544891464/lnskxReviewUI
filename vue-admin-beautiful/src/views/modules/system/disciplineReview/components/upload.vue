@@ -87,7 +87,8 @@
         // TODO: 上传前校验是否已经上传过
         async handleConfirm() {
           const {data} = await doUpdate({
-            completeFilePath:this.uploadPath
+            completeFilePath:this.uploadPath,
+            isSubmit:1
           });
           this.close();
         },

@@ -1244,6 +1244,11 @@ export default {
       },
 
       rules: {
+
+        orgId: [
+          { required: true, message: "请选择单位", trigger: "change" },
+        ],
+
         discipline: [
           {
             required: true,
@@ -1457,20 +1462,20 @@ export default {
         //     trigger: "change",
         //   },
         // ],
-        projectLevel: [
-          {
-            required: true,
-            message: "请选择项目级别",
-            trigger: "change",
-          },
-        ],
-        projectInnovation: [
-          {
-            required: true,
-            message: "请选择自主创新情况",
-            trigger: "change",
-          },
-        ],
+        // projectLevel: [
+        //   {
+        //     required: true,
+        //     message: "请选择项目级别",
+        //     trigger: "change",
+        //   },
+        // ],
+        // projectInnovation: [
+        //   {
+        //     required: true,
+        //     message: "请选择自主创新情况",
+        //     trigger: "change",
+        //   },
+        // ],
       },
 
       firstAuthorSexOptions: [
