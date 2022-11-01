@@ -34,10 +34,10 @@
             @click="handleImportExcel"
         > 导入 </el-button> -->
 
-       <el-button
+       <!-- <el-button
             type="warning"
             @click="fetchData"
-        > 刷新 </el-button>
+        > 刷新 </el-button> -->
 
         <el-button
             :disabled="!selectRows.length > 0"
@@ -45,22 +45,41 @@
             @click="handlePrize"
         > 批量设置学科组 </el-button>
 
-        <el-button
+        <!-- <el-button
             v-if="$perms('system_apply_delete')"
             :disabled="!selectRows.length > 0"
             icon="el-icon-delete"
             type="danger"
             @click="handleDelete"
-        > 批量删除 </el-button>
+        > 批量删除 </el-button> -->
 
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
 
           <el-form-item>
-<!--            <el-button icon="el-icon-search" type="primary" @click="queryData">
+
+
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.discipline_LIKE"
+                placeholder="请输入专业名称或专业代码"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.subjectGroupName_LIKE"
+                placeholder="请输入学科组名称"
+                clearable
+              />
+            </el-form-item>
+
+           <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
-            </el-button> -->
+            </el-button>
 
 
           </el-form-item>
@@ -130,8 +149,8 @@
       <el-table-column
         show-overflow-tooltip
         label="当前学科组"
-        prop="subjectGroup"
-        :formatter="subjectGroupFormat"
+        prop="subjectGroupName"
+        
         
       >
 <!--        <template v-slot="scope">

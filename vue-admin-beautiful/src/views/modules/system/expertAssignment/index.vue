@@ -20,12 +20,19 @@
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
+
+        <el-button
+            :disabled="!selectRows.length > 0"
+            type="primary"
+            @click="handleSetSubjectGroup"
+        > 批量设置学科组 </el-button>
         <!-- <el-button
             v-if="$perms('system_expertmanagement_insert')"
             icon="el-icon-plus"
             type="primary"
             @click="handleInsert"
         > 添加 </el-button>
+        
 
         <el-button icon="el-icon-upload2" type="warning" @click="handleImportUser">
           导入到用户里
@@ -284,7 +291,7 @@
         }else{
           if(this.selectRows.length>0){
             console.log("多条");
-            const ids = this.selectRows.map((item) => item.id).join();
+            const ids = this.selectRows.map((item) => item.userId).join();
             console.log(ids);
             this.$refs["group"].show(ids);
           }

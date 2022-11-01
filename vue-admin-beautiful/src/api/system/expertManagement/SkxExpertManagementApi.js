@@ -32,6 +32,14 @@ export function doSetSubjectGroup(data) {
   });
 }
 
+export function doSetSubjectGroupAll(data) {
+  return request({
+    url: "/api/v1/system/expertManagement/setSubjectGroupAll",
+    method: "post",
+    params: data,
+  });
+}
+
 export function doImportUser(data) {
   return request({
     url: "/api/v1/system/expertManagement/importUser",

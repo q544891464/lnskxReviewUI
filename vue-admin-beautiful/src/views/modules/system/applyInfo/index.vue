@@ -4,13 +4,9 @@
     <el-table-column prop="info" label="相关信息">
       <template v-slot="scope">
         <!-- <el-input v-model="scope.row.info" :disabled = true></el-input> -->
-        {{scope.row.info}}
-        <el-button
-          v-if="scope.row.view == true"
-          type="text"
-          :disabled="scope.row.url == ''"
-          @click="handleViewFile(scope.row.url)"
-        >
+        {{ scope.row.info }}
+        <el-button v-if="scope.row.view == true" type="text" :disabled="scope.row.url == ''"
+          @click="handleViewFile(scope.row.url)">
           查看
         </el-button>
       </template>
@@ -80,45 +76,45 @@ export default {
       this.form = this.$route.query.form;
       this.tableData[i].info = this.form.applyName; i++;
       this.tableData[i].info = this.form.publicationDate; i++;
-      this.tableData[i].info = this.form.firstAuthor;i++;
-      this.tableData[i].info = this.form.firstAuthorWorkplace;i++;
-      this.tableData[i].info = this.form.introduction;i++;
-      this.tableData[i].info = this.form.innovation;i++;
-      this.tableData[i].info = this.form.application;i++;
-      this.tableData[i].info = this.form.publicationName;i++;
-      this.tableData[i].info = this.form.publicationDate;i++;
-      this.tableData[i].info = this.form.impactFactor;i++;
-      this.tableData[i].info = retrievalMap.get(this.form.retrieval);i++;
-      this.tableData[i].info = this.form.citations;i++;
+      this.tableData[i].info = this.form.firstAuthor; i++;
+      this.tableData[i].info = this.form.firstAuthorWorkplace; i++;
+      this.tableData[i].info = this.form.introduction; i++;
+      this.tableData[i].info = this.form.innovation; i++;
+      this.tableData[i].info = this.form.application; i++;
+      this.tableData[i].info = this.form.publicationName; i++;
+      this.tableData[i].info = this.form.publicationDate; i++;
+      this.tableData[i].info = this.form.impactFactor; i++;
+      this.tableData[i].info = retrievalMap.get(this.form.retrieval); i++;
+      this.tableData[i].info = this.form.citations; i++;
       // this.tableData[12].info = relatedAchievementsMap.get(this.form.relatedAchievements);
-      this.tableData[i].info = paperTypeMap.get(this.form.paperType);i++;
+      this.tableData[i].info = paperTypeMap.get(this.form.paperType); i++;
       // 出版社名称
-      this.tableData[i].info = this.form.publicationPublisherName;i++;
-      this.tableData[i].info = this.form.publicationPublishDate;i++;
-      this.tableData[i].info = this.form.publicationNumber;i++;
-      this.tableData[i].info = publicationTypeMap.get(this.form.publicationType);i++;
-      this.tableData[i].info = this.form.publicationCitations;i++;
-      this.tableData[i].info = publicationInstitutionalUseMap.get(this.form.publicationInstitutionalUse);i++;
+      this.tableData[i].info = this.form.publicationPublisherName; i++;
+      this.tableData[i].info = this.form.publicationPublishDate; i++;
+      this.tableData[i].info = this.form.publicationNumber; i++;
+      this.tableData[i].info = publicationTypeMap.get(this.form.publicationType); i++;
+      this.tableData[i].info = this.form.publicationCitations; i++;
+      this.tableData[i].info = publicationInstitutionalUseMap.get(this.form.publicationInstitutionalUse); i++;
 
-      this.tableData[i].info = relatedAchievementsMap.get(this.form.relatedAchievements);i++;
-      this.tableData[i].info = this.form.projectName;i++;
-      this.tableData[i].info = projectLevelMap.get(this.form.projectLevel);i++;
-      this.tableData[i].info = projectInnovationMap.get(this.form.projectInnovation);i++;
+      this.tableData[i].info = relatedAchievementsMap.get(this.form.relatedAchievements); i++;
+      this.tableData[i].info = this.form.projectName; i++;
+      this.tableData[i].info = this.handleFormatArray(this.form.projectLevel, projectLevelMap); i++;
+      this.tableData[i].info = this.handleFormatArray(this.form.projectInnovation, projectInnovationMap); i++;
 
-      this.tableData[i].info = this.form.patentName;i++;
-      this.tableData[i].info = patentTypeMap.get(this.form.patentType);i++;
-      this.tableData[i].info = this.form.patentDate;i++;
-      this.tableData[i].info = this.form.patentApplication;i++;
-      this.tableData[i].info = this.form.patentValue;i++;
+      this.tableData[i].info = this.form.patentName; i++;
+      this.tableData[i].info = this.handleFormatArray(this.form.patentType, patentTypeMap); i++;
+      // this.tableData[i].info = this.form.patentDate;i++;
+      this.tableData[i].info = this.form.patentApplication; i++;
+      this.tableData[i].info = this.form.patentValue; i++;
 
       this.tableData[i].url = this.form.filePath;
-      this.tableData[i].view = true;i++;
+      this.tableData[i].view = true; i++;
 
       this.tableData[i].url = this.form.otherFilePath;
-      this.tableData[i].view = true;i++;
+      this.tableData[i].view = true; i++;
 
       this.tableData[i].url = this.form.completedFilePath;
-      this.tableData[i].view = true;i++;
+      this.tableData[i].view = true; i++;
 
 
 
@@ -239,10 +235,10 @@ export default {
           prop: "专利类型：",
           info: "",
         },
-        {
-          prop: "专利获得时间：",
-          info: "",
-        },
+        // {
+        //   prop: "专利获得时间：",
+        //   info: "",
+        // },
         {
           prop: "专利应用证明：",
           info: "",
@@ -261,7 +257,7 @@ export default {
           prop: '其它支撑材料及证明材料：',
           info: '',
           view: true,
-          url:"",
+          url: "",
         },
         {
           prop: "已上传申报表：",
@@ -274,6 +270,17 @@ export default {
   },
 
   methods: {
+
+    handleFormatArray(array, map) {
+      array = array.split(",");
+      let result = "";
+      for (let i = 0; i < array.length; i++) {
+        result += map.get(array[i]) + " ";
+      }
+      return result;
+    },
+
+
     handleViewFile(url) {
       if (url) {
         window.open(url, "_blank");

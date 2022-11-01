@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-  import { doSetSubjectGroup } from "@/api/system/expertManagement/SkxExpertManagementApi";
+  import { doSetSubjectGroup ,doSetSubjectGroupAll} from "@/api/system/expertManagement/SkxExpertManagementApi";
   import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 export default {
   inheritAttrs: false,
@@ -55,10 +55,10 @@ export default {
   methods: {
 
     show(row){
+      this.getOptions();
       if(row.id){
         this.id = row.id;
         this.expertId = row.userId;
-        this.getOptions();
         if(row.subjectGroupNo){
           this.formData.setSubjectGroup = row.subjectGroupNo;
           this.insertOrUpdate = "update";
@@ -97,8 +97,20 @@ export default {
     },
     handelConfirm() {
       this.$refs['elForm'].validate(async valid => {
-        if (valid) {
-          
+        if (!valid) {
+
+
+          return
+        }
+        if (this.ids) {
+          console.log("处理多条数据");
+          let res = await doSetSubjectGroupAll({
+            ids: this.ids,
+            subjectGroup: this.formData.setSubjectGroup,
+          });
+          this.$baseMessage(res.msg, "success");
+          this.close();
+        } else {
           let res = await doSetSubjectGroup({
             expertId: this.expertId,
             subjectGroup: this.formData.setSubjectGroup,

@@ -101,9 +101,11 @@
           clearable
           v-bind:disabled="disabled"
         ></el-date-picker>
+        <div class="tip" style="color:red">*发表/出版日期不得晚于2021年1月1日</div>
       </el-form-item>
 
-      <el-form-item label-width="150px" label="学科专业分类" prop="discipline">
+
+      <el-form-item label-width="150px" label="学科专业分类(专业代码)" prop="discipline">
         <el-cascader
           v-model="form.discipline"
           :options="disciplineOptions"
@@ -943,6 +945,7 @@
         <el-select
           v-model="form.projectInnovation"
           placeholder="请选择自主创新情况"
+          :multiple="true"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
@@ -1066,7 +1069,7 @@
           :multiple="false"
           :auto-upload="true"
           :show-file-list="true"
-          :before-upload="beforeUploadCompleted"
+          :before-upload="befilePathOtherforeUploadCompleted"
           :file-list="fileListCompleted"
           :http-request="handleImportCompleted"
           :on-success="onSuccess"
@@ -1137,6 +1140,23 @@ export default {
 
       if(this.form.projectLevel){
         this.form.projectLevel = this.form.projectLevel.split(",");
+      }
+      if(this.form.projectInnovation){
+        this.form.projectInnovation = this.form.projectInnovation.split(",");
+      }
+
+      if(this.form.filePath){
+        this.fileList.push({
+          name: this.form.filePath,
+          url: this.form.filePath,
+        });
+      }
+
+      if(this.form.otherFilePath){
+        this.fileListOther.push({
+          name: this.form.otherFilePath,
+          url: this.form.otherFilePath,
+        });
       }
 
       // console.log(this.form.discipline,"this.form.discipline");
@@ -1266,7 +1286,7 @@ export default {
       // 发表日期不能晚于2021-1-1 这里写死 应该改成参数
       pickerOptions: {
                 disabledDate(time) {
-                    return time.getTime() > Date.parse("2021-1-1"); 
+                    return time.getTime() > Date.parse("2020-12-31"); 
                 }
              },
 
@@ -2277,6 +2297,8 @@ export default {
       // 数组转为字符串
       this.form.patentType = this.form.patentType.join(",");
       this.form.projectLevel = this.form.projectLevel.join(",");
+      this.form.projectInnovation = this.form.projectInnovation.join(",");
+
       //解析身份证号得到出生年月日
       let iden = this.form.firstAuthorId;
       if (iden.length == 18) {
