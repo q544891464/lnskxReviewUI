@@ -24,7 +24,7 @@
 </template>
 <script>
   import { doSetSubjectGroup,doSetSubjectGroupAll } from "@/api/system/apply/SysApplyManagementApi";
-
+  import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 export default {
   inheritAttrs: false,
   components: {},
@@ -87,6 +87,8 @@ export default {
       }
       this.dialogFormVisible = true;
     },
+
+
     onOpen() {},
     onClose() {
       this.$refs['elForm'].resetFields()
@@ -96,6 +98,15 @@ export default {
       this.$emit('fetchData', false)
       this.dialogFormVisible = false;
     },
+
+    async getOptions(){
+      let res = await getList();
+      if(res.code == 200){
+        console.log(res.data);
+        this.setSubjectGroupOptions = res.data.rows;
+      }
+    },
+    
     handelConfirm() {
 
       this.$refs['elForm'].validate(async valid => {

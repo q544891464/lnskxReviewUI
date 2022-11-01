@@ -48,7 +48,7 @@
             @click="handleImportExcel"
         > 导入 </el-button> -->
 
-        <el-button type="warning" @click="fetchData">刷新</el-button>
+        <!-- <el-button type="warning" @click="fetchData">刷新</el-button> -->
 
         <el-button type="warning" @click="exportExpertWord">
           导出汇总表

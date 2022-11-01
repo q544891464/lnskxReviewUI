@@ -97,6 +97,7 @@
           value-format="yyyy-MM-dd"
           :style="{ width: '50%' }"
           placeholder="请选择发表日期/出版日期"
+          :picker-options="pickerOptions"
           clearable
           v-bind:disabled="disabled"
         ></el-date-picker>
@@ -114,10 +115,10 @@
         ></el-cascader>
       </el-form-item>
 
-      <el-form-item label="成果类别" prop="applyType">
+      <el-form-item label="单位类型" prop="applyType">
         <el-select
           v-model="form.applyType"
-          placeholder="请选择成果类别"
+          placeholder="请选择单位类型"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
@@ -167,7 +168,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="成果相关其它价值" prop="innovation">
+      <el-form-item label="成果其它相关价值" prop="innovation">
         <el-input
           v-model="form.innovation"
           type="textarea"
@@ -220,7 +221,7 @@
           v-bind:disabled="disabled"
         ></el-input>
       </el-form-item>
-      <el-form-item label="地域" prop="firstAuthorRegion">
+      <!-- <el-form-item label="地域" prop="firstAuthorRegion">
         <el-select
           v-model="form.firstAuthorRegion"
           clearable
@@ -235,7 +236,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="工作单位" prop="firstAuthorWorkplace">
         <el-input
           v-model="form.firstAuthorWorkplace"
@@ -311,7 +312,7 @@
             :value="item.value" :disabled="item.disabled"></el-option>
         </el-select>
       </el-form-item> -->
-      <el-form-item label="学历" prop="firstAuthorEdu">
+      <el-form-item label="学历" prop="fedirstAuthorEdu">
         <el-select
           v-model="form.firstAuthorEdu"
           placeholder="请选择学历"
@@ -748,7 +749,7 @@
         <div>（排除本人及本机构引用次数）</div>
       </el-form-item>
 
-      <el-form-item label="论文类型" prop="paperType">
+      <!-- <el-form-item label="论文类型" prop="paperType">
         <el-select
           v-model="form.paperType"
           placeholder="请选择论文类型"
@@ -765,7 +766,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-divider>专著</el-divider>
       <el-form-item label="出版社名称" prop="publicationPublisherName">
@@ -851,7 +852,7 @@
         <div>（可用该机构网页证明）</div>
       </el-form-item>
 
-      <el-form-item label="论文及证明材料上传" prop="uploadFile">
+      <el-form-item label="代表性作品（论文或专著）及证明材料上传" prop="uploadFile">
         <el-upload
           ref="fileimport"
           accept=".pdf"
@@ -877,7 +878,7 @@
             预览
           </el-button>
           <div slot="tip" class="el-upload__tip">
-            请将论文及证明材料合并为一份pdf上传
+            请将代表性作品（论文或专著）及证明材料合并为一份pdf上传
           </div>
           <div slot="tip" class="el-upload__tip">
             证明材料需盖相关部门或申报人所在单位科技部门公章方为有效
@@ -888,7 +889,7 @@
         </el-upload>
       </el-form-item>
 
-      <el-divider>其它相关证明材料</el-divider>
+      <el-divider style="font-weight: 100;">其它支撑材料及证明材料</el-divider>
 
       <el-form-item label="相关系列成果" prop="relatedAchievements">
         <el-select
@@ -917,11 +918,13 @@
           v-bind:disabled="disabled"
 
         ></el-input>
+        <div style="color:red"> (多个项目名称用 ; 隔开)</div>
       </el-form-item>
       <el-form-item label="项目级别" prop="projectLevel">
         <el-select
           v-model="form.projectLevel"
-          placeholder="请选择项目级别"
+          placeholder="请选择所填项目所包含的项目级别"
+          :multiple="true"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
@@ -964,12 +967,16 @@
           v-bind:disabled="disabled"
 
         ></el-input>
+        <div style="color:red">(多个专利名称用 ; 隔开)</div>
       </el-form-item>
+      
+
 
       <el-form-item label="专利类型" prop="patentType">
         <el-select
           v-model="form.patentType"
-          placeholder="请选择专利类型"
+          placeholder="请选择所填专利包含的专利类型"
+          :multiple= true
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
@@ -985,7 +992,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label-width="150px" label="专利获得时间" prop="patentDate">
+      <!-- <el-form-item label-width="150px" label="专利获得时间" prop="patentDate">
         <el-date-picker
           v-model="form.patentDate"
           format="yyyy-MM-dd"
@@ -995,7 +1002,7 @@
           clearable
           v-bind:disabled="disabled"
         ></el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item label="专利应用证明" prop="patentApplication">
         <el-input
@@ -1117,14 +1124,26 @@ import { validatorRule } from "@/utils/validateRlue";
 export default {
   name: "Form",
   created() {
+    
     this.getUnitNames();
+    
     if (this.$route.query.form) {
       this.form = this.$route.query.form;
+
+      if(this.form.patentType){
+        // console.log(this.form.patentType, "this.form.patentType");
+      this.form.patentType = this.form.patentType.split(",");
+      }
+
+      if(this.form.projectLevel){
+        this.form.projectLevel = this.form.projectLevel.split(",");
+      }
+
       // console.log(this.form.discipline,"this.form.discipline");
       // 处理学科专业级联菜单的Json与String转换
       if (this.form.discipline) {
         this.form.discipline = JSON.parse(this.form.discipline);
-        console.log(this.form.discipline[1], "当前专业");
+        // console.log(this.form.discipline[1], "当前专业");
         this.form.disciplineName = this.form.discipline[1];
       }
       // 如果是查看 则令全部表单不可编辑
@@ -1136,6 +1155,7 @@ export default {
 
   mounted() {
     this.getIsDeadLine();
+    
 
     // 调用方法获取所有学科专业数据
     this.getDisciplineList();
@@ -1143,6 +1163,7 @@ export default {
 
   data() {
     return {
+
       dropDownValue: "",
       optionsMetaAll: [],
       optionsMetaShow: [],
@@ -1242,8 +1263,22 @@ export default {
         fileName: "",
         fileData: null,
       },
+      // 发表日期不能晚于2021-1-1 这里写死 应该改成参数
+      pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.parse("2021-1-1"); 
+                }
+             },
 
       rules: {
+
+        application:[
+        { required: true, message: "请输入其他支撑材料的支撑关系", trigger: "blur" },
+          {
+            max: 500,
+            trigger: "blur",
+          },
+        ],
 
         orgId: [
           { required: true, message: "请选择单位", trigger: "change" },
@@ -1293,7 +1328,7 @@ export default {
         innovation: [
           {
             required: true,
-            message: "请输入成果相关其它价值",
+            message: "请输入成果其它相关价值",
             trigger: "blur",
           },
         ],
@@ -1500,21 +1535,14 @@ export default {
 
       applyTypeOptions: [
         {
-          label: "学术论文",
-          value: "学术论文",
+          label: "高校科研院所",
+          value: "高校科研院所",
         },
         {
-          label: "著作",
-          value: "著作",
+          label: "非高校科研院所",
+          value: "非高校科研院所",
         },
-        {
-          label: "技术创新论文（已发表）",
-          value: "技术创新论文（已发表）",
-        },
-        {
-          label: "技术创新论文（未发表）",
-          value: "技术创新论文（未发表）",
-        },
+
       ],
       firstAuthorRegionOptions: [
         {
@@ -1743,20 +1771,24 @@ export default {
       relatedAchievementsOptions: [
         {
           label:
-            "有相关专利，或有3篇以上中文相关论文或1篇外文相关论文，或市级政府采用证明",
+            "有5篇（含）以上中（外）文相关论文",
           value: "A",
         },
         {
-          label: "有2篇中文相关论文",
+          label: "有相关专利，或有3篇以上中（外）文相关论文，或市级政府采用项目证明",
           value: "B",
         },
         {
-          label: "有1篇中文相关论文",
+          label: "有2篇中文相关论文和其他支撑材料",
           value: "C",
         },
         {
-          label: "无",
-          value: "无",
+          label: "有1篇中文相关论文和其他支撑材料",
+          value: "D",
+        },
+        {
+          label: "其他",
+          value: "其他",
         },
       ],
       projectLevelOptions: [
@@ -2242,6 +2274,9 @@ export default {
     },
 
     handlerFormData(formData) {
+      // 数组转为字符串
+      this.form.patentType = this.form.patentType.join(",");
+      this.form.projectLevel = this.form.projectLevel.join(",");
       //解析身份证号得到出生年月日
       let iden = this.form.firstAuthorId;
       if (iden.length == 18) {
@@ -2261,6 +2296,8 @@ export default {
           "-" +
           iden.substring(10, 12);
       }
+
+      
 
       this.form.disciplineName = this.form.discipline[1];
 

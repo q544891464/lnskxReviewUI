@@ -106,11 +106,11 @@
       <el-table-column
         show-overflow-tooltip
         label="详细信息"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        
       >
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_apply_update')"
+          
             type="text"
             @click="handleViewInfo(scope.row)"
           >
@@ -168,7 +168,7 @@
         show-overflow-tooltip
         label="网评结果"
         prop="avgScore"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+       
       >
         <!-- :formatter="disciplineReviewPrizeFormat" -->
         <!--        <template v-slot="scope">
@@ -187,7 +187,7 @@
         label="复评结果"
         prop="disciplineReviewPrize"
         :formatter="disciplineReviewPrizeFormat"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        
       >
         <!--        <template v-slot="scope">
 
@@ -205,7 +205,7 @@
         label="当前评奖"
         prop="prize"
         :formatter="prizeFormat"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        
       >
         <!--        <template v-slot="scope">
 
@@ -220,8 +220,8 @@
 
       <el-table-column
         show-overflow-tooltip
-        label="修改奖项"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        label="终评"
+        
       >
         <template v-slot="scope">
           <!--          <el-button
@@ -231,7 +231,7 @@
           > 删除 </el-button> -->
 
           <el-button
-            v-if="$perms('system_apply_update')"
+           
             type="text"
             @click="handlePrize(scope.row)"
           >

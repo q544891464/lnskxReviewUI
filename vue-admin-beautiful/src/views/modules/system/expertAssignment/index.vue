@@ -59,8 +59,18 @@
 
           <el-form-item>
             <el-input
-                    v-model.trim="queryForm.expertName_LIKE"
-                    placeholder="请输入专家姓名"
+                    v-model.trim="queryForm.process_LIKE"
+                    placeholder="请输入专业"
+                    clearable
+            />
+
+          </el-form-item>
+
+          <el-form-item>
+
+            <el-input
+                    v-model.trim="queryForm.subjectGroupName_LIKE"
+                    placeholder="请输入学科组名"
                     clearable
             />
           </el-form-item>

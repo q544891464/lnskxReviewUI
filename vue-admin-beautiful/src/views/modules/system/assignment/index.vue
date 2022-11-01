@@ -113,11 +113,11 @@
       <el-table-column
         show-overflow-tooltip
         label="详细信息"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        
       >
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_apply_update')"
+            
             type="text"
             @click="handleViewInfo(scope.row)"
           > 查看 </el-button>
@@ -132,7 +132,7 @@
         label="当前学科组"
         prop="subjectGroup"
         :formatter="subjectGroupFormat"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        
       >
 <!--        <template v-slot="scope">
 
@@ -148,7 +148,7 @@
       <el-table-column
         show-overflow-tooltip
         label="修改学科组"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+       
       >
         <template v-slot="scope">
 
@@ -160,7 +160,7 @@
           > 删除 </el-button> -->
 
           <el-button
-            v-if="$perms('system_apply_update')"
+            
             type="text"
             @click="handlePrize(scope.row)"
           > 设置学科组 </el-button>

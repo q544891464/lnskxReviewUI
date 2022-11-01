@@ -37,7 +37,7 @@
           导入
         </el-button>
 
-        <el-button icon="el-icon-upload2" type="warning" @click="handleImport">
+        <!-- <el-button icon="el-icon-upload2" type="warning" @click="handleImport">
           导入到组织里
         </el-button>
 
@@ -47,7 +47,7 @@
           @click="handleImportUser"
         >
           导入到用户里
-        </el-button>
+        </el-button> -->
 
         <el-button
           v-if="$perms('system_orginfo_export')"

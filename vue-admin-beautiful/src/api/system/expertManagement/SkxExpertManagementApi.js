@@ -1,6 +1,13 @@
 import request from "@/utils/request";
 import { downloadFileByData } from "@/utils/download";
 
+export function getByUserId() {
+  return request({
+    url: "/api/v1/system/expertManagement/getByUserId",
+    method: "get",
+  });
+}
+
 export function getList(data) {
   return request({
     url: "/api/v1/system/expertManagement/findPage",

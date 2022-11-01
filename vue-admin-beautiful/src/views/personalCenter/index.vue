@@ -11,7 +11,10 @@
         <el-tab-pane label="推荐单位资料修改" v-if="$perms('system_orginfo_view')" name="org">
           <profile-org-info ref="profile-org-info" />
         </el-tab-pane>
-
+        
+        <el-tab-pane label="专家资料修改" v-if="$perms('system_expert_user')" name="expert">
+          <profile-expert-info ref="profile-expert-info" />
+        </el-tab-pane>
       </el-tabs>
     </el-row>
   </div>
@@ -21,11 +24,12 @@
 import ProfileBase from "./components/profiles/base";
 import ProfileOrgInfo from "./components/profiles/orgInfo";
 import ProfileSecurity from "./components/profiles/security";
+import ProfileExpertInfo from "./components/profiles/expertInfo";
 import $store from "@/store";
 
 export default {
   name: "PersonalCenter",
-  components: { ProfileBase, ProfileSecurity, ProfileOrgInfo },
+  components: { ProfileBase, ProfileSecurity, ProfileOrgInfo,ProfileExpertInfo},
   data() {
     return {
       activeTab: "base",
