@@ -151,12 +151,14 @@
         show-overflow-tooltip
         label="上传申报表"
         v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        
       >
         <template v-slot="scope">
           <el-button
             v-if="$perms('system_apply_update')"
             type="text"
             @click="handleUpload(scope.row)"
+            v-bind:disabled = "scope.row.completedFilePath != '' && scope.row.completedFilePath != null"
           >
             上传申报表
           </el-button>
@@ -171,7 +173,8 @@
       >
         <template v-slot="scope">
           <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
+            <span class="el-dropdown-link"
+            >
               删除
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -191,6 +194,7 @@
                 v-if="$perms('system_apply_delete')"
                 type="text"
                 @click.native="handleDelete(scope.row)"
+                v-bind:disabled = "scope.row.completedFilePath != '' && scope.row.completedFilePath != null"
               >
                 确认删除
               </el-dropdown-item>

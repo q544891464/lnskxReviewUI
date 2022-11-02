@@ -127,6 +127,7 @@ export default {
         completedFilePath: this.form.completedFilePath,
       });
       this.$baseMessage(msg, "success");
+      this.$emit("fetchData");
       this.close();
       // console.log("prize:"+this.formData.setPrize);
     },

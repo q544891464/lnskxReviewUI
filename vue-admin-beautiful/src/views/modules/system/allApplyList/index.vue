@@ -40,8 +40,8 @@
               @click="handleImportExcel"
           > 导入 </el-button> -->
 
-        <!--        <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
-            @click="handleExportExcel"> 导出 </el-button> -->
+               <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
+            @click="handleExportExcel"> 导出 </el-button>
         <!--   
           <el-button
             v-if="$perms('system_apply_delete')"
@@ -67,6 +67,14 @@
             <el-input
               v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
               placeholder="请输入工作单位名称"
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-input
+              v-model.trim="queryForm.discipline_LIKE"
+              placeholder="请输入专业"
               clearable
             />
           </el-form-item>
@@ -271,6 +279,7 @@ import {
   doDelete,
   doDeleteAll,
   doExportExcelById,
+  doExportExcelApplyStatistics
 } from "@/api/system/apply/SysApplyManagementApi";
 //   import Edit from "./components/SysApplyManagementEdit";
 //   import Import from "./components/SysApplyManagementImport";
@@ -450,7 +459,7 @@ export default {
       vueButtonClickBan(el, 10);
 
       // 执行导出
-      doExportExcelById(this.queryForm);
+      doExportExcelApplyStatistics(this.queryForm);
     },
     // 导入excel
     handleImportExcel() {

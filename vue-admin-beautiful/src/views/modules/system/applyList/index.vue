@@ -17,11 +17,13 @@
     </el-collapse-transition>
 
     <!-- 避免超级管理员查看时出现bug -->
-    <el-row v-if="this.orgInfo!= null">
-      <h3>
-        本单位推荐名额为：{{this.orgInfo.quota}}。
-      </h3>
+    <el-row v-if="this.orgInfo != null">
+      <h3>本单位推荐名额为：{{ this.orgInfo.quota }}。</h3>
     </el-row>
+
+    <h3>
+      成果提交后不能再进行评审结果的修改，请认真核对评审结果再提交。提交完成后，导出初评报告模板，按要求完善初评报告内容，签字盖章后扫描成pdf并上传系统。
+    </h3>
 
     <!-- 主要操作  -->
     <!-- v-if="$perms('system_apply_insert')" -->
@@ -34,12 +36,13 @@
             @click="handleInsert"
         > 添加 </el-button> -->
 
-        <el-button
-            type="primary"
-            @click="handleSubmit"
-            v-bind:disabled= disabled
-        > 提交 </el-button>
-
+        <!-- <el-button
+          type="primary"
+          @click="handleSubmit"
+          v-bind:disabled="disabled"
+        >
+          提交
+        </el-button> -->
 
         <!--        <el-button
             v-if="$perms('system_apply_import')"
@@ -47,14 +50,25 @@
             type="warning"
             @click="handleImportExcel"
         > 导入 </el-button> -->
-<!-- v-if="$perms('system_apply_export')" -->
+        <!-- v-if="$perms('system_apply_export')" -->
         <el-button
-            
-            icon="el-icon-download"
-            type="warning"
-            @click="handleExportExcel"
-        > 导出 </el-button>
-<!-- 
+          icon="el-icon-download"
+          type="warning"
+          @click="handleExportWord"
+        >
+          导出汇总表
+        </el-button>
+
+        <el-button type="warning"  v-if="submitInfo.completeFilePath==null" @click="uploadChuping">上传汇总表并提交</el-button>
+
+        <el-button type="warning" v-if="submitInfo.completeFilePath!=null" @click="uploadChuping">
+          重新上传
+        </el-button>
+
+        <el-button type="warning" v-if="submitInfo.completeFilePath!=null" @click="handleViewCompleteFile">
+          查看已上传汇总表
+        </el-button>
+        <!-- 
         <el-button
             v-if="$perms('system_apply_delete')"
             :disabled="!selectRows.length > 0"
@@ -104,7 +118,7 @@
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
     >
-      <el-table-column show-overflow-tooltip type="selection"></el-table-column>
+      <!-- <el-table-column show-overflow-tooltip type="selection"></el-table-column> -->
 
       <!-- <el-table-column show-overflow-tooltip label="序号" width="95">
         <template slot-scope="scope">
@@ -124,6 +138,12 @@
         width="400"
       ></el-table-column>
 
+      <el-table-column
+        show-overflow-tooltip
+        prop="applyType"
+        label="成果类型"
+      ></el-table-column>
+
       <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
           <el-button type="text" @click="handleViewDetailInfo(scope.row)">
@@ -137,6 +157,18 @@
           <el-button type="text" @click="handleViewInfo(scope.row)">
             查看
           </el-button>
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip label="专业">
+        <template v-slot="scope">
+          <span v-if="scope.row.discipline != null">
+            {{
+              scope.row.discipline
+                .split(",")[1]
+                .substring(1, scope.row.discipline.split(",")[1].length - 2)
+            }}
+          </span>
         </template>
       </el-table-column>
 
@@ -209,6 +241,7 @@
 
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData"></import>
+    <upload ref="upload" @fetchData="fetchData" @refresh="fetchData"></upload>
   </div>
 </template>
 
@@ -221,21 +254,27 @@ import {
   doDelete,
   doDeleteAll,
   doExportExcelByOrg,
+  doExportChupingWord,
 } from "@/api/system/apply/SysApplyManagementApi";
-import { getByCurrentUser,doUpdate } from "@/api/system/orgInfo/OrgInfoManagementApi";
+import {
+  getByCurrentUser,
+  doUpdate,
+} from "@/api/system/orgInfo/OrgInfoManagementApi";
+import { getSubmitInfoByCurrentUser } from "@/api/system/orgSubmit/SkxOrgSubmitManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
 import { formateDate } from "@/utils/format";
+import Upload from "./components/upload";
 
 export default {
   name: "SysApplyManagement",
-  components: { Edit, Import },
+  components: { Edit, Import, Upload },
   data() {
     return {
-      disabled : false,
+      disabled: false,
       list: null,
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
@@ -246,6 +285,7 @@ export default {
       orgInfo: {
         quota: 0,
       },
+      submitInfo: {},
       queryForm: {
         pageNo: 1,
         pageSize: 10,
@@ -290,6 +330,11 @@ export default {
   mounted() {},
   methods: {
     async handleEnable(row) {
+      if (row.preRank == null || row.preRank == "") {
+        this.$message.error("请先设置初评排序");
+        row.isPass = 0;
+        return;
+      }
       const isPass = row.isPass;
       // 回退原有状态
       if (row.isPass === "0") row.isPass = "1";
@@ -307,18 +352,25 @@ export default {
       }
     },
 
-    handleRankChange(row) {
+    async handleRankChange(row) {
       const preRank = row.preRank;
-
-      if (row.id) {
-        const { msg } = doSetPreRank({
-          applyId: row.id,
-          preRank: preRank,
-        });
-        row.preRank = preRank;
-        // this.$baseMessage(msg, "success");
+      console.log(preRank);
+      if (preRank == null || preRank == "") {
+        this.$message.error("请先设置初评排序");
+        return;
       } else {
-        this.$baseMessage("未选中任何行", "error");
+        if (row.id) {
+          const { msg } = await doSetPreRank({
+            applyId: row.id,
+            preRank: preRank,
+          });
+          row.preRank = preRank;
+
+          // this.$baseMessage(msg, "success");
+        } else {
+          this.$baseMessage("未选中任何行", "error");
+        }
+        this.fetchData();
       }
     },
     setPass(row) {
@@ -387,20 +439,16 @@ export default {
 
     handleSubmit() {
       this.$baseConfirm("你确定要提交吗", null, async () => {
-            // const { msg } = await doDeleteAll({ ids });
-            this.orgInfo.hasReport = "1";
-            const{success,msg} = await doUpdate(this.orgInfo);
-            if(success){
-              this.$baseMessage("已提交", "success");
-              this.disabled = true;
-              await this.fetchData();
-            }
-
-          });
-
+        // const { msg } = await doDeleteAll({ ids });
+        this.orgInfo.hasReport = "1";
+        const { success, msg } = await doUpdate(this.orgInfo);
+        if (success) {
+          this.$baseMessage("已提交", "success");
+          this.disabled = true;
+          await this.fetchData();
+        }
+      });
     },
-
-
 
     handleViewFile(row) {
       if (row.filePath) {
@@ -408,6 +456,27 @@ export default {
       } else {
         this.$baseMessage("请先上传文件", "error");
       }
+    },
+
+    handleViewCompleteFile() {
+      if (this.submitInfo.completeFilePath) {
+        window.open(this.submitInfo.completeFilePath, "_blank");
+      } else {
+        this.$baseMessage("请先上传文件", "error");
+      }
+    },
+
+    async handleExportWord() {
+      const { code, msg, data } = await doExportChupingWord();
+      if (code === 200) {
+        window.open(data, "_blank");
+      } else {
+        this.$baseMessage(msg, "error");
+      }
+    },
+
+    async uploadChuping() {
+      this.$refs["upload"].show();
     },
     // 导出excel
     handleExportExcel(el) {
@@ -438,17 +507,23 @@ export default {
       this.fetchData();
     },
 
-    async getOrgInfo(){
+    async getOrgInfo() {
       const { data } = await getByCurrentUser();
       this.orgInfo = data;
-      if(data.hasReport === "1"){
+      if (data.hasReport === "1") {
         this.disabled = true;
       }
+    },
+
+    async getSubmitInfo() {
+      const { data } = await getSubmitInfoByCurrentUser();
+      this.submitInfo = data;
     },
 
     async fetchData() {
       this.listLoading = true;
       this.getOrgInfo();
+      this.getSubmitInfo();
       const { data } = await getListByOrg(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;
