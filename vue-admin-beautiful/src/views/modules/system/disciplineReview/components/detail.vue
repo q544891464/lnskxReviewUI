@@ -149,10 +149,12 @@ export default {
     onOpen() {
       this.fetchData();
     },
-    onClose() {},
+    onClose() {
+      this.$emit("fetchData");
+    },
     close() {
       this.$emit("update:visible", false);
-      this.$emit("refresh");
+      this.$emit("fetchData");
 
       this.dialogFormVisible = false;
     },
@@ -165,12 +167,13 @@ export default {
         console.log("prize:" + this.tableData[0].getScore);
         this.updateDetail();
         this.updateTotal();
+        this.$emit("fetchData");
         this.close();
       }
     },
 
     scoreChange(index,getScore,standardScore) {
-      if(getScore>standardScore){
+      if(parseInt(getScore) >parseInt(standardScore)){
         this.$baseMessage("评分不能大于满分", "error");
         this.tableData[index].getScore=standardScore;
       }

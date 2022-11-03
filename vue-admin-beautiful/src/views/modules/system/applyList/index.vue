@@ -59,13 +59,27 @@
           导出汇总表
         </el-button>
 
-        <el-button type="warning"  v-if="submitInfo.completeFilePath==null" @click="uploadChuping">上传汇总表并提交</el-button>
+        <el-button
+          type="warning"
+          v-if="submitInfo.completeFilePath == null"
+          @click="uploadChuping"
+        >
+          上传汇总表并提交
+        </el-button>
 
-        <el-button type="warning" v-if="submitInfo.completeFilePath!=null" @click="uploadChuping">
+        <el-button
+          type="warning"
+          v-if="submitInfo.completeFilePath != null"
+          @click="uploadChuping"
+        >
           重新上传
         </el-button>
 
-        <el-button type="warning" v-if="submitInfo.completeFilePath!=null" @click="handleViewCompleteFile">
+        <el-button
+          type="warning"
+          v-if="submitInfo.completeFilePath != null"
+          @click="handleViewCompleteFile"
+        >
           查看已上传汇总表
         </el-button>
         <!-- 

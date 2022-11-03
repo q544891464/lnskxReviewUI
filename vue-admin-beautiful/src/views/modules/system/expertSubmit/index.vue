@@ -19,48 +19,46 @@
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
-        <!-- <el-button
-            v-if="$perms('system_orgsubmit_insert')"
-            icon="el-icon-plus"
-            type="primary"
-            @click="handleInsert"
-        > 添加 </el-button>
+        <el-button
+          v-if="$perms('system_expertsubmit_insert')"
+          icon="el-icon-plus"
+          type="primary"
+          @click="handleInsert"
+        >
+          添加
+        </el-button>
 
         <el-button
-            v-if="$perms('system_orgsubmit_import')"
-            icon="el-icon-upload2"
-            type="warning"
-            @click="handleImportExcel"
-        > 导入 </el-button>
+          v-if="$perms('system_expertsubmit_import')"
+          icon="el-icon-upload2"
+          type="warning"
+          @click="handleImportExcel"
+        >
+          导入
+        </el-button>
 
         <el-button
-            v-if="$perms('system_orgsubmit_export')"
-            icon="el-icon-download"
-            type="warning"
-            @click="handleExportExcel"
-        > 导出 </el-button>
+          v-if="$perms('system_expertsubmit_export')"
+          icon="el-icon-download"
+          type="warning"
+          @click="handleExportExcel"
+        >
+          导出
+        </el-button>
 
         <el-button
-            v-if="$perms('system_orgsubmit_delete')"
-            :disabled="!selectRows.length > 0"
-            icon="el-icon-delete"
-            type="danger"
-            @click="handleDelete"
-        > 批量删除 </el-button> -->
+          v-if="$perms('system_expertsubmit_delete')"
+          :disabled="!selectRows.length > 0"
+          icon="el-icon-delete"
+          type="danger"
+          @click="handleDelete"
+        >
+          批量删除
+        </el-button>
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-
           <el-form-item>
-            <el-input
-              v-model.trim="queryForm.orgName_LIKE"
-              placeholder="请输入单位名称"
-              clearable
-            />
-          </el-form-item>
-          <el-form-item>
-
-
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
             </el-button>
@@ -75,7 +73,7 @@
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
     >
-      <!-- <el-table-column show-overflow-tooltip type="selection"></el-table-column> -->
+      <el-table-column show-overflow-tooltip type="selection"></el-table-column>
 
       <el-table-column show-overflow-tooltip label="序号" width="95">
         <template slot-scope="scope">
@@ -85,27 +83,20 @@
 
       <el-table-column
         show-overflow-tooltip
-        prop="unitName"
-        label="单位名称"
-        width="135"
+        prop="expertName"
+        label="专家姓名"
       ></el-table-column>
 
       <el-table-column
         show-overflow-tooltip
-        prop="passCount"
-        label="推荐数量"
+        prop="workplace"
+        label="专家单位"
       ></el-table-column>
 
       <el-table-column
         show-overflow-tooltip
-        prop="passType1Count"
-        label="高校科研类院所数量"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="passType2Count"
-        label="非高校科研类院所数量"
+        prop="subjectGroupName"
+        label="学科组"
       ></el-table-column>
 
       <el-table-column show-overflow-tooltip label="汇总表">
@@ -118,57 +109,16 @@
 
       <el-table-column
         show-overflow-tooltip
-        prop="unitCode"
-        label="单位编码"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="unitContact"
-        label="单位联系人"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="contPosition"
-        label="单位联系人职位"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="contPhone"
-        label="单位联系人电话"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="contMobile"
-        label="单位联系人手机"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="contEmail"
-        label="单位联系人邮箱"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="year"
-        label="提交年份"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
         label="操作"
         width="200"
         v-if="
-          $perms('system_orgsubmit_update') || $perms('system_orgsubmit_delete')
+          $perms('system_expertsubmit_update') ||
+          $perms('system_expertsubmit_delete')
         "
       >
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_orgsubmit_update')"
+            v-if="$perms('system_expertsubmit_update')"
             type="text"
             @click="handleUpdate(scope.row)"
           >
@@ -178,7 +128,7 @@
           <el-divider direction="vertical"></el-divider>
 
           <el-button
-            v-if="$perms('system_orgsubmit_delete')"
+            v-if="$perms('system_expertsubmit_delete')"
             type="text"
             @click="handleDelete(scope.row)"
           >
@@ -205,20 +155,19 @@
 <script>
 import {
   getList,
-  getListByOrgSubmit,
   doDelete,
   doDeleteAll,
   doExportExcel,
-} from "@/api/system/orgSubmit/SkxOrgSubmitManagementApi";
-import Edit from "./components/SkxOrgSubmitManagementEdit";
-import Import from "./components/SkxOrgSubmitManagementImport";
+} from "@/api/system/expertSubmit/SkxExpertSubmitManagementApi";
+import Edit from "./components/SkxExpertSubmitManagementEdit";
+import Import from "./components/SkxExpertSubmitManagementImport";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
 import { formateDate } from "@/utils/format";
 
 export default {
-  name: "SkxOrgSubmitManagement",
+  name: "SkxExpertSubmitManagement",
   components: { Edit, Import },
   data() {
     return {
@@ -278,6 +227,15 @@ export default {
     handleInsert(row) {
       this.$refs["edit"].showEdit();
     },
+
+    handleViewFile(row) {
+      if (row.completeFilePath) {
+        window.open(row.completeFilePath, "_blank");
+      } else {
+        this.$baseMessage("暂时无法查看", "error");
+      }
+    },
+
     handleUpdate(row) {
       if (row.id) {
         this.$refs["edit"].showEdit(row);
@@ -317,14 +275,6 @@ export default {
       this.$refs["import"].show();
     },
 
-    handleViewFile(row) {
-      if (row.completeFilePath) {
-        window.open(row.completeFilePath, "_blank");
-      } else {
-        this.$baseMessage("暂时无法查看", "error");
-      }
-    },
-
     handleSizeChange(val) {
       this.queryForm.pageSize = val;
       this.fetchData();
@@ -342,7 +292,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      const { data } = await getListByOrgSubmit(this.queryForm);
+      const { data } = await getList(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;
         this.total = data.total;
