@@ -67,7 +67,7 @@
             <el-input
               v-model="form.applyName"
               placeholder="成果名称"
-              :maxlength="40"
+              :maxlength="150"
               show-word-limit
               clearable
               :style="{ width: '90%' }"
@@ -697,6 +697,7 @@
           v-model="form.publicationName"
           placeholder="请输入论文发表刊物名称"
           clearable
+          :maxlength="150"
           :style="{ width: '100%' }"
           v-bind:disabled="disabled"
         ></el-input>
@@ -776,6 +777,7 @@
           v-model="form.publicationPublisherName"
           placeholder="请输入出版社名称名称"
           clearable
+          :maxlength="150"
           :style="{ width: '100%' }"
           v-bind:disabled="disabled"
 
@@ -787,6 +789,7 @@
           v-model="form.publicationNumber"
           placeholder="请输入专著出版数量(册)"
           clearable
+          :maxlength="10"
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
 
@@ -916,6 +919,7 @@
           v-model="form.projectName"
           placeholder="请输入产生该成果的项目名称(没有填无)"
           clearable
+          :maxlength="150"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
 
@@ -966,6 +970,7 @@
           v-model="form.patentName"
           placeholder="请输入专利名称(没有填无)"
           clearable
+          :maxlength="200"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
 
@@ -1012,6 +1017,7 @@
           v-model="form.patentApplication"
           placeholder="请输入专利应用证明"
           clearable
+          :maxlength="150"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
 
@@ -1023,6 +1029,7 @@
           v-model="form.patentValue"
           placeholder="请填写产值或经济效益"
           clearable
+          :maxlength="150"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
           
@@ -1334,8 +1341,8 @@ export default {
           { required: true, message: "请输入成果名称", trigger: "blur" },
           {
             min: 3,
-            max: 40,
-            message: "长度在 3 到 40 个字符",
+            max: 150,
+            message: "长度在 3 到 150 个字符",
             trigger: "blur",
           },
         ],
