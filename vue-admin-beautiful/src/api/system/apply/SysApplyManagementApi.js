@@ -48,6 +48,14 @@ export function getListByDiscipline(data) {
   });
 }
 
+export function getListByDisciplineStatistic(data) {
+  return request({
+    url: "/api/v1/system/apply/findPageByDisciplineStatistic",
+    method: "get",
+    params: data,
+  });
+}
+
 export function getListByIsPassed(data) {
   return request({
     url: "/api/v1/system/apply/findPageByIsPassed",
@@ -207,6 +215,28 @@ export function doExportExcel(data) {
 
 /**
  * 导出Excel 目前只支持一层参数传递
+ * @param data
+ * @returns file
+ */
+export function doExportExcelFuping(data) {
+  let requestURL = "/api/v1/system/apply/exportExcelFuping";
+  // 下载文件
+  downloadFileByData(requestURL, data);
+}
+
+/**
+ * 导出Excel 目前只支持一层参数传递
+ * @param data
+ * @returns file
+ */
+export function doExportExcelZhongping(data) {
+  let requestURL = "/api/v1/system/apply/exportExcelZhongping";
+  // 下载文件
+  downloadFileByData(requestURL, data);
+}
+
+/**
+ * 导出Excel 目前只支持一层参数传递
  * 用于查看自己提交的数据
  * @param data
  * @returns file
@@ -249,6 +279,18 @@ export function doExportExcelByIsPass(data) {
  */
 export function doExportExcelApplyStatistics(data) {
   let requestURL = "/api/v1/system/apply/exportExcelApplyStatistics";
+  // 下载文件
+  downloadFileByData(requestURL, data);
+}
+
+/**
+ * 导出Excel 目前只支持一层参数传递
+ * 用于终极评审 查看已通过的数据
+ * @param data
+ * @returns file
+ */
+export function doExportExcelDisciplineStatistics(data) {
+  let requestURL = "/api/v1/system/apply/exportExcelDisciplineStatistics";
   // 下载文件
   downloadFileByData(requestURL, data);
 }

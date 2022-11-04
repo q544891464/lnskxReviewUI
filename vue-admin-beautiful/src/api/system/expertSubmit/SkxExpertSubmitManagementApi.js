@@ -9,6 +9,13 @@ export function getList(data) {
   });
 }
 
+export function getSubmitInfoByCurrentUser() {
+  return request({
+    url: "/api/v1/system/expertSubmit/getSubmitInfoByCurrentUser",
+    method: "get",
+  });
+}
+
 export function doInsert(data) {
   return request({
     url: "/api/v1/system/expertSubmit/insert",

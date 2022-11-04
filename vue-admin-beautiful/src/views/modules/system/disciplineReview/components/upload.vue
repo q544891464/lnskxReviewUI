@@ -24,9 +24,11 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击导入</em></div>
         <div class="el-upload__tip" slot="tip">只能上传pdf文件，且不超过5MB</div>
       </el-upload>
+
+      <h3 style="color: red">汇总表上传之后不能再进行评审结果的修改，请认真核对后再操作</h3>
   
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleConfirm">完成</el-button>
+        <el-button type="primary" @click="handleConfirm">提交</el-button>
         <el-button @click="close">关 闭</el-button>
       </div>
     </el-dialog>
@@ -86,6 +88,10 @@
 
         // TODO: 上传前校验是否已经上传过
         async handleConfirm() {
+          if (this.uploadPath == '') {
+            this.$message.error("请先上传文件");
+            return;
+          }
           const {data} = await doUpdate({
             completeFilePath:this.uploadPath,
             isSubmit:1

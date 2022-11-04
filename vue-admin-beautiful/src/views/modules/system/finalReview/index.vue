@@ -16,19 +16,19 @@
       </div>
     </el-collapse-transition>
     <el-row>
-      <h3>评审项目数量：{{ this.list.length }} 当前85分以上数量：</h3>
+      <!-- <h3>评审项目数量： </h3> -->
     </el-row>
 
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
-        <el-button
+        <!-- <el-button
           v-if="$perms('system_apply_export')"
           type="warning"
           @click="fetchData"
         >
           刷新
-        </el-button>
+        </el-button> -->
 
         <!--        <el-button
             v-if="$perms('system_apply_import')"
@@ -54,7 +54,7 @@
             @click="handleDelete"
         > 批量删除 </el-button> -->
       </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="14">
+      <vab-query-form-right-panel :span="24">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
 
           <el-form-item>
@@ -69,6 +69,22 @@
               <el-input
                 v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
                 placeholder="请输入工作单位名称"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.disciplineGroup_LIKE"
+                placeholder="请输入学科组别"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.disciplineName_LIKE"
+                placeholder="请输入学科"
                 clearable
               />
             </el-form-item>
@@ -88,7 +104,7 @@
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
     >
-      <el-table-column show-overflow-tooltip type="selection"></el-table-column>
+      <!-- <el-table-column show-overflow-tooltip type="selection"></el-table-column> -->
 
       <el-table-column show-overflow-tooltip label="序号" width="95">
         <template slot-scope="scope">
@@ -136,6 +152,18 @@
         show-overflow-tooltip
         prop="firstAuthorWorkplace"
         label="工作单位"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineGroup"
+        label="学科组别"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineName"
+        label="学科"
       ></el-table-column>
 
       <el-table-column show-overflow-tooltip label="初评单位" prop="orgName">
@@ -189,17 +217,17 @@
         :formatter="disciplineReviewPrizeFormat"
         
       >
-        <!--        <template v-slot="scope">
 
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handlePrize(scope.row)"
-          > $scope.row.prize </el-button>
-        </template>
- -->
       </el-table-column>
+      
+      <el-table-column
+        show-overflow-tooltip
+        label="复评意见"
+        prop="disciplineReviewMark"
+        
+      >
 
+      </el-table-column>
       <el-table-column
         show-overflow-tooltip
         label="当前评奖"
@@ -263,6 +291,7 @@ import {
   doDelete,
   doDeleteAll,
   doExportExcel,
+  doExportExcelZhongping
 } from "@/api/system/apply/SysApplyManagementApi";
 import {getByCode} from "@/api/system/options/SysOptionsManagement";
 import Edit from "./components/SysApplyManagementEdit";
@@ -438,7 +467,7 @@ export default {
       vueButtonClickBan(el, 10);
 
       // 执行导出
-      doExportExcel(this.queryForm);
+      doExportExcelZhongping(this.queryForm);
     },
     // 导入excel
     handleImportExcel() {

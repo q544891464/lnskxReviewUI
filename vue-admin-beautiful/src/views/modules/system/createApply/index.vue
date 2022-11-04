@@ -1211,6 +1211,8 @@ export default {
         mainAuthors: "",
         discipline: [],
         disciplineName: "",
+        disciplineGroup: "",
+        disciplineCode: "",
         subjectGroup: "",
         applyType: "",
         publicationDate: null,
@@ -2321,7 +2323,17 @@ export default {
 
       
 
-      this.form.disciplineName = this.form.discipline[1];
+      this.form.disciplineName = this.form.discipline[1].substring(
+        0,
+        this.form.discipline[1].length - 2
+      );
+
+      this.form.disciplineCode = this.form.discipline[1].substring(
+        this.form.discipline[1].length - 2,
+        this.form.discipline[1].length
+      );
+
+      this.form.disciplineGroup = this.form.discipline[0];
 
       this.form.subjectGroup = this.subjectGroupFormat(this.form.discipline[0]);
 

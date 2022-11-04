@@ -17,25 +17,38 @@
     </el-collapse-transition>
 
     <el-row>
-      <h3>
+      <!-- <h3>
         {{ this.prize1 }}分以上为一等奖； {{ this.prize2 }}分-{{
           this.prize1
         }}分为二等奖； {{ this.prize3 }}分-{{ this.prize2 }}分为三等奖；
+      </h3> -->
+      <h3>
+        评审项目数量：{{ this.totalCount }} 。当前{{
+          this.prize1
+        }}分以上数量：{{ this.prize1Count }}； {{ this.prize2 }}分-{{
+          this.prize1 - 1
+        }}分数量：{{ this.prize2Count }}； {{ this.prize3 }}分-{{
+          this.prize2 - 1
+        }}分数量：{{ this.prize3Count }}； {{ this.prize3 }}分以下数量：{{
+          this.prize4Count
+        }};
+        未评分数量：{{this.noPrizeCount}}
       </h3>
       <h3>
-        评审项目数量：{{ this.totalCount }} 。当前{{ this.prize1 }}分以上数量：{{
-          this.prize1Count
-        }}； {{ this.prize2 }}分-{{ this.prize1 - 1}}分数量：{{
-          this.prize2Count
-        }}； {{ this.prize3 }}分-{{ this.prize2 - 1}}分数量：{{
-          this.prize3Count
-        }}； {{ this.prize3 }}分以下数量：{{
-          this.totalCount -
-          this.prize1Count -
-          this.prize2Count -
-          this.prize3Count
-        }}
+        根据评奖比例，{{this.prize1}}分以上数不得超过{{this.maxPrize1Count}}项；
+         {{ this.prize2 }}分-{{this.prize1}}分不得超过{{this.maxPrize2Count}}项；
+          {{ this.prize3 }}分-{{ this.prize2 }}分不得超过{{this.maxPrize3Count}}项；
       </h3>
+
+      <h3 v-if="this.prize1Count>this.maxPrize1Count || this.prize2Count>this.maxPrize2Count || this.prize3Count>this.maxPrize3Count">
+        <span style="color: red">评分比例超过限制，请重新设置！</span>
+      </h3>
+
+      <h3 v-if="this.noPrizeCount>0">
+        <span>尚未完成全部评分</span>
+      </h3>
+
+      <h3 style="color: red">注：对所有成果进行评分后才能导出汇总表，签字盖章后扫描成pdf文件，再进行汇总表上传，汇总表上传后将不能再进行评分结果的修改，请认真核对后再操作</h3>
     </el-row>
 
     <!-- 主要操作  -->
@@ -50,12 +63,24 @@
 
         <!-- <el-button type="warning" @click="fetchData">刷新</el-button> -->
 
-        <el-button type="warning" @click="exportExpertWord">
+        <el-button type="primary" @click="exportExpertWord">
           导出汇总表
         </el-button>
 
-        <el-button type="warning" @click="uploadExpertWord">
-          上传汇总表
+        <el-button 
+        type="primary" 
+        @click="uploadExpertWord"
+        v-bind:disabled="submitDisabled"
+        v-if="submitInfo.completeFilePath == null ">
+          上传汇总表并提交
+        </el-button>
+
+        <el-button
+          type="warning"
+          v-if="submitInfo.completeFilePath != null"
+          @click="handleViewCompleteFile"
+        >
+          查看已上传汇总表
         </el-button>
 
         <!-- <el-button
@@ -87,6 +112,22 @@
               />
             </el-form-item>
 
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.disciplineGroup_LIKE"
+                placeholder="请输入学科组别"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.disciplineName_LIKE"
+                placeholder="请输入学科"
+                clearable
+              />
+            </el-form-item>
+
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
             </el-button>
@@ -101,13 +142,13 @@
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
     >
-      <el-table-column show-overflow-tooltip type="selection"></el-table-column>
+      <!-- <el-table-column show-overflow-tooltip type="selection"></el-table-column> -->
 
-      <!-- <el-table-column show-overflow-tooltip label="序号" width="95">
+      <el-table-column show-overflow-tooltip label="序号" width="95">
         <template slot-scope="scope">
           {{ (queryForm.pageNo - 1) * queryForm.pageSize + scope.$index + 1 }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -120,6 +161,18 @@
         prop="applyName"
         label="成果名称"
         width="400"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineGroup"
+        label="学科组别"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineName"
+        label="学科"
       ></el-table-column>
 
       <!--      <el-table-column
@@ -193,7 +246,7 @@
             @click="handleDelete(scope.row)"
           > 删除 </el-button> -->
 
-          <el-button type="text" @click="handlePrize(scope.row)">
+          <el-button type="text" @click="handlePrize(scope.row)" v-bind:disabled="disabled">
             评分
           </el-button>
         </template>
@@ -226,7 +279,10 @@ import {
   doDeleteAll,
   doExportExcelByIsPass,
 } from "@/api/system/apply/SysApplyManagementApi";
-import { doExportExpertWord } from "@/api/system/expertSubmit/SkxExpertSubmitManagementApi";
+import {
+  doExportExpertWord,
+  getSubmitInfoByCurrentUser,
+} from "@/api/system/expertSubmit/SkxExpertSubmitManagementApi";
 import { getByCode } from "@/api/system/options/SysOptionsManagement";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
@@ -246,6 +302,9 @@ export default {
     return {
       list: [],
       listLoading: true,
+      submitInfo: {},
+      disabled: false,
+      submitDisabled: false,
       totalCount: 0,
       prize1: 0,
       prize2: 0,
@@ -253,6 +312,12 @@ export default {
       prize1Count: 0,
       prize2Count: 0,
       prize3Count: 0,
+      prize4Count: 0,
+      noPrizeCount: 0,
+      maxPrize1Count:0,
+      maxPrize2Count:0,
+      maxPrize3Count:0,
+
       layout: "total, prev, pager, next, sizes, jumper",
       total: 0,
       selectRows: "",
@@ -371,8 +436,16 @@ export default {
       }
     },
 
-    handlePrize(row) {
-      this.$refs["detail"].show({
+    handleViewCompleteFile() {
+      if (this.submitInfo.completeFilePath) {
+        window.open(this.submitInfo.completeFilePath, "_blank");
+      } else {
+        this.$baseMessage("请先上传文件", "error");
+      }
+    },
+
+    async handlePrize(row) {
+      await this.$refs["detail"].show({
         id: row.id,
         prize1: this.prize1,
         prize2: this.prize2,
@@ -474,6 +547,28 @@ export default {
       this.prize1Count = data.prize1Count;
       this.prize2Count = data.prize2Count;
       this.prize3Count = data.prize3Count;
+      this.prize4Count = data.prize4Count;
+      this.noPrizeCount = this.totalCount-this.prize1Count-this.prize2Count-this.prize3Count-this.prize4Count;
+      this.maxPrize1Count = data.maxPrize1Count;
+      this.maxPrize2Count = data.maxPrize2Count;
+      this.maxPrize3Count = data.maxPrize3Count;
+      if(this.prize1Count>this.maxPrize1Count || this.prize2Count>this.maxPrize2Count || this.prize3Count>this.maxPrize3Count)
+      {
+        this.submitDisabled = true;
+        this.$baseMessage("奖项数量超过标准，请及时修改", "error");
+      }
+      if(this.noPrizeCount>0)
+      {
+        this.submitDisabled = true;
+      }
+    },
+
+    async getSubmitInfo() {
+      const { data } = await getSubmitInfoByCurrentUser();
+      this.submitInfo = data;
+      if (data.completeFilePath) {
+        this.disabled = true;
+      }
     },
 
     async fetchData() {
@@ -490,6 +585,7 @@ export default {
       this.getPrize2Stantard();
       this.getPrize3Stantard();
       this.getCount();
+      this.getSubmitInfo();
 
       setTimeout(() => {
         this.listLoading = false;

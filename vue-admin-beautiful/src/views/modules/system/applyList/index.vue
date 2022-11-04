@@ -21,9 +21,14 @@
       <h3>本单位推荐名额为：{{ this.orgInfo.quota }}。</h3>
     </el-row>
 
+    <!-- <h3>
+      完成初评后，导出初评报告模板，按要求完善初评报告内容，签字盖章后扫描成pdf并上传系统。
+    </h3> -->
     <h3>
-      成果提交后不能再进行评审结果的修改，请认真核对评审结果再提交。提交完成后，导出初评报告模板，按要求完善初评报告内容，签字盖章后扫描成pdf并上传系统。
+      完成初评后，导出初评报告模板，按要求完善初评报告内容，签字盖章后扫描成pdf并上传系统。
     </h3>
+
+    <h3 style="color: red;">汇总表上传提交后不能再进行初评操作，请确保内容无误后再进行上传提交。</h3>
 
     <!-- 主要操作  -->
     <!-- v-if="$perms('system_apply_insert')" -->
@@ -53,27 +58,27 @@
         <!-- v-if="$perms('system_apply_export')" -->
         <el-button
           icon="el-icon-download"
-          type="warning"
+          type="primary"
           @click="handleExportWord"
         >
           导出汇总表
         </el-button>
 
         <el-button
-          type="warning"
+          type="primary"
           v-if="submitInfo.completeFilePath == null"
           @click="uploadChuping"
         >
           上传汇总表并提交
         </el-button>
 
-        <el-button
+        <!-- <el-button
           type="warning"
           v-if="submitInfo.completeFilePath != null"
           @click="uploadChuping"
         >
           重新上传
-        </el-button>
+        </el-button> -->
 
         <el-button
           type="warning"
@@ -118,6 +123,23 @@
               />
             </el-form-item>
 
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.disciplineGroup_LIKE"
+                placeholder="请输入学科组别"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.disciplineName_LIKE"
+                placeholder="请输入学科"
+                clearable
+              />
+            </el-form-item>
+
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
             </el-button>
@@ -156,6 +178,18 @@
         show-overflow-tooltip
         prop="applyType"
         label="成果类型"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineGroup"
+        label="学科组别"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineName"
+        label="学科"
       ></el-table-column>
 
       <el-table-column show-overflow-tooltip label="申报表">
@@ -209,7 +243,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip prop="enable" label="是否通过">
+      <el-table-column show-overflow-tooltip prop="enable" label="是否推荐">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.isPass"
@@ -524,14 +558,17 @@ export default {
     async getOrgInfo() {
       const { data } = await getByCurrentUser();
       this.orgInfo = data;
-      if (data.hasReport === "1") {
-        this.disabled = true;
-      }
+      // if (data.hasReport === "1") {
+      //   this.disabled = true;
+      // }
     },
 
     async getSubmitInfo() {
       const { data } = await getSubmitInfoByCurrentUser();
       this.submitInfo = data;
+      if(data.completeFilePath){
+        this.disabled = true;
+      }
     },
 
     async fetchData() {

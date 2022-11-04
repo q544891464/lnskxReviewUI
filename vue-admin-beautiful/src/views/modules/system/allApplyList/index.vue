@@ -40,8 +40,14 @@
               @click="handleImportExcel"
           > 导入 </el-button> -->
 
-               <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
-            @click="handleExportExcel"> 导出 </el-button>
+        <el-button
+          
+          icon="el-icon-download"
+          type="warning"
+          @click="handleExportExcel"
+        >
+          导出
+        </el-button>
         <!--   
           <el-button
             v-if="$perms('system_apply_delete')"
@@ -93,7 +99,7 @@
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
     >
-      <el-table-column show-overflow-tooltip type="selection"></el-table-column>
+      <!-- <el-table-column show-overflow-tooltip type="selection"></el-table-column> -->
 
       <el-table-column show-overflow-tooltip label="序号" width="60">
         <template slot-scope="scope">
@@ -135,11 +141,7 @@
 
       <el-table-column show-overflow-tooltip prop="info" label="详细信息">
         <template v-slot="scope">
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handleViewInfo(scope.row)"
-          >
+          <el-button type="text" @click="handleViewInfo(scope.row)">
             查看
           </el-button>
         </template>
@@ -185,14 +187,10 @@
           </template>
         </el-table-column> -->
 
-      <el-table-column
-        show-overflow-tooltip
-        label="导出"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
-      >
+      <el-table-column show-overflow-tooltip label="导出">
         <template v-slot="scope">
           <el-button type="text" @click.native="handleViewFile(scope.row)">
-            导出为word
+            申报表查看
           </el-button>
         </template>
       </el-table-column>
@@ -279,7 +277,7 @@ import {
   doDelete,
   doDeleteAll,
   doExportExcelById,
-  doExportExcelApplyStatistics
+  doExportExcelApplyStatistics,
 } from "@/api/system/apply/SysApplyManagementApi";
 //   import Edit from "./components/SysApplyManagementEdit";
 //   import Import from "./components/SysApplyManagementImport";

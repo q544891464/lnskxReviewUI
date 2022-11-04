@@ -7,11 +7,11 @@
       @close="onClose"
       title="评分"
     >
-      <h3>
+      <!-- <h3>
         {{ this.prize1 }}分以上为一等奖； {{ this.prize2 }}分-{{
           this.prize1 -1
         }}分为二等奖； {{ this.prize3 }}分-{{ this.prize2 -1 }}分为三等奖；
-      </h3>
+      </h3> -->
       <el-table :data="tableData" stripe style="width: 100%">
         <!-- <el-table-column prop="id" label="序号" width="80"></el-table-column> -->
         <el-table-column
@@ -25,9 +25,32 @@
           label="满分"
           width="60"
         ></el-table-column>
+        <el-table-column
+          prop="remarks"
+          label="备注"
+          v-model="tableData.standardRemarks"
+          v-if="firstInsert"
+        ></el-table-column>
+        <el-table-column
+          prop="standardRemarks"
+          label="备注"
+          v-model="tableData.standardRemarks"
+          v-if="!firstInsert"
+        ></el-table-column>
+
         <el-table-column prop="standardScore" label="评分">
           <template slot-scope="scope">
-            <el-input type="number" v-model="scope.row.getScore" @change="scoreChange(scope.$index,scope.row.getScore,scope.row.standardScore)">
+            <el-input
+              type="number"
+              v-model="scope.row.getScore"
+              @change="
+                scoreChange(
+                  scope.$index,
+                  scope.row.getScore,
+                  scope.row.standardScore
+                )
+              "
+            >
               0
             </el-input>
           </template>
@@ -43,9 +66,7 @@
 
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item
-          label="评审意见(评分若为一等奖则必须填写)"
-          
-          
+          label="评审意见(评分若为85分以上则必须填写)"
           prop="comment"
         >
           <el-input v-model="form.comment" type="textarea"></el-input>
@@ -87,8 +108,10 @@ export default {
       tableData: [
         {
           getScore: 0,
+          standardRemarks: "",
         },
       ],
+      remarks: [],
       form: {
         comment: "",
         remarks: "",
@@ -127,7 +150,7 @@ export default {
         },
         {
           label: "未获奖",
-          value: 0,
+          value: 4,
         },
       ],
     };
@@ -149,21 +172,30 @@ export default {
     onOpen() {
       this.fetchData();
     },
-    onClose() {
-      this.$emit("fetchData");
-    },
+    onClose() {},
     close() {
       this.$emit("update:visible", false);
-      this.$emit("fetchData");
 
       this.dialogFormVisible = false;
+    },
+    checkIsEmpty(){
+      for(let i=0;i<this.tableData.length;i++){
+        if(this.tableData[i].getScore == null){
+          return false;
+        }
+      }
+      return true;
     },
 
     handelConfirm() {
       // 验证一等奖是否填写了意见
       if (this.form.totalScore >= this.prize1 && isNull(this.form.comment)) {
-        this.$baseMessage("一等奖未填写意见", "error");
-      } else {
+        this.$baseMessage("未填写意见", "error");
+      } else if(!this.checkIsEmpty()){
+        this.$baseMessage("有项目未填", "error");
+      }
+      else
+        {
         console.log("prize:" + this.tableData[0].getScore);
         this.updateDetail();
         this.updateTotal();
@@ -172,14 +204,14 @@ export default {
       }
     },
 
-    scoreChange(index,getScore,standardScore) {
-      if(parseInt(getScore) >parseInt(standardScore)){
+    scoreChange(index, getScore, standardScore) {
+      if (parseInt(getScore) > parseInt(standardScore)) {
         this.$baseMessage("评分不能大于满分", "error");
-        this.tableData[index].getScore=standardScore;
+        this.tableData[index].getScore = standardScore;
       }
-      if(getScore<0){
+      if (getScore < 0) {
         this.$baseMessage("评分不能小于0", "error");
-        this.tableData[index].getScore=0;
+        this.tableData[index].getScore = 0;
       }
       this.form.totalScore = 0;
       for (let i = 0; i < this.tableData.length; i++) {
@@ -187,10 +219,10 @@ export default {
           this.form.totalScore += parseInt(this.tableData[i].getScore);
         }
       }
-      if(this.form.totalScore>this.prize1){
-        this.rules.comment = {required:true,message:"请填写评审意见"};
-      }else{
-        this.rules.comment = {required:false,message:"请填写评审意见"};
+      if (this.form.totalScore > this.prize1) {
+        this.rules.comment = { required: true, message: "请填写评审意见" };
+      } else {
+        this.rules.comment = { required: false, message: "请填写评审意见" };
       }
     },
 
@@ -201,10 +233,10 @@ export default {
       if (isNotNull(data)) {
         this.form = data;
       }
-      if(this.form.totalScore>this.prize1){
-        this.rules.comment = {required:true,message:"请填写评审意见"};
-      }else{
-        this.rules.comment = {required:false,message:"请填写评审意见"};
+      if (this.form.totalScore >= this.prize1) {
+        this.rules.comment = { required: true, message: "请填写评审意见" };
+      } else {
+        this.rules.comment = { required: false, message: "请填写评审意见" };
       }
       console.log("form:" + this.form);
     },
@@ -213,7 +245,7 @@ export default {
       var { data } = await getScoreList({
         applyId: this.id,
       });
-      console.log("data:" + data);
+      // console.log("data:" + data);
 
       if (data.length == 0) {
         this.firstInsert = true;
@@ -221,11 +253,18 @@ export default {
         var { data } = await getStandardList({
           year: 2022,
         });
+        for(let i=0;i<data.length;i++){
+          this.remarks.push(data[i].remarks);
+        }
+
       }
+
       console.log("firstInsert:" + this.firstInsert);
 
       this.tableData = data;
-      // console.log("data:" + this.tableData[0].standardContent);
+      
+
+      console.log("data:" + this.remarks);
       this.fetchTotalScore();
     },
 
@@ -254,7 +293,6 @@ export default {
           this.$baseMessage("评分成功", "success");
         }
       }
-      
     },
     // 更新小分
     async updateDetail() {
@@ -270,6 +308,7 @@ export default {
             standardId: this.tableData[i].id,
             standardContent: this.tableData[i].standardContent,
             standardScore: this.tableData[i].standardScore,
+            standardRemarks: this.remarks[i],
             getScore: this.tableData[i].getScore,
             // TODO:这里年份先写死 后续需要通过改参数调整
             year: 2022,
@@ -281,12 +320,12 @@ export default {
             standardId: this.tableData[i].id,
             standardContent: this.tableData[i].standardContent,
             standardScore: this.tableData[i].standardScore,
+            standardRemarks: this.tableData[i].standardRemarks,
             getScore: this.tableData[i].getScore,
             // TODO:这里年份先写死 后续需要通过改参数调整
             year: 2022,
           });
         }
-        
       }
       this.firstInsert = false;
       console.log("total score:" + this.form.totalScore);

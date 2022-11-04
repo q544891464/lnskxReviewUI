@@ -1,19 +1,46 @@
 <template>
   <div>
     <el-dialog
-    v-bind="$attrs"
-    v-on="$listeners"
-    :visible.sync="dialogFormVisible"
-    @close="onClose"
-    title="设置奖项">
-      <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px"
-        label-position="left">
+      v-bind="$attrs"
+      v-on="$listeners"
+      :visible.sync="dialogFormVisible"
+      @close="onClose"
+      title="设置奖项"
+    >
+      <el-form
+        ref="elForm"
+        :model="formData"
+        :rules="rules"
+        size="medium"
+        label-width="100px"
+        label-position="left"
+      >
         <el-form-item label="设置奖项" prop="setPrize">
-          <el-select v-model="formData.setPrize" placeholder="请选择设置奖项" clearable :style="{width: '100%'}">
-            <el-option v-for="(item, index) in setPrizeOptions" :key="index" :label="item.label"
-              :value="item.value" :disabled="item.disabled"></el-option>
+          <el-select
+            v-model="formData.setPrize"
+            placeholder="请选择设置奖项"
+            clearable
+            :style="{ width: '100%' }"
+          >
+            <el-option
+              v-for="(item, index) in setPrizeOptions"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+              :disabled="item.disabled"
+            ></el-option>
           </el-select>
         </el-form-item>
+
+        <el-form-item
+          label="评审意见"
+          
+          
+          prop="disciplineReviewMark"
+        >
+          <el-input v-model="formData.disciplineReviewMark" type="textarea"></el-input>
+        </el-form-item>
+
       </el-form>
       <div slot="footer">
         <el-button @click="close">取消</el-button>
@@ -23,7 +50,7 @@
   </div>
 </template>
 <script>
-  import { doSetDisciplineReviewPrize } from "@/api/system/apply/SysApplyManagementApi";
+import { doSetDisciplineReviewPrize } from "@/api/system/apply/SysApplyManagementApi";
 
 export default {
   inheritAttrs: false,
@@ -31,74 +58,82 @@ export default {
   props: [],
   data() {
     return {
-      id:"",
-      dialogFormVisible:false,
+      id: "",
+      dialogFormVisible: false,
       formData: {
         setPrize: "",
+        disciplineReviewMark:"",
       },
       rules: {
-        setPrize: [{
-          required: true,
-          message: '请选择设置奖项',
-          trigger: 'change'
-        }],
+        setPrize: [
+          {
+            required: true,
+            message: "请选择设置奖项",
+            trigger: "change",
+          },
+        ],
       },
-      setPrizeOptions: [{
-        "label": "一等奖",
-        "value": 1
-      }, {
-        "label": "二等奖",
-        "value": 2
-      }, {
-        "label": "三等奖",
-        "value": 3
-      }, {
-        "label": "未获奖",
-        "value": 0
-      }],
-    }
+      setPrizeOptions: [
+        {
+          label: "一等奖",
+          value: 1,
+        },
+        {
+          label: "二等奖",
+          value: 2,
+        },
+        {
+          label: "三等奖",
+          value: 3,
+        },
+        {
+          label: "未获奖",
+          value: 4,
+        },
+      ],
+    };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {
-
-    show(row){
+    show(row) {
       this.id = row.id;
+
+      this.formData.disciplineReviewMark = row.disciplineReviewMark;
+
       this.dialogFormVisible = true;
     },
     onOpen() {},
     onClose() {
-      this.$refs['elForm'].resetFields()
+      this.$refs["elForm"].resetFields();
     },
     close() {
-      this.$emit('update:visible', false);
-      this.$emit('refresh');
+      this.$emit("update:visible", false);
+      this.$emit("fetchData");
       this.dialogFormVisible = false;
     },
     handelConfirm() {
       // console.log("prize:"+this.formData.setPrize);
-      this.$refs['elForm'].validate(async valid => {
+      this.$refs["elForm"].validate(async (valid) => {
         if (!valid) {
           // 向后端发送id和奖项
 
-
-          return
+          return;
         }
-        console.log("prize:"+this.formData.setPrize+"id:"+this.id);
+        console.log("prize:" + this.formData.setPrize + "id:" + this.id);
         const { msg } = await doSetDisciplineReviewPrize({
           applyId: this.id,
           prize: this.formData.setPrize,
+          disciplineReviewMark: this.formData.disciplineReviewMark,
         });
         this.$baseMessage(msg, "success");
         this.close(this.formData.setPrize);
-
-      })
+      });
     },
-  }
-}
-
+  },
+};
 </script>
 <style>
 </style>

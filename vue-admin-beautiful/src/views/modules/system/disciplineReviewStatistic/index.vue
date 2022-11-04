@@ -1,3 +1,4 @@
+<!-- 已提交申请表 -->
 <template>
   <div class="tenantManagement-container">
     <el-collapse-transition>
@@ -16,41 +17,41 @@
       </div>
     </el-collapse-transition>
 
-    <el-row>
-      <!-- <h3>评审项目数量：{{ this.list.length }} 当前一等奖数量：</h3> -->
-    </el-row>
+    <!-- <h3>
+        填写完申报表后，请在本页点击《导出为word》并打印，在学术诚信承诺书上签字后，将申报表报送所在单位审核，合格后加盖单位公章或科技部门公章，将签字、盖章后的申报表扫描成PDF电子版，并点击《上传申报表》进行上传，上传成功后，如点击详细信息《查看》可查看已上传文件，说明申报表上传成功。
+        </h3> -->
+
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
         <!-- <el-button
-            v-if="$perms('system_apply_export')"
-            type="warning"
-            @click="fetchData"
-        > 刷新 </el-button> -->
+            v-if="$perms('system_apply_insert')"
+            icon="el-icon-plus"
+            type="primary"
+            @click="handleInsert"
+          >
+            添加
+          </el-button> -->
 
-        <!--        <el-button
-            v-if="$perms('system_apply_import')"
-            icon="el-icon-upload2"
-            type="warning"
-            @click="handleImportExcel"
-        > 导入 </el-button> -->
+        <!--       <el-button
+              v-if="$perms('system_apply_import')"
+              icon="el-icon-upload2"
+              type="warning"
+              @click="handleImportExcel"
+          > 导入 </el-button> -->
 
-        <el-button
-          v-if="$perms('system_apply_export')"
-          icon="el-icon-download"
-          type="warning"
-          @click="handleExportExcel"
-        >
-          导出
-        </el-button>
-
-        <!-- <el-button
+               <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
+            @click="handleExportExcel"> 导出 </el-button>
+        <!--   
+          <el-button
             v-if="$perms('system_apply_delete')"
             :disabled="!selectRows.length > 0"
             icon="el-icon-delete"
             type="danger"
             @click="handleDelete"
-        > 批量删除 </el-button> -->
+          >
+            批量删除
+          </el-button> -->
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
@@ -61,6 +62,7 @@
               clearable
             />
           </el-form-item>
+
           <el-form-item>
             <el-input
               v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
@@ -70,20 +72,12 @@
           </el-form-item>
 
           <el-form-item>
-              <el-input
-                v-model.trim="queryForm.disciplineGroup_LIKE"
-                placeholder="请输入学科组别"
-                clearable
-              />
-            </el-form-item>
-
-            <el-form-item>
-              <el-input
-                v-model.trim="queryForm.disciplineName_LIKE"
-                placeholder="请输入学科"
-                clearable
-              />
-            </el-form-item>
+            <el-input
+              v-model.trim="queryForm.discipline_LIKE"
+              placeholder="请输入专业"
+              clearable
+            />
+          </el-form-item>
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
@@ -101,11 +95,17 @@
     >
       <!-- <el-table-column show-overflow-tooltip type="selection"></el-table-column> -->
 
-      <el-table-column show-overflow-tooltip label="序号" width="95">
+      <el-table-column show-overflow-tooltip label="序号" width="60">
         <template slot-scope="scope">
           {{ (queryForm.pageNo - 1) * queryForm.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="applyCode"
+        label="成果编号"
+      ></el-table-column>
 
       <el-table-column
         show-overflow-tooltip
@@ -114,119 +114,140 @@
         width="400"
       ></el-table-column>
 
-      <el-table-column show-overflow-tooltip label="申报表">
+      <el-table-column
+        show-overflow-tooltip
+        prop="orgName"
+        label="推荐单位"
+        width="120"
+      ></el-table-column>
+
+      <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
-          <el-button type="text" @click="handleViewDetailInfo(scope.row)">
-            查看
-          </el-button>
+          <span v-if="scope.row.discipline != null">
+            {{
+              scope.row.discipline
+                .split(",")[1]
+                .substring(1, scope.row.discipline.split(",")[1].length - 2)
+            }}
+          </span>
         </template>
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip label="详细信息">
+      <el-table-column show-overflow-tooltip prop="info" label="详细信息">
         <template v-slot="scope">
-          <el-button type="text" @click="handleViewInfo(scope.row)">
-            查看
-          </el-button>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="disciplineGroup"
-        label="学科组别"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="disciplineName"
-        label="学科"
-      ></el-table-column>
-
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="firstAuthor"
-        label="第一作者"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="firstAuthorWorkplace"
-        label="工作单位"
-      ></el-table-column>
-
-      <el-table-column show-overflow-tooltip label="初评单位" prop="orgName">
-        <template slot-scope="scope">
-          <span>{{ scope.row.orgName }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column show-overflow-tooltip label="初评排序" prop="preRank">
-        <template slot-scope="scope">
-          <span>{{ scope.row.preRank }}</span>
-        </template>
-      </el-table-column>
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="discipline"
-              label="学科专业"
-      ></el-table-column> -->
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="keywords"
-              label="关键词"
-      ></el-table-column> -->
-
-      <el-table-column show-overflow-tooltip label="网评结果" prop="avgScore">
-        <!-- :formatter="disciplineReviewPrizeFormat" -->
-        <!--        <template v-slot="scope">
-
           <el-button
             v-if="$perms('system_apply_update')"
             type="text"
-            @click="handlePrize(scope.row)"
-          > $scope.row.prize </el-button>
+            @click="handleViewInfo(scope.row)"
+          >
+            查看
+          </el-button>
         </template>
- -->
       </el-table-column>
 
       <el-table-column
         show-overflow-tooltip
-        label="当前评奖"
-        prop="disciplineReviewPrize"
-        :formatter="disciplineReviewPrizeFormat"
+        prop="expertScore"
+        label="专家评分"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="avgScore"
+        label="平均分"
+      ></el-table-column>
+
+
+
+      <!--      <el-table-column
+                show-overflow-tooltip
+                prop="mainAuthors"
+                label="主要完成人"
+        ></el-table-column> -->
+
+      <!--      <el-table-column
+                show-overflow-tooltip
+                prop="keywords"
+                label="关键词"
+        ></el-table-column> -->
+
+      <!-- <el-table-column
+          show-overflow-tooltip
+          label="编辑"
+          v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        >
+          <template v-slot="scope">
+            <el-button
+              v-if="$perms('system_apply_update')"
+              type="text"
+              @click="handleUpdate(scope.row)"
+            >
+              编辑
+            </el-button>
+          </template>
+        </el-table-column> -->
+
+      <!-- <el-table-column
+        show-overflow-tooltip
+        label="导出"
+        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
       >
-        <!--        <template v-slot="scope">
-
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handlePrize(scope.row)"
-          > $scope.row.prize </el-button>
-        </template>
- -->
-      </el-table-column>
-
-      <el-table-column show-overflow-tooltip label="复评">
         <template v-slot="scope">
-          <!--          <el-button
-            v-if="$perms('system_apply_delete')"
-            type="text"
-            @click="handleDelete(scope.row)"
-          > 删除 </el-button> -->
-
-          <el-button type="text" @click="handlePrize(scope.row)">
-            设置奖项
+          <el-button type="text" @click.native="handleViewFile(scope.row)">
+            导出为word
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
+
+
 
       <el-table-column
         show-overflow-tooltip
-        label="复评意见"
-        prop="disciplineReviewMark"
+        prop="year"
+        label="年份"
       ></el-table-column>
+      <!--   
+        <el-table-column
+          show-overflow-tooltip
+          label="上传申报表"
+          v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        >
+          <template v-slot="scope">
+            <el-button
+              v-if="$perms('system_apply_update')"
+              type="text"
+              @click="handleUpload(scope.row)"
+            >
+              上传申报表
+            </el-button>
+          </template>
+        </el-table-column> -->
+
+      <!-- <el-table-column
+          show-overflow-tooltip
+          label="删除"
+          width="200"
+          v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
+        >
+          <template v-slot="scope">
+            <el-dropdown trigger="click">
+              <span class="el-dropdown-link">
+                删除
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+
+                <el-dropdown-item
+                  v-if="$perms('system_apply_delete')"
+                  type="text"
+                  @click.native="handleDelete(scope.row)"
+                >
+                  确认删除
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-table-column> -->
     </el-table>
     <el-pagination
       background
@@ -238,24 +259,26 @@
       @current-change="handleCurrentChange"
     ></el-pagination>
 
-    <edit ref="edit" @fetchData="fetchData"></edit>
-    <import ref="import" @fetchData="fetchData"></import>
-    <prize ref="prize" @fetchData="fetchData" @refresh="fetchData"></prize>
+    <!-- <edit ref="edit" @fetchData="fetchData"></edit>
+      <import ref="import" @fetchData="fetchData"></import>
+      <upload ref="upload" @fetchData="fetchData"></upload> -->
   </div>
 </template>
-
+  
 <script>
 import {
+  getList,
   getListAll,
-  getListByIsPassed,
+  getListByDisciplineStatistic,
   doDelete,
   doDeleteAll,
-  doExportExcel,
-  doExportExcelFuping,
+  doExportExcelById,
+  doExportExcelApplyStatistics,
+  doExportExcelDisciplineStatistics
 } from "@/api/system/apply/SysApplyManagementApi";
-import Edit from "./components/SysApplyManagementEdit";
-import Import from "./components/SysApplyManagementImport";
-import Prize from "./components/selectPrize";
+//   import Edit from "./components/SysApplyManagementEdit";
+//   import Import from "./components/SysApplyManagementImport";
+//   import Upload from "./components/upload";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
@@ -263,10 +286,14 @@ import { formateDate } from "@/utils/format";
 
 export default {
   name: "SysApplyManagement",
-  components: { Edit, Import, Prize },
+  // components: {
+  //   Edit,
+  //   Import,
+  //   Upload,
+  // },
   data() {
     return {
-      list: [],
+      list: null,
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
       total: 0,
@@ -316,54 +343,16 @@ export default {
   },
   mounted() {},
   methods: {
-    prizeFormat(row, column) {
-      if (row.prize == 1) {
-        return "一等奖";
-      } else if (row.prize == 2) {
-        return "二等奖";
-      } else if (row.prize == 3) {
-        return "三等奖";
-      }
-    },
-
-    disciplineReviewPrizeFormat(row, column) {
-      if (row.disciplineReviewPrize == 1) {
-        return "一等奖";
-      } else if (row.disciplineReviewPrize == 2) {
-        return "二等奖";
-      } else if (row.disciplineReviewPrize == 3) {
-        return "三等奖";
-      }
-    },
-
-    async handleEnable(row) {
-      const isPass = row.isPass;
-      // 回退原有状态
-      if (row.isPass === "0") row.isPass = "1";
-      else if (row.isPass === "1") row.isPass = "0";
-
-      if (row.id) {
-        const { msg } = await doIsPassApply({
-          applyId: row.id,
-          isPass: isPass,
-        });
-        row.isPass = isPass;
-        this.$baseMessage(msg, "success");
-      } else {
-        this.$baseMessage("未选中任何行", "error");
-      }
-    },
-    setPass(row) {
-      // this.selectRows = val;
-      this.$baseMessage("还没做", "error");
-    },
     setSelectRows(val) {
       this.selectRows = val;
     },
     handleInsert(row) {
       // this.$refs["edit"].showEdit();
-      this.$router.push({ path: "/createApply" });
+      this.$router.push({
+        path: "/createApply",
+      });
     },
+    //查看 将元素设置为不可修改
     handleView(row) {
       if (row.id) {
         // this.$refs["edit"].showEdit(row);
@@ -376,11 +365,20 @@ export default {
         });
       }
     },
+
     handleViewInfo(row) {
       if (row.id) {
-        // this.$refs["edit"].showEdit(row);
+        //   let newpage = this.$router.resolve({
+        //   name: '/applyInfo',
+        //   form:{
+        //     row
+        //   }
+        // })
+
+        // window.open(newpage.href, '_blank');
+        //   this.$refs["edit"].showEdit(row);
         this.$router.push({
-          path: "/applyInfo",
+          path: "/applyInfo/applyInfo",
           query: {
             form: row,
           },
@@ -388,21 +386,40 @@ export default {
       }
     },
 
-    handleViewDetailInfo(row) {
-      if (row.wordPath) {
-        window.open(row.wordPath, "_blank");
-      } else {
-        this.$baseMessage("暂时无法查看", "error");
+    async handleUpload(row) {
+      await this.$refs["upload"].show(row);
+    },
+
+    handleUpdate(row) {
+      if (row.id) {
+        // this.$refs["edit"].showEdit(row);
+        this.$router.push({
+          path: "/createApply",
+          query: {
+            form: row,
+          },
+        });
       }
     },
 
-    async handlePrize(row) {
-      await this.$refs["prize"].show(row);
-    },
+    // handleUpload(row) {
+    //   if (row.id) {
+    //     // this.$refs["edit"].showEdit(row);
+    //     this.$router.push({
+    //       path: '/createApply',
+    //       query: {
+    //         form: row,
+    //       }
+    //     })
+    //   }
+    // },
+
     handleDelete(row) {
       if (row.id) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const { msg } = await doDelete({ id: row.id });
+          const { msg } = await doDelete({
+            id: row.id,
+          });
           this.$baseMessage(msg, "success");
           await this.fetchData();
         });
@@ -410,7 +427,9 @@ export default {
         if (this.selectRows.length > 0) {
           const ids = this.selectRows.map((item) => item.id).join();
           this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const { msg } = await doDeleteAll({ ids });
+            const { msg } = await doDeleteAll({
+              ids,
+            });
             this.$baseMessage(msg, "success");
             await this.fetchData();
           });
@@ -420,13 +439,22 @@ export default {
         }
       }
     },
+
+    handleViewFile(row) {
+      if (row.wordPath) {
+        window.open(row.wordPath, "_blank");
+      } else {
+        this.$baseMessage("请先上传文件", "error");
+      }
+    },
+
     // 导出excel
     handleExportExcel(el) {
       // 导出按钮防抖处理 默认限制为10秒
       vueButtonClickBan(el, 10);
 
       // 执行导出
-      doExportExcelFuping(this.queryForm);
+      doExportExcelDisciplineStatistics(this.queryForm);
     },
     // 导入excel
     handleImportExcel() {
@@ -450,10 +478,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
-      // 如果是成果奖的流程就改回 getlistbyispassed
-      const { data } = await getListByIsPassed(this.queryForm);
-      // const { data } = await getListAll(this.queryForm);
+      const { data } = await getListByDisciplineStatistic(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;
         this.total = data.total;
@@ -465,3 +490,4 @@ export default {
   },
 };
 </script>
+  

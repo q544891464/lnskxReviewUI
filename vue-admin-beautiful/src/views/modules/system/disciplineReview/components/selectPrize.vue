@@ -55,7 +55,7 @@ export default {
         "value": 3
       }, {
         "label": "未获奖",
-        "value": 0
+        "value": 4
       }],
     }
   },
