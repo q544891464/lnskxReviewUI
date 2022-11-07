@@ -103,8 +103,8 @@ export default {
       this.tableData[i].info = this.form.citations;
       i++;
       // this.tableData[12].info = relatedAchievementsMap.get(this.form.relatedAchievements);
-      this.tableData[i].info = paperTypeMap.get(this.form.paperType);
-      i++;
+      // this.tableData[i].info = paperTypeMap.get(this.form.paperType);
+      // i++;
       // 出版社名称
       this.tableData[i].info = this.form.publicationPublisherName;
       i++;
@@ -229,10 +229,10 @@ export default {
           prop: "被引用次数：",
           info: "",
         },
-        {
-          prop: "论文类型：",
-          info: "",
-        },
+        // {
+        //   prop: "论文类型：",
+        //   info: "",
+        // },
         {
           prop: "出版社名称：",
           info: "",

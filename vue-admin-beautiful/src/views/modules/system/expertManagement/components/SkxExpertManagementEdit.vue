@@ -7,7 +7,7 @@
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="105px">
-      <el-row :gutter="10" >
+      <el-row :gutter="10">
         <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
           <el-form-item label="专家姓名" prop="expertName">
             <el-input v-model="form.expertName" autocomplete="off"></el-input>
@@ -61,9 +61,7 @@
             <el-input v-model="form.phone" autocomplete="off"></el-input>
           </el-form-item>
         </el-col>
-
       </el-row>
-
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
@@ -73,85 +71,95 @@
 </template>
 
 <script>
-  import { doInsert, doUpdate } from "@/api/system/expertManagement/SkxExpertManagementApi";
-  import { isNull } from "@/utils/validate";
-  import { formateDate } from "@/utils/format";
-  import { validatorRule } from "@/utils/validateRlue";
+import {
+  doInsert,
+  doUpdate,
+} from "@/api/system/expertManagement/SkxExpertManagementApi";
+import { isNull } from "@/utils/validate";
+import { formateDate } from "@/utils/format";
+import { validatorRule } from "@/utils/validateRlue";
 
-  export default {
-    name: "SkxExpertManagementEdit",
-    data() {
-
-      return {
-        form: {
-          // 设置默认值
-          version: 0
-        },
-        dict: {},
-        rules: {
-        },
-        title: "",
-        dialogFormVisible: false,
-      };
-    },
-    created() {
-
-    },
-    mounted() {
-      // 加载字典值
-    },
-    methods: {
-      showEdit(row) {
-        if (!row) {
-          this.title = "添加";
-        } else {
-          this.title = "编辑";
-          this.form = Object.assign({}, row);
-        }
-        this.dialogFormVisible = true;
+export default {
+  name: "SkxExpertManagementEdit",
+  data() {
+    return {
+      form: {
+        // 设置默认值
+        version: 0,
       },
-      close() {
-        this.dialogFormVisible = false;
-        this.$refs["form"].resetFields();
-        this.form = this.$options.data().form;
+      dict: {},
+      rules: {},
+      title: "",
+      dialogFormVisible: false,
+      rules: {
+        expertName: [
+          {
+            required: true,
+            message: "请输入专家姓名",
+            trigger: "blur",
+          },
+        ],
       },
-      save() {
-        this.$refs["form"].validate(async (valid) => {
-          if (valid) {
-            // 处理数据
-            this.handlerFormData(this.form);
+    };
+  },
+  created() {},
+  mounted() {
+    // 加载字典值
+  },
+  methods: {
+    showEdit(row) {
+      if (!row) {
+        this.title = "添加";
+      } else {
+        this.title = "编辑";
+        this.form = Object.assign({}, row);
+      }
+      this.dialogFormVisible = true;
+    },
+    close() {
+      this.dialogFormVisible = false;
+      this.$refs["form"].resetFields();
+      this.form = this.$options.data().form;
+    },
+    save() {
+      this.$refs["form"].validate(async (valid) => {
+        if (valid) {
+          // 处理数据
+          this.handlerFormData(this.form);
 
-            // 修改
-            if (!isNull(this.form.id)) {
-              const { success, msg } = await doUpdate(this.form);
-              if(success){
-                this.$baseMessage(msg, "success");
-              }
-            } else {
-              const { success, msg } = await doInsert(this.form);
-              if(success){
-                this.$baseMessage(msg, "success");
-              }
+          // 修改
+          if (!isNull(this.form.id)) {
+            const { success, msg } = await doUpdate(this.form);
+            if (success) {
+              this.$baseMessage(msg, "success");
             }
-
-            await this.$emit("fetchData");
-            this.close();
           } else {
-            return false;
-          }
-        });
-      },
-      // 处理 form数据
-      handlerFormData(formData){
-        if(!isNull(formData)){
-          for(let key in formData){
-            // 对于时间类进行处理
-            if("[object Date]" === Object.prototype.toString.call(formData[key])){
-              formData[key] = formateDate(formData[key], 'yyyy-MM-dd hh:mm:ss');
+            const { success, msg } = await doInsert(this.form);
+            if (success) {
+              this.$baseMessage(msg, "success");
             }
           }
+
+          await this.$emit("fetchData");
+          this.close();
+        } else {
+          return false;
         }
-      },
+      });
     },
-  };
+    // 处理 form数据
+    handlerFormData(formData) {
+      if (!isNull(formData)) {
+        for (let key in formData) {
+          // 对于时间类进行处理
+          if (
+            "[object Date]" === Object.prototype.toString.call(formData[key])
+          ) {
+            formData[key] = formateDate(formData[key], "yyyy-MM-dd hh:mm:ss");
+          }
+        }
+      }
+    },
+  },
+};
 </script>

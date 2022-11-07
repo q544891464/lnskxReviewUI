@@ -5,11 +5,9 @@
         <!-- 更多查找 -->
         <vab-query-form>
           <vab-query-form-left-panel :span="24">
-            <el-form
-              :inline="true"
-              :model="queryForm"
-              @submit.native.prevent
-            ></el-form>
+            <el-form :inline="true" :model="queryForm" @submit.native.prevent>
+              <el-form-item></el-form-item>
+            </el-form>
           </vab-query-form-left-panel>
         </vab-query-form>
         <el-divider></el-divider>
@@ -17,7 +15,14 @@
     </el-collapse-transition>
 
     <el-row>
-      <!-- <h3>评审项目数量：{{ this.list.length }} 当前一等奖数量：</h3> -->
+      <h3>
+        评审项目数量：{{ this.countData.count }} 当前一等奖数量：{{
+          this.countData.prize1Count
+        }}
+        当前二等奖数量：{{ this.countData.prize2Count }} 当前三等奖数量：{{
+          this.countData.prize3Count
+        }}
+      </h3>
     </el-row>
     <!-- 主要操作  -->
     <vab-query-form>
@@ -34,6 +39,23 @@
             type="warning"
             @click="handleImportExcel"
         > 导入 </el-button> -->
+
+        <el-select
+          v-model="queryForm.pageName"
+          placeholder="请选择组别"
+          clearable
+          :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+          @change="handlePageNameChange"
+        >
+          <el-option
+            v-for="(item, index) in pageNameOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
 
         <el-button
           v-if="$perms('system_apply_export')"
@@ -70,20 +92,20 @@
           </el-form-item>
 
           <el-form-item>
-              <el-input
-                v-model.trim="queryForm.disciplineGroup_LIKE"
-                placeholder="请输入学科组别"
-                clearable
-              />
-            </el-form-item>
+            <el-input
+              v-model.trim="queryForm.disciplineGroup_LIKE"
+              placeholder="请输入学科组别"
+              clearable
+            />
+          </el-form-item>
 
-            <el-form-item>
-              <el-input
-                v-model.trim="queryForm.disciplineName_LIKE"
-                placeholder="请输入学科"
-                clearable
-              />
-            </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model.trim="queryForm.disciplineName_LIKE"
+              placeholder="请输入学科"
+              clearable
+            />
+          </el-form-item>
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
@@ -141,7 +163,6 @@
         prop="disciplineName"
         label="学科"
       ></el-table-column>
-
 
       <el-table-column
         show-overflow-tooltip
@@ -246,6 +267,7 @@
 
 <script>
 import {
+  getCount,
   getListAll,
   getListByIsPassed,
   doDelete,
@@ -267,6 +289,7 @@ export default {
   data() {
     return {
       list: [],
+      countData: {},
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
       total: 0,
@@ -276,8 +299,47 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
+        pageName: "全部组别",
       },
       dict: {},
+      pageNameOptions: [
+        {
+          label: "全部组别",
+          value: "全部组别",
+        },
+        {
+          label: "理科",
+          value: "理科",
+        },
+        {
+          label: "农科",
+          value: "农科",
+        },
+        {
+          label: "医药",
+          value: "医药",
+        },
+        {
+          label: "生命科学与基础医学",
+          value: "生命科学与基础医学",
+        },
+        {
+          label: "机械、材料、矿山、冶金",
+          value: "机械、材料、矿山、冶金",
+        },
+        {
+          label: "电气、电子与信息技术",
+          value: "电气、电子与信息技术",
+        },
+        {
+          label: "能源、化工与环境",
+          value: "能源、化工与环境",
+        },
+        {
+          label: "交通与基建",
+          value: "交通与基建",
+        },
+      ],
       pickerOptions: {
         shortcuts: [
           {
@@ -316,6 +378,18 @@ export default {
   },
   mounted() {},
   methods: {
+    async getCount() {
+      const { data } = await getCount({
+        pageName: "fuping,"+this.queryForm.pageName,
+      });
+      this.countData = data;
+    },
+
+    handlePageNameChange(value) {
+      this.queryForm.pageName = value;
+      this.fetchData();
+    },
+
     prizeFormat(row, column) {
       if (row.prize == 1) {
         return "一等奖";
@@ -450,6 +524,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
+      this.getCount();
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed
       const { data } = await getListByIsPassed(this.queryForm);

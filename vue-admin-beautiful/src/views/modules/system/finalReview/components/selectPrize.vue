@@ -96,6 +96,8 @@ export default {
   methods: {
     show(row) {
       this.id = row.id;
+      this.formData.setPrize = parseInt(row.prize);
+
       this.dialogFormVisible = true;
     },
     onOpen() {},
@@ -105,6 +107,7 @@ export default {
     close() {
       this.$emit("update:visible", false);
       this.$emit("refresh");
+      this.formData.setPrize = "";
       this.dialogFormVisible = false;
     },
     handelConfirm() {

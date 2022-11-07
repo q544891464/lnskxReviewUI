@@ -40,8 +40,14 @@
           {{ this.prize3 }}分-{{ this.prize2 }}分不得超过{{this.maxPrize3Count}}项；
       </h3>
 
-      <h3 v-if="this.prize1Count>this.maxPrize1Count || this.prize2Count>this.maxPrize2Count || this.prize3Count>this.maxPrize3Count">
-        <span style="color: red">评分比例超过限制，请重新设置！</span>
+      <h3 v-if="this.prize1Count>this.maxPrize1Count ">
+        <span style="color: red">85分以上比例超过限制，请重新设置！</span>
+      </h3>
+      <h3 v-if="this.prize2Count>this.maxPrize2Count ">
+        <span style="color: red">84-75分比例超过限制，请重新设置！</span>
+      </h3>
+      <h3 v-if="this.prize3Count>this.maxPrize3Count ">
+        <span style="color: red">74-60分比例超过限制，请重新设置！</span>
       </h3>
 
       <h3 v-if="this.noPrizeCount>0">

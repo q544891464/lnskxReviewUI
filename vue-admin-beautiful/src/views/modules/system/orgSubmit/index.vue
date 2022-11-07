@@ -19,6 +19,11 @@
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
+        <el-button
+            icon="el-icon-download"
+            type="warning"
+            @click="handleExportExcel"
+        > 导出 </el-button>
         <!-- <el-button
             v-if="$perms('system_orgsubmit_insert')"
             icon="el-icon-plus"
@@ -33,12 +38,7 @@
             @click="handleImportExcel"
         > 导入 </el-button>
 
-        <el-button
-            v-if="$perms('system_orgsubmit_export')"
-            icon="el-icon-download"
-            type="warning"
-            @click="handleExportExcel"
-        > 导出 </el-button>
+
 
         <el-button
             v-if="$perms('system_orgsubmit_delete')"
@@ -209,6 +209,7 @@ import {
   doDelete,
   doDeleteAll,
   doExportExcel,
+  doExportExcelByOrgSubmit,
 } from "@/api/system/orgSubmit/SkxOrgSubmitManagementApi";
 import Edit from "./components/SkxOrgSubmitManagementEdit";
 import Import from "./components/SkxOrgSubmitManagementImport";
@@ -310,7 +311,7 @@ export default {
       vueButtonClickBan(el, 10);
 
       // 执行导出
-      doExportExcel(this.queryForm);
+      doExportExcelByOrgSubmit(this.queryForm);
     },
     // 导入excel
     handleImportExcel() {

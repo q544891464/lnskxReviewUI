@@ -16,7 +16,14 @@
       </div>
     </el-collapse-transition>
     <el-row>
-      <!-- <h3>评审项目数量： </h3> -->
+      <h3>
+        评审项目数量：{{ this.countData.count }} 当前一等奖数量：{{
+          this.countData.prize1Count
+        }}
+        当前二等奖数量：{{ this.countData.prize2Count }} 当前三等奖数量：{{
+          this.countData.prize3Count
+        }}
+      </h3>
     </el-row>
 
     <!-- 主要操作  -->
@@ -36,6 +43,22 @@
             type="warning"
             @click="handleImportExcel"
         > 导入 </el-button> -->
+        <el-select
+          v-model="queryForm.pageName"
+          placeholder="请选择组别"
+          clearable
+          :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+          @change="handlePageNameChange"
+        >
+          <el-option
+            v-for="(item, index) in pageNameOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
 
         <el-button
           v-if="$perms('system_apply_export')"
@@ -286,8 +309,9 @@
 
 <script>
 import {
+  getCount,
   getListAll,
-  getListByIsPassed,
+  getListByFinal,
   doDelete,
   doDeleteAll,
   doExportExcel,
@@ -307,6 +331,7 @@ export default {
   components: { Edit, Import, Prize },
   data() {
     return {
+      countData: {},
       list: [],
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
@@ -317,8 +342,47 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
+        pageName: "全部组别",
       },
       dict: {},
+      pageNameOptions: [
+        {
+          label: "全部组别",
+          value: "全部组别",
+        },
+        {
+          label: "理科",
+          value: "理科",
+        },
+        {
+          label: "农科",
+          value: "农科",
+        },
+        {
+          label: "医药",
+          value: "医药",
+        },
+        {
+          label: "生命科学与基础医学",
+          value: "生命科学与基础医学",
+        },
+        {
+          label: "机械、材料、矿山、冶金",
+          value: "机械、材料、矿山、冶金",
+        },
+        {
+          label: "电气、电子与信息技术",
+          value: "电气、电子与信息技术",
+        },
+        {
+          label: "能源、化工与环境",
+          value: "能源、化工与环境",
+        },
+        {
+          label: "交通与基建",
+          value: "交通与基建",
+        },
+      ],
       pickerOptions: {
         shortcuts: [
           {
@@ -357,6 +421,14 @@ export default {
   },
   mounted() {},
   methods: {
+
+    async getCount() {
+      const { data } = await getCount({
+        pageName: "zhongping,"+this.queryForm.pageName,
+      });
+      this.countData = data;
+    },
+
     prizeFormat(row, column) {
       if (row.prize == 1) {
         return "一等奖";
@@ -365,6 +437,11 @@ export default {
       } else if (row.prize == 3) {
         return "三等奖";
       }
+    },
+
+    handlePageNameChange(value) {
+      this.queryForm.pageName = value;
+      this.fetchData();
     },
 
     disciplineReviewPrizeFormat(row, column) {
@@ -513,9 +590,10 @@ export default {
 
     async fetchData() {
       this.listLoading = true;
+      this.getCount();
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed
-      const { data } = await getListByIsPassed(this.queryForm);
+      const { data } = await getListByFinal(this.queryForm);
       // const { data } = await getListAll(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;

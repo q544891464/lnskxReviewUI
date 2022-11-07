@@ -96,6 +96,7 @@
             completeFilePath:this.uploadPath,
             isSubmit:1
           });
+          this.$emit("fetchData");
           this.close();
         },
   

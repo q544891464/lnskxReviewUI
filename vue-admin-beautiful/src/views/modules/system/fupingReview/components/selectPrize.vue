@@ -34,10 +34,9 @@
 
         <el-form-item
           label="评审意见"
-          
-          
           prop="disciplineReviewMark"
         >
+          <div style="color:red" v-if="formData.setPrize == 1">*一等奖需填写推荐理由</div>
           <el-input v-model="formData.disciplineReviewMark" type="textarea"></el-input>
         </el-form-item>
 
@@ -103,7 +102,21 @@ export default {
 
       this.formData.disciplineReviewMark = row.disciplineReviewMark;
 
+      this.formData.setPrize = parseInt(row.disciplineReviewPrize) ;
+
       this.dialogFormVisible = true;
+    },
+
+    prizeFormat(prize) {
+      if (prize == 1) {
+        return "一等奖";
+      } else if (prize == 2) {
+        return "二等奖";
+      } else if (prize == 3) {
+        return "三等奖";
+      } else if (prize == 4) {
+        return "未获奖";
+      }
     },
     onOpen() {},
     onClose() {

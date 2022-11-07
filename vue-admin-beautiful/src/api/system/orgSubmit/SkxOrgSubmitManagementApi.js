@@ -68,6 +68,17 @@ export function doExportExcel(data) {
 }
 
 /**
+ * 导出Excel 目前只支持一层参数传递
+ * @param data
+ * @returns file
+ */
+export function doExportExcelByOrgSubmit(data) {
+  let requestURL = "/api/v1/system/orgSubmit/exportExcelByOrgSubmit";
+  // 下载文件
+  downloadFileByData(requestURL, data);
+}
+
+/**
  * 下载模版
  * @returns file
  */

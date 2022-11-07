@@ -58,6 +58,14 @@
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
+
+          <el-form-item>
+              <el-input
+                v-model.trim="queryForm.subjectGroupName_LIKE"
+                placeholder="请输入学科"
+                clearable
+              />
+            </el-form-item>
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询

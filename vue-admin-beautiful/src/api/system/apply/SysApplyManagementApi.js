@@ -64,6 +64,14 @@ export function getListByIsPassed(data) {
   });
 }
 
+export function getListByFinal(data) {
+  return request({
+    url: "/api/v1/system/apply/findPageByFinal",
+    method: "get",
+    params: data,
+  });
+}
+
 export function doIsPassApply(data) {
   return request({
     url: "/api/v1/system/apply/isPassApply",
