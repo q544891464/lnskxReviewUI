@@ -99,6 +99,14 @@ export default {
             trigger: "blur",
           },
         ],
+
+        idNumber: [
+          {
+            required: true,
+            message: "请输入专家身份证",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },

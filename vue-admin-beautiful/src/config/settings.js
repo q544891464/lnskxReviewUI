@@ -20,7 +20,7 @@ module.exports = {
       ? "http://localhost:7001/opsli-boot"
       : "http://42.101.40.191:7000/opsli-boot",
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
-  title: "2022年辽宁省自然科学学术成果奖",
+  title: "2022年辽宁省自然科学学术成果奖申报评审系统",
   //简写
   abbreviation: "opsli",
   //开发环境端口号
@@ -40,7 +40,14 @@ module.exports = {
   // 路由模式，可选值为 history 或 hash
   routerMode: "hash",
   //不经过token校验的路由
-  routesWhiteList: ["/login", "/register", "/system/register", "/404", "/401"],
+  routesWhiteList: [
+    "/login",
+    "/register",
+    "/getBackPassword",
+    "/system/register",
+    "/404",
+    "/401",
+  ],
   //加载时显示文字
   loadingText: "正在加载中...",
   //token名称

@@ -12,6 +12,11 @@ import { publicPath, routerMode } from "@/config/settings";
 Vue.use(VueRouter);
 export const constantRoutes = [
   {
+    path: "/getBackPassword",
+    component: () => import("@/views/getBackPassword/index"),
+    hidden: true,
+  },
+  {
     path: "/login",
     component: () => import("@/views/login/index"),
     hidden: true,

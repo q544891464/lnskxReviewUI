@@ -74,6 +74,15 @@
             </el-input>
           </el-form-item>
 
+          <el-form-item prop="email">
+            <el-input
+              v-model.trim="form.email"
+              placeholder="设置邮箱(用于找回密码)"
+            >
+              <vab-icon slot="prefix" :icon="['fas', 'unlock']"></vab-icon>
+            </el-input>
+          </el-form-item>
+
 
           <el-form-item v-if="captchaFlag" prop="captcha">
             <span class="svg-container">
@@ -111,8 +120,12 @@
             <!-- @click.native.prevent="handleReister" -->
               注册
             </el-button>
-            <router-link to="/login">
+            <router-link to="/login" style="display:inline-block;">
               <div style="margin-top: 20px">登录</div>
+            </router-link>
+
+            <router-link to="/getBackPassword" style="display:inline-block;">
+              <div style="margin-top: 20px;margin-left: 40px;">找回密码</div>
             </router-link>
           </el-form-item>
         </el-form>
@@ -122,7 +135,7 @@
 </template>
 <script>
   import { uuid } from "@/utils";
-  import { isPassword, isPhone } from "@/utils/validate";
+  import { isPassword, isPhone,isEmail } from "@/utils/validate";
   import { isGeneral } from "@/utils/valiargs";
   import { register,captcha } from "@/api/user";
   import {doRegister} from"@/api/system/user/userManagement";
@@ -158,6 +171,13 @@
           callback();
         }
       };
+      const validateEmail = (rule, value, callback) => {
+        if (!isEmail(value)) {
+          callback(new Error("请输入正确的邮箱"));
+        } else {
+          callback();
+        }
+      };
       return {
         isGetphone: false,
         captchaFlag: true,
@@ -170,6 +190,7 @@
         form: {
           username: "",
           password: "",
+          email:"",
           captcha: "",
           uuid: "",
         },
@@ -182,6 +203,10 @@
           phone: [
             { required: true, trigger: "blur", message: "请输入手机号码" },
             { validator: validatePhone, trigger: "blur" },
+          ],
+          email: [
+            { required: true, trigger: "blur", message: "请输入邮箱" },
+            { validator: validateEmail, trigger: "blur" },
           ],
           password: [
             { required: true, trigger: "blur", message: "请输入密码" },
@@ -252,6 +277,7 @@
             const param = {
               username: this.form.username,
               password: this.form.password,
+              email:this.form.email,
               captcha: this.form.captcha,
               uuid:this.form.uuid,
             };

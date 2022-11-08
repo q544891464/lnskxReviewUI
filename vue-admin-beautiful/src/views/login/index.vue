@@ -78,21 +78,64 @@
             />
           </el-form-item>
 
-          <el-button
-            :loading="loading"
-            class="login-btn"
-            type="primary"
-            @click="handleLogin"
-          >
-            登录
-          </el-button>
+          <el-form-item>
+            <el-button
+              :loading="loading"
+              class="login-btn"
+              type="primary"
+              @click="handleLogin"
+              style="display: inline-block; margin-right: 20px"
+            >
+              登录
+            </el-button>
 
-          <router-link to="/register">
-            <div style="margin-top: 20px">注册</div>
-          </router-link>
+            <router-link to="/register">
+              <el-button
+                :loading="loading"
+                class="login-btn"
+                type="primary"
+                style="display: inline-block"
+              >
+                注册
+              </el-button>
+            </router-link>
+
+            <!-- <router-link to="getBackPassword">
+              <div style="margin-top: 20px;margin-left: 40px;">找回密码</div>
+            </router-link> -->
+
+            <router-link to="/getBackPassword">
+              <div style="margin-top: 20px">找回密码</div>
+            </router-link>
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
+
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.6;
+        margin: 20px 0;
+      "
+    >
+      @2022
+      
+      <el-link
+        type="primary"
+        href="https://www.****.com/"
+        target="_blank"
+        style="margin: 0 5px"
+      >
+        辽宁省科学技术协会
+      </el-link>
+      版权所有
+    </div>
+
+    <!-- <footer></footer> -->
 
     <!-- <login-tips ref="login-tips" @tipsClick="tipsClick"></login-tips> -->
   </div>
@@ -103,6 +146,8 @@ import { uuid } from "@/utils";
 import { isNull } from "@/utils/valiargs";
 import { validatorRule } from "@/utils/validateRlue";
 import { captcha } from "@/api/user";
+import { footer } from "./components/footer";
+import Footer from "./components/footer.vue";
 
 // TODO 演示专用 开发记得删除
 // import LoginTips from "./components/LoginTips";
@@ -117,7 +162,7 @@ export default {
     },
   },
   // components: { LoginTips },
-  components: {},
+  components: { Footer },
   data() {
     return {
       nodeEnv: process.env.NODE_ENV,
@@ -153,6 +198,7 @@ export default {
       immediate: true,
     },
   },
+
   created() {
     document.body.style.overflow = "hidden";
     this.form.uuid = uuid();
@@ -173,6 +219,7 @@ export default {
       this.form.password = ret.password;
       this.handleLogin();
     },
+
     // 获得新验证码
     getCaptcha() {
       this.captchaImg = captcha(this.form.uuid);
@@ -232,7 +279,7 @@ export default {
 
   .title-tips {
     margin-top: 29px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
 
     // color: rgba(14, 18, 26, 1);
@@ -243,7 +290,19 @@ export default {
 
   .login-btn {
     display: inherit;
-    width: 220px;
+    width: 150px;
+    height: 60px;
+    margin-top: 5px;
+    border: 0;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .register-btn {
+    display: inherit;
+    width: 150px;
     height: 60px;
     margin-top: 5px;
     border: 0;

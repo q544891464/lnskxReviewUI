@@ -1136,8 +1136,11 @@ export default {
   created() {
     
     this.getUnitNames();
+    this.getDisciplineList();
     
     if (this.$route.query.form) {
+      this.rules.uploadFile = [];
+      this.rules.uploadFileOther = [];
       this.form = this.$route.query.form;
 
       if(this.form.patentType){
@@ -1185,7 +1188,7 @@ export default {
     
 
     // 调用方法获取所有学科专业数据
-    this.getDisciplineList();
+    
   },
 
   data() {
@@ -1207,6 +1210,9 @@ export default {
       fileListCompleted: [],
       uuid: "",
       disabled: true,
+      tmpform:{
+
+      },
       form: {
         dynamicItem: [
           {
@@ -1474,6 +1480,14 @@ export default {
           {
             required: true,
             message: "请输入第一作者地址",
+            trigger: "blur",
+          },
+        ],
+
+        uploadFile: [
+          {
+            required: true,
+            message: "请上传代表性作品",
             trigger: "blur",
           },
         ],
@@ -1939,6 +1953,7 @@ export default {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           // alert("submit!");
+          this.tmpform = this.form;
           this.handlerFormData(this.form);
 
           // 修改
@@ -1952,6 +1967,10 @@ export default {
             const { success, msg, data } = await doInsert(this.form);
             if (success) {
               this.$baseMessage(msg, "success");
+            } else {
+              this.$baseMessage(msg,"error");
+              this.form = this.tmpform;
+              return false;
             }
           }
 
@@ -2058,7 +2077,9 @@ export default {
 
               console.log(this.form.filePath);
               // 成功
+              this.rules.uploadFile = [];
               params.onSuccess();
+
             } else {
               // 文件进度 100%
               this.errorProcess(params.file.uid);
@@ -2303,10 +2324,16 @@ export default {
     },
 
     handlerFormData(formData) {
-      // 数组转为字符串
-      this.form.patentType = this.form.patentType.join(",");
-      this.form.projectLevel = this.form.projectLevel.join(",");
-      this.form.projectInnovation = this.form.projectInnovation.join(",");
+        // 数组转为字符串
+      if(this.form.patentType){
+        this.form.patentType = this.form.patentType.join(",");
+      }
+      if(this.form.projectLevel){
+        this.form.projectLevel = this.form.projectLevel.join(",");
+      }
+      if(this.form.projectInnovation){
+        this.form.projectInnovation = this.form.projectInnovation.join(",");
+      }
 
       //解析身份证号得到出生年月日
       let iden = this.form.firstAuthorId;

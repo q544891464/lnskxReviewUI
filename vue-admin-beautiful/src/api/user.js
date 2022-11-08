@@ -78,6 +78,18 @@ export function register(data) {
   });
 }
 
+export function getBackPassword(data) {
+  return request({
+    url: "/system/getBackPassword",
+    method: "post",
+    data,
+    headers: {
+      "X-Token":
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0ZW5hbnRJZCI6IjAiLCJ0eXBlIjoic3lzdGVtIiwiZXhwIjoxNjU1NzE5NzY5LCJ1c2VySWQiOiIxIiwiYWNjb3VudCI6InN5c3RlbSIsInRpbWVzdGFtcCI6IjE2NTU3MTI1NjkyODAifQ.-4t67bFrggCffaXUqoxMOgW5vbFcvYpfkykan0U3muI",
+    },
+  });
+}
+
 export function captcha(uuid) {
   // 请求地址
   let url = "/captcha";
