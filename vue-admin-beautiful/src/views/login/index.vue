@@ -124,12 +124,14 @@
     >
 
      CopyRight
-     
-      @2022
+
+      @ 2022
 
       辽宁省科学技术协会
       
       版权所有
+
+      ALL Rights Reserved
     </div>
 
     <!-- <footer></footer> -->

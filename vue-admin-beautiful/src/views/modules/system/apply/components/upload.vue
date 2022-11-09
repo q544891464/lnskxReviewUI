@@ -33,7 +33,6 @@
               slot="trigger"
               type="danger"
               icon="el-icon-upload2"
-              v-bind:disabled="disabled"
             >
               选取文件
             </el-button>
@@ -50,7 +49,7 @@
             <div slot="tip" class="el-upload__tip">
               提示上传成功后再选择确定即可
             </div>
-            <div slot="tip" class="el-upload__tip" style="color:red">
+            <div slot="tip" class="el-upload__tip" style="color: red">
               申报表盖章上传完成后不能再进行申报内容的修改操作，请确保申报内容无误再进行上传。
             </div>
           </el-upload>
@@ -58,7 +57,7 @@
       </el-form>
       <div slot="footer">
         <el-button @click="close">取消</el-button>
-        <el-button type="primary" @click="handelConfirm">确定</el-button>
+        <el-button type="primary" @click="handelConfirm"  v-bind:disabled = disabled>确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -76,13 +75,14 @@ export default {
   props: [],
   data() {
     return {
+      disabled: true,
       id: "",
       dialogFormVisible: false,
       uploadFileCompleted: "",
       form: {
         completedFilePath: "",
       },
-      fileListCompleted:[],
+      fileListCompleted: [],
       addFormCompleted: {
         file: null,
         fileName: "",
@@ -109,9 +109,10 @@ export default {
       this.dialogFormVisible = true;
     },
     onOpen() {},
-        // 上传成功
+    // 上传成功
     onSuccess(response, file, fileList) {
       this.successProcess(file.uid);
+
       this.$emit("fetchData");
     },
     onClose() {

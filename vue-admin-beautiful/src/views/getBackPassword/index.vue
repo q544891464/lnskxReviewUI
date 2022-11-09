@@ -111,6 +111,29 @@
         </el-form>
       </el-col>
     </el-row>
+
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.6;
+        margin: 20px 0;
+      "
+    >
+
+     CopyRight
+
+      @ 2022
+
+      辽宁省科学技术协会
+      
+      版权所有
+
+      ALL Rights Reserved
+    </div>
+
   </div>
 </template>
 <script>
