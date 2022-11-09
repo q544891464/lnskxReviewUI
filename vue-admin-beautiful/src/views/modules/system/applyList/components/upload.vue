@@ -30,7 +30,7 @@
     </el-upload>
 
     <h3 style="color: red">
-      汇总表盖章上传完成后不能再进行初评操作，请确保内容无误后再进行上传提交。
+      初评报告盖章上传完成后不能再进行初评操作，请确保内容无误后再进行上传提交。
     </h3>
 
     <div slot="footer" class="dialog-footer">
@@ -54,7 +54,7 @@ export default {
   name: "SysApplyManagementImport",
   data() {
     return {
-      title: "上传汇总表",
+      title: "上传初评报告",
       importExcelUrl: "",
       uploadPath: "",
       fileList:[],
@@ -101,7 +101,7 @@ export default {
     // TODO: 上传前校验是否已经上传过
     async handleConfirm() {
       if (this.uploadPath == "") {
-        this.$message.error("请先上传汇总表");
+        this.$message.error("请先上传初评报告");
         return;
       }
       const { data } = await doUpdate({

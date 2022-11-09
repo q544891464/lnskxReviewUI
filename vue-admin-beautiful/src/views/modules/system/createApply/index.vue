@@ -309,7 +309,7 @@
             :value="item.value"
             :disabled="item.disabled"
           ></el-option>
-        </el-select>el-select
+        </el-select>
       </el-form-item>
       <!--      <el-form-item label="行政级别" prop="firstAuthorAdminLevel">
         <el-select v-model="form.firstAuthorAdminLevel" placeholder="请选择行政级别" clearable
@@ -709,14 +709,17 @@
             :label="item.label"
             :value="item.value"
             :disabled="item.disabled"
-            
           ></el-option>
         </el-select>
       </el-form-item>
 
       <el-divider v-if="form.paperType == 'A'">论文</el-divider>
 
-      <el-form-item label="论文发表刊物名称" prop="publicationName" v-if="form.paperType == 'A'">
+      <el-form-item
+        label="论文发表刊物名称"
+        prop="publicationName"
+        v-if="form.paperType == 'A'"
+      >
         <el-input
           v-model="form.publicationName"
           placeholder="请输入论文发表刊物名称"
@@ -727,7 +730,11 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="刊物影响因子" prop="impactFactor" v-if="form.paperType == 'A'">
+      <el-form-item
+        label="刊物影响因子"
+        prop="impactFactor"
+        v-if="form.paperType == 'A'"
+      >
         <el-input
           v-model="form.impactFactor"
           placeholder="请输入刊物影响因子"
@@ -737,7 +744,11 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="检索收录情况" prop="retrieval" v-if="form.paperType == 'A'">
+      <el-form-item
+        label="检索收录情况"
+        prop="retrieval"
+        v-if="form.paperType == 'A'"
+      >
         <el-select
           v-model="form.retrieval"
           placeholder="请选择检索收录情况"
@@ -755,7 +766,11 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="被引用次数" prop="citations" v-if="form.paperType == 'A'">
+      <el-form-item
+        label="被引用次数"
+        prop="citations"
+        v-if="form.paperType == 'A'"
+      >
         <el-select
           v-model="form.citations"
           placeholder="请选择被引用次数"
@@ -794,7 +809,11 @@
       </el-form-item> -->
 
       <el-divider v-if="form.paperType == 'B'">著作</el-divider>
-      <el-form-item label="出版社名称" prop="publicationPublisherName" v-if="form.paperType == 'B'">
+      <el-form-item
+        label="出版社名称"
+        prop="publicationPublisherName"
+        v-if="form.paperType == 'B'"
+      >
         <el-input
           v-model="form.publicationPublisherName"
           placeholder="请输入出版社名称名称"
@@ -805,7 +824,11 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="出版数量" prop="publicationNumber" v-if="form.paperType == 'B'">
+      <el-form-item
+        label="出版数量"
+        prop="publicationNumber"
+        v-if="form.paperType == 'B'"
+      >
         <el-input
           v-model="form.publicationNumber"
           placeholder="请输入著作出版数量(册)"
@@ -816,7 +839,11 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="著作类型" prop="publicationType" v-if="form.paperType == 'B'">
+      <el-form-item
+        label="著作类型"
+        prop="publicationType"
+        v-if="form.paperType == 'B'"
+      >
         <el-select
           v-model="form.publicationType"
           placeholder="请选择著作类型"
@@ -834,7 +861,11 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="被引用次数" prop="publicationCitations" v-if="form.paperType == 'B'">
+      <el-form-item
+        label="被引用次数"
+        prop="publicationCitations"
+        v-if="form.paperType == 'B'"
+      >
         <el-select
           v-model="form.publicationCitations"
           placeholder="请选择被引用次数"
@@ -1894,7 +1925,7 @@ export default {
     };
   },
   methods: {
-    paperTypeChange(){
+    paperTypeChange() {
       this.form.publicationName = "";
       this.form.impactFactor = "";
       this.form.retrieval = "";
@@ -1903,7 +1934,7 @@ export default {
       this.form.publicationNumber = "";
       this.form.publicationType = "";
       this.form.publicationCitations = "";
-      this.form.publicationInstitutionalUse="";
+      this.form.publicationInstitutionalUse = "";
     },
     dropDownSearch() {
       var _this = this;
@@ -1974,15 +2005,28 @@ export default {
             const { success, msg, data } = await doUpdate(this.form);
             if (success) {
               this.$baseMessage(msg, "success");
+            } else {
+              this.$baseMessage(msg, "error");
+              // console.log(this.form.discipline,"discipline");
+              
+
+              this.form = this.tmpform;
+              this.form.discipline = JSON.parse(this.tmpform.discipline);
+
+              return false;
             }
           } else {
             //插入
+
             const { success, msg, data } = await doInsert(this.form);
+
             if (success) {
               this.$baseMessage(msg, "success");
             } else {
               this.$baseMessage(msg, "error");
+
               this.form = this.tmpform;
+
               return false;
             }
           }
@@ -2392,7 +2436,7 @@ export default {
 
           if (key == "discipline") {
             let discipline = formData[key];
-            formData[key] = JSON.stringify(formData[key]).replace(/[\\]/g,'');
+            formData[key] = JSON.stringify(formData[key]).replace(/[\\]/g, "");
             // formData["disciplineName"] = this.disciplineOptions[formData[key][1]].disciplineName;
             // console.log(formData["disciplineName"],"disciplineName");
           }

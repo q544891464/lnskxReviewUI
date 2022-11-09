@@ -108,6 +108,7 @@ export default {
       this.id = row.id;
       this.dialogFormVisible = true;
       this.fileListCompleted = [];
+      this.form.completedFilePath = "";
     },
     onOpen() {},
     // 上传成功

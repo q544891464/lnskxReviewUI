@@ -28,7 +28,7 @@
       完成初评后，导出初评报告模板，按要求完善初评报告内容，签字盖章后扫描成pdf并上传系统。
     </h3>
 
-    <h3 style="color: red;">汇总表上传提交后不能再进行初评操作，请确保内容无误后再进行上传提交。</h3>
+    <h3 style="color: red;">初评报告上传提交后不能再进行初评操作，请确保内容无误后再进行上传提交。</h3>
 
     <!-- 主要操作  -->
     <!-- v-if="$perms('system_apply_insert')" -->
@@ -61,7 +61,7 @@
           type="primary"
           @click="handleExportWord"
         >
-          导出汇总表
+          导出初评报告
         </el-button>
 
         <el-button
@@ -69,7 +69,7 @@
           v-if="submitInfo.completeFilePath == null"
           @click="uploadChuping"
         >
-          上传汇总表并提交
+          上传初评报告并提交
         </el-button>
 
         <!-- <el-button
@@ -85,7 +85,7 @@
           v-if="submitInfo.completeFilePath != null"
           @click="handleViewCompleteFile"
         >
-          查看已上传汇总表
+          查看已上传初评报告
         </el-button>
         <!-- 
         <el-button

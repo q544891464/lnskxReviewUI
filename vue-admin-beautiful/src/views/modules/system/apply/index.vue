@@ -75,7 +75,6 @@
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
     >
-      <el-table-column show-overflow-tooltip type="selection"></el-table-column>
 
       <el-table-column show-overflow-tooltip label="序号" width="95">
         <template slot-scope="scope">
