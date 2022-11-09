@@ -107,12 +107,13 @@ export default {
     show(row) {
       this.id = row.id;
       this.dialogFormVisible = true;
+      this.fileListCompleted = [];
     },
     onOpen() {},
     // 上传成功
     onSuccess(response, file, fileList) {
       this.successProcess(file.uid);
-
+      
       this.$emit("fetchData");
     },
     onClose() {
@@ -197,6 +198,7 @@ export default {
             if (success) {
               this.$baseMessage(msg, "success");
               this.form.completedFilePath = data;
+              this.disabled = false;
               // 列表里只允许显示一个文件
               if (this.fileListCompleted.length <= 0) {
                 this.fileListCompleted.push({

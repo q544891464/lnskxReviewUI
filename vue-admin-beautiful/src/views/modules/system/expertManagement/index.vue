@@ -33,7 +33,7 @@
           type="warning"
           @click="handleImportUser"
         >
-          导入到用户里
+          抽取专家
         </el-button>
 
         <el-button
@@ -55,7 +55,7 @@
         </el-button>
 
         <el-button
-          v-if="$perms('system_expertmanagement_delete')"
+          
           :disabled="!selectRows.length > 0"
           icon="el-icon-delete"
           type="danger"
@@ -162,7 +162,7 @@
       >
         <template v-slot="scope">
           <el-button
-            v-if="$perms('system_expertmanagement_update')"
+            
             type="text"
             @click="handleUpdate(scope.row)"
           >
@@ -172,7 +172,7 @@
           <el-divider direction="vertical"></el-divider>
 
           <el-button
-            v-if="$perms('system_expertmanagement_delete')"
+            
             type="text"
             @click="handleDelete(scope.row)"
           >

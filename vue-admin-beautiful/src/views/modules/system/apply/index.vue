@@ -46,15 +46,17 @@
         <!--        <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
           @click="handleExportExcel"> 导出 </el-button> -->
 
-        <el-button
+        <!-- <el-button
           v-if="$perms('system_apply_delete')"
           :disabled="!selectRows.length > 0"
           icon="el-icon-delete"
           type="danger"
           @click="handleDelete"
+          
         >
           批量删除
-        </el-button>
+        </el-button> -->
+        
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
