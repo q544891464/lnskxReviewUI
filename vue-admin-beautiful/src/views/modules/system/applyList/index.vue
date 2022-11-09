@@ -237,6 +237,7 @@
             v-model="scope.row.preRank"
             type="number"
             style="width: 80px"
+        
             @change="handleRankChange(scope.row)"
             v-bind:disabled="disabled"
           ></el-input>
@@ -401,6 +402,19 @@ export default {
     },
 
     async handleRankChange(row) {
+
+      this.orgInfo.quota
+
+      if(parseInt(row.preRank)>0){
+        this.$baseMessage("排序不能小于1", "error");
+        row.preRank = 1;
+      }
+
+      if(parseInt(row.preRank)<=0){
+        this.$baseMessage("排序不能小于1", "error");
+        row.preRank = 1;
+      }
+
       const preRank = row.preRank;
       console.log(preRank);
       if (preRank == null || preRank == "") {
