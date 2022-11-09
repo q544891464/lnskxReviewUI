@@ -73,7 +73,7 @@
 
           <el-form-item>
             <el-input
-              v-model.trim="queryForm.discipline_LIKE"
+              v-model.trim="queryForm.disciplineName_LIKE"
               placeholder="请输入专业"
               clearable
             />
@@ -123,11 +123,9 @@
 
       <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
-          <span v-if="scope.row.discipline != null">
+          <span v-if="scope.row.disciplineName != null">
             {{
-              scope.row.discipline
-                .split(",")[1]
-                .substring(1, scope.row.discipline.split(",")[1].length - 2)
+              scope.row.disciplineName
             }}
           </span>
         </template>

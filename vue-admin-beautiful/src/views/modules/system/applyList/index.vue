@@ -210,11 +210,9 @@
 
       <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
-          <span v-if="scope.row.discipline != null">
+          <span v-if="scope.row.disciplineName != null">
             {{
-              scope.row.discipline
-                .split(",")[1]
-                .substring(1, scope.row.discipline.split(",")[1].length - 2)
+              scope.row.disciplineName
             }}
           </span>
         </template>
@@ -403,11 +401,11 @@ export default {
 
     async handleRankChange(row) {
 
-      this.orgInfo.quota
+      
 
-      if(parseInt(row.preRank)>0){
-        this.$baseMessage("排序不能小于1", "error");
-        row.preRank = 1;
+      if(parseInt(row.preRank)>this.orgInfo.quota){
+        this.$baseMessage("排序不能大于推荐名额", "error");
+        row.preRank = this.orgInfo.quota;
       }
 
       if(parseInt(row.preRank)<=0){

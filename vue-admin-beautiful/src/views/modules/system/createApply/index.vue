@@ -101,11 +101,16 @@
           clearable
           v-bind:disabled="disabled"
         ></el-date-picker>
-        <div class="tip" style="color:red">*发表/出版日期不得晚于2021年1月1日</div>
+        <div class="tip" style="color: red">
+          *发表/出版日期不得晚于2021年1月1日
+        </div>
       </el-form-item>
 
-
-      <el-form-item label-width="150px" label="学科专业分类(专业代码)" prop="discipline">
+      <el-form-item
+        label-width="150px"
+        label="学科专业分类(专业代码)"
+        prop="discipline"
+      >
         <el-cascader
           v-model="form.discipline"
           :options="disciplineOptions"
@@ -184,7 +189,6 @@
       </el-form-item>
 
       <el-divider>申报人简介</el-divider>
-
 
       <el-form-item label="申报人" prop="firstAuthor">
         <el-input
@@ -305,7 +309,7 @@
             :value="item.value"
             :disabled="item.disabled"
           ></el-option>
-        </el-select>
+        </el-select>el-select
       </el-form-item>
       <!--      <el-form-item label="行政级别" prop="firstAuthorAdminLevel">
         <el-select v-model="form.firstAuthorAdminLevel" placeholder="请选择行政级别" clearable
@@ -688,11 +692,31 @@
 
       <!-- 分割线 -->
 
-      <el-divider>代表性作品证明材料</el-divider>
+      <el-divider>代表性作品证明材料（论文/著作选择一项填写）</el-divider>
 
-      <el-divider>论文</el-divider>
+      <el-form-item label="代表性作品类型" prop="paperType">
+        <el-select
+          v-model="form.paperType"
+          placeholder="请选择代表性作品类型"
+          clearable
+          :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+          @change="paperTypeChange"
+        >
+          <el-option
+            v-for="(item, index) in paperTypeOptions"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+            
+          ></el-option>
+        </el-select>
+      </el-form-item>
 
-      <el-form-item label="论文发表刊物名称" prop="publicationName">
+      <el-divider v-if="form.paperType == 'A'">论文</el-divider>
+
+      <el-form-item label="论文发表刊物名称" prop="publicationName" v-if="form.paperType == 'A'">
         <el-input
           v-model="form.publicationName"
           placeholder="请输入论文发表刊物名称"
@@ -703,7 +727,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="刊物影响因子" prop="impactFactor">
+      <el-form-item label="刊物影响因子" prop="impactFactor" v-if="form.paperType == 'A'">
         <el-input
           v-model="form.impactFactor"
           placeholder="请输入刊物影响因子"
@@ -713,14 +737,13 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="检索收录情况" prop="retrieval">
+      <el-form-item label="检索收录情况" prop="retrieval" v-if="form.paperType == 'A'">
         <el-select
           v-model="form.retrieval"
           placeholder="请选择检索收录情况"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in retrievalOptions"
@@ -732,14 +755,13 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="被引用次数" prop="citations">
+      <el-form-item label="被引用次数" prop="citations" v-if="form.paperType == 'A'">
         <el-select
           v-model="form.citations"
           placeholder="请选择被引用次数"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in citationsOptions"
@@ -771,8 +793,8 @@
         </el-select>
       </el-form-item> -->
 
-      <el-divider>专著</el-divider>
-      <el-form-item label="出版社名称" prop="publicationPublisherName">
+      <el-divider v-if="form.paperType == 'B'">著作</el-divider>
+      <el-form-item label="出版社名称" prop="publicationPublisherName" v-if="form.paperType == 'B'">
         <el-input
           v-model="form.publicationPublisherName"
           placeholder="请输入出版社名称名称"
@@ -780,30 +802,27 @@
           :maxlength="150"
           :style="{ width: '100%' }"
           v-bind:disabled="disabled"
-
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="出版数量" prop="publicationNumber">
+      <el-form-item label="出版数量" prop="publicationNumber" v-if="form.paperType == 'B'">
         <el-input
           v-model="form.publicationNumber"
-          placeholder="请输入专著出版数量(册)"
+          placeholder="请输入著作出版数量(册)"
           clearable
           :maxlength="10"
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="著作类型" prop="publicationType">
+      <el-form-item label="著作类型" prop="publicationType" v-if="form.paperType == 'B'">
         <el-select
           v-model="form.publicationType"
           placeholder="请选择著作类型"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in publicationTypeOptions"
@@ -815,14 +834,13 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="被引用次数" prop="publicationCitations">
+      <el-form-item label="被引用次数" prop="publicationCitations" v-if="form.paperType == 'B'">
         <el-select
           v-model="form.publicationCitations"
           placeholder="请选择被引用次数"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in citationsOptions"
@@ -838,6 +856,7 @@
       <el-form-item
         label="图书馆收藏或学术机构使用"
         prop="publicationInstitutionalUse"
+        v-if="form.paperType == 'B'"
       >
         <el-select
           v-model="form.publicationInstitutionalUse"
@@ -857,7 +876,10 @@
         <div>（可用该机构网页证明）</div>
       </el-form-item>
 
-      <el-form-item label="代表性作品（论文或专著）及证明材料上传" prop="uploadFile">
+      <el-form-item
+        label="代表性作品（论文或著作）及证明材料上传"
+        prop="uploadFile"
+      >
         <el-upload
           ref="fileimport"
           accept=".pdf"
@@ -883,7 +905,7 @@
             预览
           </el-button>
           <div slot="tip" class="el-upload__tip">
-            请将代表性作品（论文或专著）及证明材料合并为一份pdf上传
+            请将代表性作品（论文或著作）及证明材料合并为一份pdf上传
           </div>
           <div slot="tip" class="el-upload__tip">
             证明材料需盖相关部门或申报人所在单位科技部门公章方为有效
@@ -894,7 +916,7 @@
         </el-upload>
       </el-form-item>
 
-      <el-divider style="font-weight: 100;">其它支撑材料及证明材料</el-divider>
+      <el-divider style="font-weight: 100">其它支撑材料及证明材料</el-divider>
 
       <el-form-item label="相关系列成果" prop="relatedAchievements">
         <el-select
@@ -903,7 +925,6 @@
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in relatedAchievementsOptions"
@@ -922,9 +943,8 @@
           :maxlength="150"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
-
         ></el-input>
-        <div style="color:red"> (多个项目名称用 ; 隔开)</div>
+        <div style="color: red">(多个项目名称用 ; 隔开)</div>
       </el-form-item>
       <el-form-item label="项目级别" prop="projectLevel">
         <el-select
@@ -934,7 +954,6 @@
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in projectLevelOptions"
@@ -944,6 +963,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
+        <div>(可多选)</div>
       </el-form-item>
       <el-form-item label="自主创新情况" prop="projectInnovation">
         <el-select
@@ -953,7 +973,6 @@
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in projectInnovationOptions"
@@ -963,6 +982,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
+        <div>(可多选)</div>
       </el-form-item>
 
       <el-form-item label="专利名称" prop="patentName">
@@ -973,22 +993,18 @@
           :maxlength="200"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
-
         ></el-input>
-        <div style="color:red">(多个专利名称用 ; 隔开)</div>
+        <div style="color: red">(多个专利名称用 ; 隔开)</div>
       </el-form-item>
-      
-
 
       <el-form-item label="专利类型" prop="patentType">
         <el-select
           v-model="form.patentType"
           placeholder="请选择所填专利包含的专利类型"
-          :multiple= true
+          :multiple="true"
           clearable
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
-
         >
           <el-option
             v-for="(item, index) in patentTypeOptions"
@@ -998,6 +1014,7 @@
             :disabled="item.disabled"
           ></el-option>
         </el-select>
+        <div>(可多选)</div>
       </el-form-item>
 
       <!-- <el-form-item label-width="150px" label="专利获得时间" prop="patentDate">
@@ -1020,7 +1037,6 @@
           :maxlength="150"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
-
         ></el-input>
       </el-form-item>
 
@@ -1032,7 +1048,6 @@
           :maxlength="150"
           :style="{ width: '80%' }"
           v-bind:disabled="disabled"
-          
         ></el-input>
       </el-form-item>
 
@@ -1134,35 +1149,36 @@ import { validatorRule } from "@/utils/validateRlue";
 export default {
   name: "Form",
   created() {
-    
     this.getUnitNames();
     this.getDisciplineList();
-    
+    this.fileList = [];
+    this.fileListOther = [];
+
     if (this.$route.query.form) {
       this.rules.uploadFile = [];
       this.rules.uploadFileOther = [];
       this.form = this.$route.query.form;
 
-      if(this.form.patentType){
+      if (this.form.patentType) {
         // console.log(this.form.patentType, "this.form.patentType");
-      this.form.patentType = this.form.patentType.split(",");
+        this.form.patentType = this.form.patentType.split(",");
       }
 
-      if(this.form.projectLevel){
+      if (this.form.projectLevel) {
         this.form.projectLevel = this.form.projectLevel.split(",");
       }
-      if(this.form.projectInnovation){
+      if (this.form.projectInnovation) {
         this.form.projectInnovation = this.form.projectInnovation.split(",");
       }
 
-      if(this.form.filePath){
+      if (this.form.filePath) {
         this.fileList.push({
           name: this.form.filePath,
           url: this.form.filePath,
         });
       }
 
-      if(this.form.otherFilePath){
+      if (this.form.otherFilePath) {
         this.fileListOther.push({
           name: this.form.otherFilePath,
           url: this.form.otherFilePath,
@@ -1185,15 +1201,12 @@ export default {
 
   mounted() {
     this.getIsDeadLine();
-    
 
     // 调用方法获取所有学科专业数据
-    
   },
 
   data() {
     return {
-
       dropDownValue: "",
       optionsMetaAll: [],
       optionsMetaShow: [],
@@ -1210,9 +1223,7 @@ export default {
       fileListCompleted: [],
       uuid: "",
       disabled: true,
-      tmpform:{
-
-      },
+      tmpform: {},
       form: {
         dynamicItem: [
           {
@@ -1300,24 +1311,25 @@ export default {
       },
       // 发表日期不能晚于2021-1-1 这里写死 应该改成参数
       pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.parse("2020-12-31"); 
-                }
-             },
+        disabledDate(time) {
+          return time.getTime() > Date.parse("2020-12-31");
+        },
+      },
 
       rules: {
-
-        application:[
-        { required: true, message: "请输入其他支撑材料的支撑关系", trigger: "blur" },
+        application: [
+          {
+            required: true,
+            message: "请输入其他支撑材料的支撑关系",
+            trigger: "blur",
+          },
           {
             max: 500,
             trigger: "blur",
           },
         ],
 
-        orgId: [
-          { required: true, message: "请选择单位", trigger: "change" },
-        ],
+        orgId: [{ required: true, message: "请选择单位", trigger: "change" }],
 
         discipline: [
           {
@@ -1519,13 +1531,13 @@ export default {
         //     trigger: "change",
         //   },
         // ],
-        // paperType: [
-        //   {
-        //     required: true,
-        //     message: "请选择论文类型",
-        //     trigger: "change",
-        //   },
-        // ],
+        paperType: [
+          {
+            required: true,
+            message: "代表性作品类型",
+            trigger: "change",
+          },
+        ],
         // relatedAchievements: [
         //   {
         //     required: true,
@@ -1585,7 +1597,6 @@ export default {
           label: "非高校科研院所",
           value: "非高校科研院所",
         },
-
       ],
       firstAuthorRegionOptions: [
         {
@@ -1763,25 +1774,17 @@ export default {
       ],
       paperTypeOptions: [
         {
-          label: "指南、标准、研究性原始论文",
+          label: "论文",
           value: "A",
         },
         {
-          label: "综述性文献、讲座",
+          label: "著作",
           value: "B",
-        },
-        {
-          label: "短篇报道",
-          value: "C",
-        },
-        {
-          label: "其他",
-          value: "其他",
         },
       ],
       publicationTypeOptions: [
         {
-          label: "专著",
+          label: "著作",
           value: "A",
         },
         {
@@ -1813,12 +1816,12 @@ export default {
       ],
       relatedAchievementsOptions: [
         {
-          label:
-            "有5篇（含）以上中（外）文相关论文",
+          label: "有5篇（含）以上中（外）文相关论文",
           value: "A",
         },
         {
-          label: "有相关专利，或有3篇以上中（外）文相关论文，或市级政府采用项目证明",
+          label:
+            "有相关专利，或有3篇以上中（外）文相关论文，或市级政府采用项目证明",
           value: "B",
         },
         {
@@ -1887,11 +1890,21 @@ export default {
           label: "外观设计专利",
           value: "C",
         },
-
       ],
     };
   },
   methods: {
+    paperTypeChange(){
+      this.form.publicationName = "";
+      this.form.impactFactor = "";
+      this.form.retrieval = "";
+      this.form.citations = "";
+      this.form.publicationPublisherName = "";
+      this.form.publicationNumber = "";
+      this.form.publicationType = "";
+      this.form.publicationCitations = "";
+      this.form.publicationInstitutionalUse="";
+    },
     dropDownSearch() {
       var _this = this;
       // _this.valueMeta = [];
@@ -1968,7 +1981,7 @@ export default {
             if (success) {
               this.$baseMessage(msg, "success");
             } else {
-              this.$baseMessage(msg,"error");
+              this.$baseMessage(msg, "error");
               this.form = this.tmpform;
               return false;
             }
@@ -2079,7 +2092,6 @@ export default {
               // 成功
               this.rules.uploadFile = [];
               params.onSuccess();
-
             } else {
               // 文件进度 100%
               this.errorProcess(params.file.uid);
@@ -2324,14 +2336,14 @@ export default {
     },
 
     handlerFormData(formData) {
-        // 数组转为字符串
-      if(this.form.patentType){
+      // 数组转为字符串
+      if (this.form.patentType) {
         this.form.patentType = this.form.patentType.join(",");
       }
-      if(this.form.projectLevel){
+      if (this.form.projectLevel) {
         this.form.projectLevel = this.form.projectLevel.join(",");
       }
-      if(this.form.projectInnovation){
+      if (this.form.projectInnovation) {
         this.form.projectInnovation = this.form.projectInnovation.join(",");
       }
 
@@ -2354,8 +2366,6 @@ export default {
           "-" +
           iden.substring(10, 12);
       }
-
-      
 
       this.form.disciplineName = this.form.discipline[1].substring(
         0,
@@ -2381,7 +2391,8 @@ export default {
           }
 
           if (key == "discipline") {
-            formData[key] = JSON.stringify(formData[key]);
+            let discipline = formData[key];
+            formData[key] = JSON.stringify(formData[key]).replace(/[\\]/g,'');
             // formData["disciplineName"] = this.disciplineOptions[formData[key][1]].disciplineName;
             // console.log(formData["disciplineName"],"disciplineName");
           }
