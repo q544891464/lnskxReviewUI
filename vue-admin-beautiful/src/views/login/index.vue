@@ -122,16 +122,13 @@
         margin: 20px 0;
       "
     >
+
+     CopyRight
+     
       @2022
+
+      辽宁省科学技术协会
       
-      <el-link
-        type="primary"
-        href="https://www.****.com/"
-        target="_blank"
-        style="margin: 0 5px"
-      >
-        辽宁省科学技术协会
-      </el-link>
       版权所有
     </div>
 
