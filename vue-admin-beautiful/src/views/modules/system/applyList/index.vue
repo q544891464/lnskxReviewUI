@@ -140,9 +140,13 @@
               />
             </el-form-item>
 
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
+            <el-form-item>
+              <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
             </el-button>
+            </el-form-item>
+
+
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>

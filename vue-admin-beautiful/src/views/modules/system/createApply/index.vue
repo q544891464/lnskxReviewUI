@@ -444,7 +444,7 @@
               ></el-option>
             </el-select>
           </el-form-item> -->
-          <el-form-item label="第二作者身份证" prop="author2">
+          <el-form-item label="第二作者身份证" prop="author2Id">
             <el-input
               v-model="form.author2Id"
               placeholder="请输入第二作者身份证"
@@ -492,7 +492,7 @@
               v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
-          <el-form-item label="第三作者身份证" prop="author2">
+          <el-form-item label="第三作者身份证" prop="author3Id">
             <el-input
               v-model="form.author3Id"
               placeholder="请输入第三作者身份证"
@@ -574,7 +574,7 @@
               ></el-option>
             </el-select>
           </el-form-item> -->
-          <el-form-item label="第四作者身份证" prop="author2">
+          <el-form-item label="第四作者身份证" prop="author4Id">
             <el-input
               v-model="form.author4Id"
               placeholder="请输入第四作者身份证"
@@ -624,7 +624,7 @@
               v-bind:disabled="disabled"
             ></el-input>
           </el-form-item>
-          <el-form-item label="第五作者身份证" prop="author2">
+          <el-form-item label="第五作者身份证" prop="author5Id">
             <el-input
               v-model="form.author5Id"
               placeholder="请输入第五作者身份证"
@@ -1524,6 +1524,67 @@ export default {
             required: true,
             message: "请输入第一作者地址",
             trigger: "blur",
+          },
+        ],
+
+        author2Id:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_CITIZENID,
+          },
+        ],
+        author3Id:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_CITIZENID,
+          },
+        ],
+        author4Id:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_CITIZENID,
+          },
+        ],
+        author5Id:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_CITIZENID,
+          },
+        ],
+
+        author2Tel:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_MOBILE,
+          },
+        ],
+
+        author3Tel:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_MOBILE,
+          },
+        ],
+
+        author4Tel:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_MOBILE,
+          },
+        ],
+
+        author5Tel:[
+        {
+            required: false,
+            trigger: "blur",
+            validator: validatorRule.IS_MOBILE,
           },
         ],
 
