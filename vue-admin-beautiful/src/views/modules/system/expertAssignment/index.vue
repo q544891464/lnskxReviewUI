@@ -115,6 +115,12 @@
 
       <el-table-column
               show-overflow-tooltip
+              prop="userName"
+              label="专家账号"
+      ></el-table-column>
+
+      <el-table-column
+              show-overflow-tooltip
               prop="process"
               label="专业"
       ></el-table-column>

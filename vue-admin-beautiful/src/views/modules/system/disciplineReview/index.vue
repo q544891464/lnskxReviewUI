@@ -450,8 +450,8 @@ export default {
       }
     },
 
-    async handlePrize(row) {
-      await this.$refs["detail"].show({
+    handlePrize(row) {
+      this.$refs["detail"].show({
         id: row.id,
         prize1: this.prize1,
         prize2: this.prize2,

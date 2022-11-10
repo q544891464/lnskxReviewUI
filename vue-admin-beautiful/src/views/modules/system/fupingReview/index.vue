@@ -407,6 +407,9 @@ export default {
         return "二等奖";
       } else if (row.disciplineReviewPrize == 3) {
         return "三等奖";
+      } else {
+        return "未获奖";
+
       }
     },
 
@@ -454,7 +457,7 @@ export default {
       if (row.id) {
         // this.$refs["edit"].showEdit(row);
         this.$router.push({
-          path: "/applyInfo",
+          path: "/applyInfo/applyInfo",
           query: {
             form: row,
           },

@@ -420,11 +420,14 @@ export default {
         return;
       } else {
         if (row.id) {
-          const { msg } = await doSetPreRank({
+          const { success,msg } = await doSetPreRank({
             applyId: row.id,
             preRank: preRank,
           });
           row.preRank = preRank;
+          if(!success){
+            row.isPass = "0";
+          }
 
           // this.$baseMessage(msg, "success");
         } else {

@@ -65,7 +65,7 @@
 
           <el-form-item>
             <el-input
-              v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
+              v-model.trim="queryForm.orgName_LIKE"
               placeholder="请输入工作单位名称"
               clearable
             />

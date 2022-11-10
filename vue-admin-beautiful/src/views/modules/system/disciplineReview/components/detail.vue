@@ -199,8 +199,9 @@ export default {
         console.log("prize:" + this.tableData[0].getScore);
         this.updateDetail();
         this.updateTotal();
-        this.close();
         this.$emit("fetchData");
+        this.close();
+        
       }
     },
 
