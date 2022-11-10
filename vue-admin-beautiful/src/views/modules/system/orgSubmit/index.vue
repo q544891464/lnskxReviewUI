@@ -53,7 +53,7 @@
 
           <el-form-item>
             <el-input
-              v-model.trim="queryForm.orgName_LIKE"
+              v-model.trim="queryForm.unitName_LIKE"
               placeholder="请输入单位名称"
               clearable
             />

@@ -118,6 +118,9 @@ export default {
       this.$emit("fetchData");
     },
     onClose() {
+      this.fileListCompleted = [];
+      this.form.completedFilePath = "";
+      this.disabled = true;
       this.$refs["elForm"].resetFields();
     },
     close() {

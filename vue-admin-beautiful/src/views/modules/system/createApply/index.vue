@@ -2008,10 +2008,8 @@ export default {
             } else {
               this.$baseMessage(msg, "error");
               // console.log(this.form.discipline,"discipline");
-              
 
-              this.form = this.tmpform;
-              this.form.discipline = JSON.parse(this.tmpform.discipline);
+              this.formatError();
 
               return false;
             }
@@ -2024,8 +2022,7 @@ export default {
               this.$baseMessage(msg, "success");
             } else {
               this.$baseMessage(msg, "error");
-
-              this.form = this.tmpform;
+              this.formatError();
 
               return false;
             }
@@ -2037,6 +2034,24 @@ export default {
         }
       });
     },
+
+    // 提交错误后，格式化数据
+    formatError() {
+      this.form = this.tmpform;
+      this.form.discipline = JSON.parse(this.tmpform.discipline);
+      if (this.form.patentType) {
+        // console.log(this.form.patentType, "this.form.patentType");
+        this.form.patentType = this.form.patentType.split(",");
+      }
+
+      if (this.form.projectLevel) {
+        this.form.projectLevel = this.form.projectLevel.split(",");
+      }
+      if (this.form.projectInnovation) {
+        this.form.projectInnovation = this.form.projectInnovation.split(",");
+      }
+    },
+
     resetForm(formName) {
       // this.$nextTick(()=>{
       //     this.$refs[formName].resetFields();

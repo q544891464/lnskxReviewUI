@@ -108,8 +108,8 @@ export default {
       // 出版社名称
       this.tableData[i].info = this.form.publicationPublisherName;
       i++;
-      this.tableData[i].info = this.form.publicationPublishDate;
-      i++;
+      // this.tableData[i].info = this.form.publicationPublishDate;
+      // i++;
       this.tableData[i].info = this.form.publicationNumber;
       i++;
       this.tableData[i].info = publicationTypeMap.get(
@@ -237,10 +237,10 @@ export default {
           prop: "出版社名称：",
           info: "",
         },
-        {
-          prop: "出版时间：",
-          info: "",
-        },
+        // {
+        //   prop: "出版时间：",
+        //   info: "",
+        // },
         {
           prop: "出版数量：",
           info: "",
