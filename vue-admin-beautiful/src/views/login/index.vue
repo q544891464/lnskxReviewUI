@@ -7,12 +7,18 @@
       :closable="false"
       style="position: fixed"
     ></el-alert>  -->
-
+      <el-row>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <h3 class="titlename"> <img style="width:80px;float:left;margin-top:-20px " src="~@/assets/login_images/logo.png">{{ title }}</h3>
+             </el-col>
+        </el-row>
     <el-row>
-      <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6">
-        <div style="color: transparent">占位符</div>
+      <el-col :xs="14" :sm="14" :md="24" :lg="14" :xl="14">
+        <div >
+          <img style="width:70%;margin:10% 0 0 10% " src="~@/assets/login_images/pic.png">
+        </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+       <el-col :xs="10" :sm="10" :md="24" :lg="10" :xl="10">
         <el-form
           ref="form"
           :model="form"
@@ -23,7 +29,7 @@
           <!-- <div class="title">
             <img src="~@/assets/login_images/title.png" alt="" />
           </div> -->
-          <div class="title-tips">{{ title }}</div>
+          <div class="title-tips">登录系统</div>
           <el-form-item style="margin-top: 40px" prop="username">
             <span class="svg-container svg-container-admin">
               <vab-icon :icon="['fas', 'user']" />
@@ -119,6 +125,7 @@
         justify-content: center;
         font-size: 14px;
         opacity: 0.6;
+        color:#fff;
         margin: 20px 0;
       "
     >
@@ -275,12 +282,20 @@ export default {
     font-weight: 500;
     color: rgba(14, 18, 26, 1);
   }
+  .titlename{
+    margin-top: 70px;
+    font-size: 40px;
+    color: #fff;
+    font-weight: 600;
+    margin-left: 30px;
+  }
 
   .title-tips {
     margin-top: 29px;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: 400;
-
+    text-align: center;
+ 
     // color: rgba(14, 18, 26, 1);
     color: #d7dee3;
     text-overflow: ellipsis;
@@ -290,7 +305,7 @@ export default {
   .login-btn {
     display: inherit;
     width: 150px;
-    height: 60px;
+    height: 50px;
     margin-top: 5px;
     border: 0;
 
@@ -316,11 +331,11 @@ export default {
     position: relative;
     max-width: 100%;
     // margin: calc((100vh - 425px) / 2) 10% 10%;
-    margin: 10% 10%;
+    margin: 15% 20% 0 0 ;
     // margin: 50px 90px;
     overflow: hidden;
-    padding: 2rem 4rem;
-
+    padding: 2rem 3rem  ;
+     width: 340px;
     .forget-password {
       width: 100%;
       margin-top: 40px;
@@ -362,7 +377,7 @@ export default {
 
   .svg-container {
     position: absolute;
-    top: 14px;
+    top: 10px;
     left: 15px;
     z-index: $base-z-index;
     font-size: 16px;
@@ -398,7 +413,7 @@ export default {
   ::v-deep {
     .el-form-item {
       padding-right: 0;
-      margin: 20px 0;
+      margin: 30px 0;
       color: #454545;
       background: transparent;
       border: 1px solid transparent;
@@ -423,7 +438,7 @@ export default {
       box-sizing: border-box;
 
       input {
-        height: 58px;
+        height: 48px;
         padding-left: 45px;
         font-size: $base-font-size-default;
         line-height: 58px;
