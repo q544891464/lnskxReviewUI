@@ -1,14 +1,34 @@
 <template>
   <div class="login-container">
-    <!--    <el-alert 默认带的广告栏 关闭了
-      v-if="nodeEnv !== 'development'"
-      title="beautiful boys and girls 欢迎加入 OPSLI 快速开发平台 QQ群：724850675 | API接口/数据库监控密码均为 admin : 123456 "
+    <!-- <el-alert
+      title="辽人社函2022 275号关于自然科学学术成果奖评选通知"
       type="success"
-      :closable="false"
+      :closable="true"
       style="position: fixed"
+      @click.native="handleViewFile(url)"
     ></el-alert>  -->
+
+
+
     <el-row>
+      <!-- <div class="vab-ad">
+      <el-carousel
+        v-if="adList"
+        height="30px"
+        direction="vertical"
+        :autoplay="true"
+        :interval="3000"
+        indicator-position="none"
+        style="background-color: #fff;"
+      >
+        <el-carousel-item v-for="(item, index) in adList" :key="index">
+          <el-tag type="warning"> 通知 </el-tag>
+          <a target="_blank" :href="item.url">{{ item.title }}</a>
+        </el-carousel-item>
+      </el-carousel>
+    </div> -->
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+        
         <h3 class="titlename">
           <img
             style="width: 80px; float: left; margin-top: -20px"
@@ -119,9 +139,17 @@
               <div style="margin-top: 20px;margin-left: 40px;">找回密码</div>
             </router-link> -->
 
-            <router-link to="/getBackPassword">
+            <router-link to="/getBackPassword" style="display: inline-block">
               <div style="margin-top: 20px">找回密码</div>
             </router-link>
+
+            <el-button
+              type="text"
+              style="margin-top: 20px; margin-left: 30px; display: inline-block"
+              @click="handleViewFile(url)"
+            >
+              帮助
+            </el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -139,7 +167,6 @@
       "
     >
       成果奖业务咨询 联系人：省科协学会（国际）部 王婷 024-23852101 13252728181
-      
     </div>
 
     <div
@@ -153,8 +180,7 @@
         margin: 5px 0;
       "
     >
-    信息平台技术咨询 联系人：陈维帆 13322424050
-      
+      信息平台技术咨询 联系人：陈维帆 13322424050
     </div>
 
     <div
@@ -202,7 +228,14 @@ export default {
   data() {
     return {
       nodeEnv: process.env.NODE_ENV,
+      adList: [
+        {
+          title: "辽人社函2022 275号关于自然科学学术成果奖评选通知",
+          url: "http://42.101.40.191:7000/opsli-boot/static/files/辽人社函2022 275号关于自然科学学术成果奖评选通知.pdf",
+        },
+      ],
       title: this.$baseTitle,
+      url: "http://42.101.40.191:7000/opsli-boot/static/files/辽人社函2022 275号关于自然科学学术成果奖评选通知.pdf",
       form: {
         username: "",
         password: "",
@@ -254,6 +287,10 @@ export default {
       this.form.username = ret.username;
       this.form.password = ret.password;
       this.handleLogin();
+    },
+
+    handleViewFile(url) {
+      window.open(url);
     },
 
     // 获得新验证码
@@ -366,6 +403,7 @@ export default {
     overflow: hidden;
     padding: 2rem 3rem;
     width: 340px;
+
     .forget-password {
       width: 100%;
       margin-top: 40px;
