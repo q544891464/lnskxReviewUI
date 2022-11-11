@@ -426,6 +426,7 @@
               clearable
               :style="{ width: '100%' }"
               v-bind:disabled="disabled"
+              @change="author2Change"
             ></el-input>
           </el-form-item>
           <!-- <el-form-item label="第二作者性别" prop="author2Sex">
@@ -490,6 +491,7 @@
               clearable
               :style="{ width: '100%' }"
               v-bind:disabled="disabled"
+              @change="author3Change"
             ></el-input>
           </el-form-item>
           <el-form-item label="第三作者身份证" prop="author3Id">
@@ -556,6 +558,7 @@
               clearable
               :style="{ width: '100%' }"
               v-bind:disabled="disabled"
+              @change="author4Change"
             ></el-input>
           </el-form-item>
           <!-- <el-form-item label="第四作者性别" prop="author4Sex">
@@ -622,6 +625,7 @@
               clearable
               :style="{ width: '100%' }"
               v-bind:disabled="disabled"
+              @change="author5Change"
             ></el-input>
           </el-form-item>
           <el-form-item label="第五作者身份证" prop="author5Id">
@@ -946,6 +950,7 @@
             只能上传不超过 10MB 的文件
           </div>
         </el-upload>
+        <div style="font-size: small; color: red">请等待出现“上传成功”后再进行提交</div>
       </el-form-item>
 
       <el-divider style="font-weight: 100">其它支撑材料及证明材料</el-divider>
@@ -1114,6 +1119,7 @@
             且盖相关部门或申报人所在单位科技部门公章方为有效
           </div>
         </el-upload>
+        <div style="font-size: small; color: red">请等待出现“上传成功”后再进行提交</div>
       </el-form-item>
 
       <!-- <el-form-item label="申报表材料" prop="uploadFileCompleted">
@@ -1319,6 +1325,11 @@ export default {
         completedFilePath: "",
         publicationName: "",
         impactFactor: "",
+        publicationPublisherName: "",
+        publicationNumber: "",
+        publicationType: "",
+        publicationCitations: "",
+        publicationInstitutionalUse: "",
         retrieval: "",
         citations: "",
         paperType: "",
@@ -1529,61 +1540,61 @@ export default {
           },
         ],
 
-        author2Id:[
-        {
+        author2Id: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_CITIZENID,
           },
         ],
-        author3Id:[
-        {
+        author3Id: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_CITIZENID,
           },
         ],
-        author4Id:[
-        {
+        author4Id: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_CITIZENID,
           },
         ],
-        author5Id:[
-        {
+        author5Id: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_CITIZENID,
           },
         ],
 
-        author2Tel:[
-        {
+        author2Tel: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_MOBILE,
           },
         ],
 
-        author3Tel:[
-        {
+        author3Tel: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_MOBILE,
           },
         ],
 
-        author4Tel:[
-        {
+        author4Tel: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_MOBILE,
           },
         ],
 
-        author5Tel:[
-        {
+        author5Tel: [
+          {
             required: false,
             trigger: "blur",
             validator: validatorRule.IS_MOBILE,
@@ -2119,7 +2130,11 @@ export default {
       console.log(file, fileList);
       this.form.filePath = "";
       this.rules.uploadFile = [
-        { required: true, message: "请上传代表性作品及证明材料", trigger: "change" },
+        {
+          required: true,
+          message: "请上传代表性作品及证明材料",
+          trigger: "change",
+        },
       ];
     },
 
@@ -2127,7 +2142,11 @@ export default {
       console.log(file, fileList);
       this.form.filePathOther = "";
       this.rules.uploadFileOther = [
-        { required: true, message: "请上传支撑材料及证明材料", trigger: "change" },
+        {
+          required: true,
+          message: "请上传支撑材料及证明材料",
+          trigger: "change",
+        },
       ];
     },
 
@@ -2461,6 +2480,55 @@ export default {
         return 7;
       } else if (disciplineSubject == "交通与基建") {
         return 8;
+      }
+    },
+
+    author2Change() {
+      if (this.form.author2 != "") {
+        this.rules.author2Id.push({
+          required: true,
+          message: "请输入第二作者身份证",
+          trigger: "change",
+        });
+      } else {
+        this.rules.author2Id = [];
+      }
+    },
+
+    author3Change() {
+      if (this.form.author3 != "") {
+        this.rules.author3Id.push({
+          required: true,
+          message: "请输入第三作者身份证",
+          trigger: "change",
+        });
+      } else {
+        this.rules.author3Id = [];
+      } 
+
+    },
+
+    author4Change() {
+      if (this.form.author4 != "") {
+        this.rules.author4Id.push({
+          required: true,
+          message: "请输入第四作者身份证",
+          trigger: "change",
+        });
+      } else {
+        this.rules.author4Id = [];
+      }
+    },
+
+    author5Change() {
+      if (this.form.author5 != "") {
+        this.rules.author5Id.push({
+          required: true,
+          message: "请输入第五作者身份证",
+          trigger: "change",
+        });
+      } else {
+        this.rules.author5Id = [];
       }
     },
 
