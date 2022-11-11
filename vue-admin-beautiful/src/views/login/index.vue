@@ -7,18 +7,27 @@
       :closable="false"
       style="position: fixed"
     ></el-alert>  -->
-      <el-row>
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <h3 class="titlename"> <img style="width:80px;float:left;margin-top:-20px " src="~@/assets/login_images/logo.png">{{ title }}</h3>
-             </el-col>
-        </el-row>
+    <el-row>
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+        <h3 class="titlename">
+          <img
+            style="width: 80px; float: left; margin-top: -20px"
+            src="~@/assets/login_images/logo.png"
+          />
+          2022年辽宁省自然科学学术成果奖申报系统
+        </h3>
+      </el-col>
+    </el-row>
     <el-row>
       <el-col :xs="14" :sm="14" :md="24" :lg="14" :xl="14">
-        <div >
-          <img style="width:70%;margin:10% 0 0 10% " src="~@/assets/login_images/pic.png">
+        <div>
+          <img
+            style="width: 70%; margin: 10% 0 0 10%"
+            src="~@/assets/login_images/pic.png"
+          />
         </div>
       </el-col>
-       <el-col :xs="10" :sm="10" :md="24" :lg="10" :xl="10">
+      <el-col :xs="10" :sm="10" :md="24" :lg="10" :xl="10">
         <el-form
           ref="form"
           :model="form"
@@ -29,7 +38,7 @@
           <!-- <div class="title">
             <img src="~@/assets/login_images/title.png" alt="" />
           </div> -->
-          <div class="title-tips">登录系统</div>
+          <div class="title-tips">用户登录</div>
           <el-form-item style="margin-top: 40px" prop="username">
             <span class="svg-container svg-container-admin">
               <vab-icon :icon="['fas', 'user']" />
@@ -125,20 +134,41 @@
         justify-content: center;
         font-size: 14px;
         opacity: 0.6;
-        color:#fff;
-        margin: 20px 0;
+        color: #fff;
+        margin: -10px 10;
       "
     >
-
-     CopyRight
-
-      @ 2022
-
-      辽宁省科学技术协会
+      成果奖业务咨询 联系人：省科协学会（国际）部 王婷 024-23852101 13252728181
       
-      版权所有
+    </div>
 
-      ALL Rights Reserved
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.6;
+        color: #fff;
+        margin: 5px 0;
+      "
+    >
+    信息平台技术咨询 联系人：陈维帆 13322424050
+      
+    </div>
+
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.6;
+        color: #fff;
+        margin: 5px 0;
+      "
+    >
+      CopyRight @ 2022 辽宁省科学技术协会 版权所有 ALL Rights Reserved
     </div>
 
     <!-- <footer></footer> -->
@@ -282,7 +312,7 @@ export default {
     font-weight: 500;
     color: rgba(14, 18, 26, 1);
   }
-  .titlename{
+  .titlename {
     margin-top: 70px;
     font-size: 40px;
     color: #fff;
@@ -295,7 +325,7 @@ export default {
     font-size: 30px;
     font-weight: 400;
     text-align: center;
- 
+
     // color: rgba(14, 18, 26, 1);
     color: #d7dee3;
     text-overflow: ellipsis;
@@ -331,11 +361,11 @@ export default {
     position: relative;
     max-width: 100%;
     // margin: calc((100vh - 425px) / 2) 10% 10%;
-    margin: 15% 20% 0 0 ;
+    margin: 15% 20% 0 0;
     // margin: 50px 90px;
     overflow: hidden;
-    padding: 2rem 3rem  ;
-     width: 340px;
+    padding: 2rem 3rem;
+    width: 340px;
     .forget-password {
       width: 100%;
       margin-top: 40px;

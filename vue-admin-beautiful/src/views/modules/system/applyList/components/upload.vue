@@ -20,6 +20,7 @@
       :on-success="onSuccess"
       :on-error="onError"
       :on-progress="onProcess"
+      :on-remove="handleRemove"
     >
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">
@@ -96,6 +97,11 @@ export default {
         file: file,
       };
       this.autoLoadingProcess(file.uid);
+    },
+
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.uploadPath = "";
     },
 
     // TODO: 上传前校验是否已经上传过

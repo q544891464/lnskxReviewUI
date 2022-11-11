@@ -919,6 +919,7 @@
           :auto-upload="true"
           :show-file-list="true"
           :before-upload="beforeUpload"
+          :on-remove="handleRemove"
           :file-list="fileList"
           :http-request="handleImport"
           :on-success="onSuccess"
@@ -1091,6 +1092,7 @@
           :auto-upload="true"
           :show-file-list="true"
           :before-upload="beforeUploadOther"
+          :on-remove="handleRemoveOther"
           :file-list="fileListOther"
           :http-request="handleImportOther"
           :on-success="onSuccess"
@@ -2111,6 +2113,22 @@ export default {
       if (this.form.projectInnovation) {
         this.form.projectInnovation = this.form.projectInnovation.split(",");
       }
+    },
+
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.form.filePath = "";
+      this.rules.uploadFile = [
+        { required: true, message: "请上传代表性作品及证明材料", trigger: "change" },
+      ];
+    },
+
+    handleRemoveOther(file, fileList) {
+      console.log(file, fileList);
+      this.form.filePathOther = "";
+      this.rules.uploadFileOther = [
+        { required: true, message: "请上传支撑材料及证明材料", trigger: "change" },
+      ];
     },
 
     resetForm(formName) {

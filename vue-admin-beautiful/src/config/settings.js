@@ -20,7 +20,7 @@ module.exports = {
       ? "http://localhost:7001/opsli-boot"
       : "http://42.101.40.191:7000/opsli-boot",
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
-  title: "2022年辽宁省自然科学学术成果奖申报系统",
+  title: "成果奖申报系统",
   //简写
   abbreviation: "opsli",
   //开发环境端口号
@@ -57,10 +57,9 @@ module.exports = {
   //token存储位置localStorage sessionStorage cookie
   storage: "localStorage",
   //token失效回退到登录页时是否记录本次的路由
-  recordRoute: true,
+  recordRoute: false,
   //是否显示logo，不显示时设置false，显示时请填写remixIcon图标名称，暂时只支持设置remixIcon
-  // TODO:暂时不显示logo
-  logo: "false",
+  logo: "lnskxlogo",
   //是否国定头部 固定fixed 不固定noFixed
   header: "fixed",
   //横纵布局 horizontal vertical

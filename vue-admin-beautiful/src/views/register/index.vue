@@ -136,11 +136,43 @@
         justify-content: center;
         font-size: 14px;
         opacity: 0.6;
-        margin: 20px 0;
+        color: #fff;
+        margin: -10px 10;
+      "
+    >
+      成果奖业务咨询 联系人：省科协学会（国际）部 王婷 024-23852101 13252728181
+      
+    </div>
+
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.6;
+        color: #fff;
+        margin: 5px 0;
+      "
+    >
+    信息平台技术咨询 联系人：陈维帆 13322424050
+      
+    </div>
+
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.6;
+        color: #fff;
+        margin: 5px 0;
       "
     >
       CopyRight @ 2022 辽宁省科学技术协会 版权所有 ALL Rights Reserved
     </div>
+
   </div>
 </template>
 <script>

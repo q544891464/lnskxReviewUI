@@ -112,6 +112,8 @@
       </el-col>
     </el-row>
 
+
+
     <div
       style="
         display: flex;
@@ -119,19 +121,11 @@
         justify-content: center;
         font-size: 14px;
         opacity: 0.6;
-        margin: 20px 0;
+        color: #fff;
+        margin: 5px 0;
       "
     >
-
-     CopyRight
-
-      @ 2022
-
-      辽宁省科学技术协会
-      
-      版权所有
-
-      ALL Rights Reserved
+      CopyRight @ 2022 辽宁省科学技术协会 版权所有 ALL Rights Reserved
     </div>
 
   </div>

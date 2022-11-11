@@ -28,6 +28,7 @@
             :http-request="handleImportCompleted"
             :on-success="onSuccess"
             :on-error="onError"
+            :on-remove="handleRemoveCompleted"
           >
             <el-button
               slot="trigger"
@@ -126,6 +127,15 @@ export default {
     close() {
       this.$emit("update:visible", false);
       this.dialogFormVisible = false;
+    },
+
+    handleRemoveCompleted(file, fileList) {
+      console.log(file, fileList);
+      this.form.completedFilePath= "";
+      this.disabled = true;
+      this.rules.uploadFileCompleted = [
+        { required: true, message: "请上传完整申报表", trigger: "change" },
+      ];
     },
     async handelConfirm() {
       const { msg } = await doSetCompletedFile({
