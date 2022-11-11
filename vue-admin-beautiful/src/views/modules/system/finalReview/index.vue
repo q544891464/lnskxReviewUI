@@ -120,7 +120,7 @@
         label="工作单位"
       ></el-table-column>
 
-      <el-table-column show-overflow-tooltip label="初评单位" prop="orgName">
+      <!-- <el-table-column show-overflow-tooltip label="初评单位" prop="orgName">
         <template slot-scope="scope">
           <span>{{ scope.row.orgName }}</span>
         </template>
@@ -132,17 +132,6 @@
         </template>
       </el-table-column>
 
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="discipline"
-              label="学科专业"
-      ></el-table-column> -->
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="keywords"
-              label="关键词"
-      ></el-table-column> -->
 
 
 
@@ -152,16 +141,7 @@
         prop="avgScore"
         v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
       >
-        <!-- :formatter="disciplineReviewPrizeFormat" -->
-        <!--        <template v-slot="scope">
 
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handlePrize(scope.row)"
-          > $scope.row.prize </el-button>
-        </template>
- -->
       </el-table-column>
 
       <el-table-column
@@ -171,16 +151,8 @@
         :formatter="disciplineReviewPrizeFormat"
         v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
       >
-        <!--        <template v-slot="scope">
 
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handlePrize(scope.row)"
-          > $scope.row.prize </el-button>
-        </template>
- -->
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
         show-overflow-tooltip
