@@ -44,12 +44,13 @@ export default {
       .set("C", "CSCD/CSSCI/CSTPCD")
       .set("无", "无");
     let relatedAchievementsMap = new Map()
+      .set("A", "有5篇（含）以上中（外）文相关论文")
       .set(
-        "A",
+        "B",
         "有相关专利，或有3篇以上中文相关论文或1篇外文相关论文，或市级政府采用证明"
       )
-      .set("B", "有2篇中文相关论文")
-      .set("C", "有1篇中文相关论文")
+      .set("C", "有2篇中文相关论文")
+      .set("D", "有1篇中文相关论文")
       .set("无", "无");
     let projectLevelMap = new Map()
       .set("A", "国家级重大项目")
@@ -151,7 +152,7 @@ export default {
       this.tableData[i].info = this.form.patentApplication;
       i++;
       this.tableData[i].info = this.form.patentValue;
-      i++;
+      i++;篇
 
       this.tableData[i].url = this.form.filePath;
       this.tableData[i].view = true;
