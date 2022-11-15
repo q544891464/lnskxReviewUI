@@ -197,7 +197,7 @@
                 v-if="$perms('system_apply_delete')"
                 type="text"
                 @click.native="handleDelete(scope.row)"
-                v-bind:disabled = "scope.row.completedFilePath != '' && scope.row.completedFilePath != null || disabled"
+                v-bind:disabled = "disabled"
               >
                 确认删除
               </el-dropdown-item>

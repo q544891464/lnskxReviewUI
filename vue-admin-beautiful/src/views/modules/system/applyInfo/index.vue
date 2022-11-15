@@ -89,9 +89,9 @@ export default {
       i++;
       this.tableData[i].info = this.form.introduction;
       i++;
-      this.tableData[i].info = this.form.innovation;
-      i++;
       this.tableData[i].info = this.form.application;
+      i++;
+      this.tableData[i].info = this.form.innovation;
       i++;
       this.tableData[i].info = this.form.publicationName;
       i++;
@@ -152,7 +152,7 @@ export default {
       this.tableData[i].info = this.form.patentApplication;
       i++;
       this.tableData[i].info = this.form.patentValue;
-      i++;篇
+      i++;
 
       this.tableData[i].url = this.form.filePath;
       this.tableData[i].view = true;

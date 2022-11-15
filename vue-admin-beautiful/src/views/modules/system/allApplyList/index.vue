@@ -185,9 +185,10 @@
           </template>
         </el-table-column> -->
 
-      <el-table-column show-overflow-tooltip label="导出">
+      <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
-          <el-button type="text" @click.native="handleViewFile(scope.row)">
+          <el-button type="text" @click.native="handleViewFile(scope.row)"
+          v-bind:disabled = "scope.row.completedFilePath == '' && scope.row.completedFilePath != null">
             申报表查看
           </el-button>
         </template>
@@ -442,8 +443,8 @@ export default {
     },
 
     handleViewFile(row) {
-      if (row.wordPath) {
-        window.open(row.wordPath, "_blank");
+      if (row.completedFilePath) {
+        window.open(row.completedFilePath, "_blank");
       } else {
         this.$baseMessage("请先上传文件", "error");
       }

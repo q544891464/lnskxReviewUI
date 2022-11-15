@@ -67,7 +67,7 @@
             <el-input
               v-model="form.applyName"
               placeholder="成果名称"
-              :maxlength="150"
+              :maxlength="200"
               show-word-limit
               clearable
               :style="{ width: '90%' }"
@@ -169,7 +169,7 @@
           type="textarea"
           v-bind:disabled="disabled"
           :autosize="{ minRows: 4, maxRows: 4 }"
-          :maxlength="500"
+
           show-word-limit
           placeholder="其他支撑材料（论文、著作、专利、项目）与代表性作品的支撑关系"
         ></el-input>
@@ -181,7 +181,7 @@
           type="textarea"
           v-bind:disabled="disabled"
           placeholder="500个汉字以内，与该代表性作品相关的其他学术价值、成果转化及经济效益、社会效益简介"
-          :maxlength="500"
+
           show-word-limit
           :autosize="{ minRows: 4, maxRows: 4 }"
           :style="{ width: '100%' }"
@@ -1122,6 +1122,8 @@
         <div style="font-size: small; color: red">请等待出现“上传成功”后再进行提交</div>
       </el-form-item>
 
+      <div style="font-size: small; ">提交后可在“上传申请表”处重新编辑</div>
+
       <!-- <el-form-item label="申报表材料" prop="uploadFileCompleted">
         <el-upload
           ref="fileimport3"
@@ -1403,8 +1405,8 @@ export default {
           { required: true, message: "请输入成果名称", trigger: "blur" },
           {
             min: 3,
-            max: 150,
-            message: "长度在 3 到 150 个字符",
+            max: 200,
+            message: "长度在 3 到 200 个字符",
             trigger: "blur",
           },
         ],
@@ -1439,11 +1441,12 @@ export default {
         ],
         firstAuthorId: [
           { required: true, message: "请填写身份证号", trigger: "blur" },
-          {
-            required: true,
-            trigger: "blur",
-            validator: validatorRule.IS_CITIZENID,
-          },
+          // 因为有外籍人士，暂时取消身份证验证
+          // {
+          //   required: true,
+          //   trigger: "blur",
+          //   validator: validatorRule.IS_CITIZENID,
+          // },
         ],
         firstAuthorRegion: [
           {
@@ -2129,25 +2132,25 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
       this.form.filePath = "";
-      this.rules.uploadFile = [
-        {
-          required: true,
-          message: "请上传代表性作品及证明材料",
-          trigger: "change",
-        },
-      ];
+      // this.rules.uploadFile = [
+      //   {
+      //     required: true,
+      //     message: "请上传代表性作品及证明材料",
+      //     trigger: "change",
+      //   },
+      // ];
     },
 
     handleRemoveOther(file, fileList) {
       console.log(file, fileList);
       this.form.filePathOther = "";
-      this.rules.uploadFileOther = [
-        {
-          required: true,
-          message: "请上传支撑材料及证明材料",
-          trigger: "change",
-        },
-      ];
+      // this.rules.uploadFileOther = [
+      //   {
+      //     required: true,
+      //     message: "请上传支撑材料及证明材料",
+      //     trigger: "change",
+      //   },
+      // ];
     },
 
     resetForm(formName) {

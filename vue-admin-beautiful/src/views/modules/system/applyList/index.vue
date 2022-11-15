@@ -198,9 +198,21 @@
 
       <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
-          <el-button type="text" @click="handleViewDetailInfo(scope.row)">
+          <el-button type="text" @click="handleViewDetailInfo(scope.row)"
+          v-bind:disabled = "scope.row.completedFilePath == '' && scope.row.completedFilePath != null">
             查看
           </el-button>
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip label="申报表上传状态">
+        <template v-slot="scope">
+          {{
+            scope.row.completedFilePath == null ||
+            scope.row.completedFilePath == ""
+              ? "未上传"
+              : "已上传"
+          }}
         </template>
       </el-table-column>
 
@@ -464,8 +476,8 @@ export default {
     },
 
     handleViewDetailInfo(row) {
-      if (row.wordPath) {
-        window.open(row.wordPath, "_blank");
+      if (row.completedFilePath) {
+        window.open(row.completedFilePath, "_blank");
       } else {
         this.$baseMessage("暂时无法查看", "error");
       }
