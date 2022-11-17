@@ -419,10 +419,10 @@ export default {
 
       
 
-      if(parseInt(row.preRank)>this.orgInfo.quota){
-        this.$baseMessage("排序不能大于推荐名额", "error");
-        row.preRank = this.orgInfo.quota;
-      }
+      // if(parseInt(row.preRank)>this.orgInfo.quota){
+      //   this.$baseMessage("排序不能大于推荐名额", "error");
+      //   row.preRank = this.orgInfo.quota;
+      // }
 
       if(parseInt(row.preRank)<=0){
         this.$baseMessage("排序不能小于1", "error");
