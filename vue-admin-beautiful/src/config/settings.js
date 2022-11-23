@@ -19,6 +19,8 @@ module.exports = {
     process.env.NODE_ENV === "development"
       ? "http://localhost:7001/opsli-boot"
       : "http://42.101.40.191:7000/opsli-boot",
+  // : "http://82.156.216.222:7000/opsli-boot",
+
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
   title: "成果奖申报系统",
   //简写

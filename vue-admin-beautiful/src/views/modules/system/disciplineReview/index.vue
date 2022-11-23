@@ -425,6 +425,7 @@ export default {
     handleViewInfo(row) {
       if (row.id) {
         // this.$refs["edit"].showEdit(row);
+        window.sessionStorage.setItem("queryForm",  JSON.stringify(this.queryForm));
         this.$router.push({
           path: "/applyInfo/applyInfo",
           query: {
@@ -579,6 +580,13 @@ export default {
 
     async fetchData() {
       this.listLoading = true;
+
+      //存储queryform 使得刷新页面后还能保留查询条件
+      if(window.sessionStorage.getItem("queryForm"))
+      {
+        this.queryForm = JSON.parse(window.sessionStorage.getItem("queryForm"));
+        window.sessionStorage.removeItem("queryForm");
+      }
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed
       // const { data } = await getListByIsPassed(this.queryForm);
@@ -592,6 +600,8 @@ export default {
       this.getPrize3Stantard();
       this.getCount();
       this.getSubmitInfo();
+
+
 
       setTimeout(() => {
         this.listLoading = false;

@@ -35,6 +35,7 @@
             src="~@/assets/login_images/logo.png"
           />
           2022年辽宁省自然科学学术成果奖申报系统
+          <!-- 2022年学会优秀论文申报系统 -->
         </h3>
       </el-col>
     </el-row>

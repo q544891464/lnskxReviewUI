@@ -66,7 +66,8 @@
 
         <el-button
           type="primary"
-          v-if="submitInfo.completeFilePath == null"
+          v-if="submitInfo.completeFilePath == null "
+          v-bind:disabled="disabled"
           @click="uploadChuping"
         >
           上传初评报告并提交
@@ -171,6 +172,32 @@
         prop="applyCode"
         label="成果编号"
       ></el-table-column>
+
+      <el-table-column show-overflow-tooltip prop="enable" label="初评排序">
+        <template slot-scope="scope">
+          <el-input
+            v-model="scope.row.preRank"
+            type="number"
+            style="width: 80px"
+        
+            @change="handleRankChange(scope.row)"
+            v-bind:disabled="disabled"
+          ></el-input>
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip prop="enable" label="是否推荐">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.isPass"
+            active-value="1"
+            inactive-value="0"
+            @change="handleEnable(scope.row)"
+            v-bind:disabled="disabled"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
       <el-table-column
         show-overflow-tooltip
         prop="applyName"
@@ -216,6 +243,17 @@
         </template>
       </el-table-column>
 
+      <!-- <el-table-column show-overflow-tooltip label="申报表">
+        <template v-slot="scope">
+          <el-button type="text" @click="handleCancel(scope.row)"
+          v-bind:disabled = "scope.row.completedFilePath == ''">
+            申报表退回
+          </el-button>
+        </template>
+      </el-table-column> -->
+
+      
+
       <el-table-column show-overflow-tooltip label="详细信息">
         <template v-slot="scope">
           <el-button type="text" @click="handleViewInfo(scope.row)">
@@ -245,30 +283,7 @@
         label="工作单位"
       ></el-table-column>
 
-      <el-table-column show-overflow-tooltip prop="enable" label="初评排序">
-        <template slot-scope="scope">
-          <el-input
-            v-model="scope.row.preRank"
-            type="number"
-            style="width: 80px"
-        
-            @change="handleRankChange(scope.row)"
-            v-bind:disabled="disabled"
-          ></el-input>
-        </template>
-      </el-table-column>
 
-      <el-table-column show-overflow-tooltip prop="enable" label="是否推荐">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.isPass"
-            active-value="1"
-            inactive-value="0"
-            @change="handleEnable(scope.row)"
-            v-bind:disabled="disabled"
-          ></el-switch>
-        </template>
-      </el-table-column>
 
       <!-- v-if="$perms('system_apply_update') || $perms('system_apply_delete') ||  $perms('system_apply_setpass')" -->
       <!-- <el-table-column
@@ -318,10 +333,12 @@ import {
   doDeleteAll,
   doExportExcelByOrg,
   doExportChupingWord,
+  doUpdate,
+  getIsDeadLine,
 } from "@/api/system/apply/SysApplyManagementApi";
 import {
   getByCurrentUser,
-  doUpdate,
+  
 } from "@/api/system/orgInfo/OrgInfoManagementApi";
 import { getSubmitInfoByCurrentUser } from "@/api/system/orgSubmit/SkxOrgSubmitManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
@@ -337,7 +354,7 @@ export default {
   components: { Edit, Import, Upload },
   data() {
     return {
-      disabled: false,
+      disabled: true,
       list: null,
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
@@ -390,7 +407,9 @@ export default {
   created() {
     this.fetchData();
   },
-  mounted() {},
+  mounted() {
+    this.getIsDeadLine();
+  },
   methods: {
     async handleEnable(row) {
       if (row.preRank == null || row.preRank == "") {
@@ -456,6 +475,19 @@ export default {
       // this.selectRows = val;
       this.$baseMessage("还没做", "error");
     },
+
+    handleCancel(row) {
+      this.$baseConfirm("你确定要退回吗", null, async () => {
+        // const { msg } = await doDeleteAll({ ids });
+        row.completedFilePath = "";
+        const { success, msg } = await doUpdate(row);
+        if (success) {
+          this.$baseMessage("已退回", "success");
+          await this.fetchData();
+        }
+      });
+      
+    },
     setSelectRows(val) {
       this.selectRows = val;
     },
@@ -516,18 +548,18 @@ export default {
       }
     },
 
-    handleSubmit() {
-      this.$baseConfirm("你确定要提交吗", null, async () => {
-        // const { msg } = await doDeleteAll({ ids });
-        this.orgInfo.hasReport = "1";
-        const { success, msg } = await doUpdate(this.orgInfo);
-        if (success) {
-          this.$baseMessage("已提交", "success");
-          this.disabled = true;
-          await this.fetchData();
-        }
-      });
-    },
+    // handleSubmit() {
+    //   this.$baseConfirm("你确定要提交吗", null, async () => {
+    //     // const { msg } = await doDeleteAll({ ids });
+    //     this.orgInfo.hasReport = "1";
+    //     const { success, msg } = await doUpdate(this.orgInfo);
+    //     if (success) {
+    //       this.$baseMessage("已提交", "success");
+    //       this.disabled = true;
+    //       await this.fetchData();
+    //     }
+    //   });
+    // },
 
     handleViewFile(row) {
       if (row.filePath) {
@@ -586,6 +618,17 @@ export default {
       this.fetchData();
     },
 
+    async getIsDeadLine() {
+      const { success, msg, data } = await getIsDeadLine();
+      if (!success) {
+        this.disabled = true;
+        this.$baseMessage(msg, "error");
+      } else {
+        this.disabled = false;
+      }
+      return success;
+    },
+
     async getOrgInfo() {
       const { data } = await getByCurrentUser();
       this.orgInfo = data;
@@ -604,8 +647,10 @@ export default {
 
     async fetchData() {
       this.listLoading = true;
+      
       this.getOrgInfo();
       this.getSubmitInfo();
+      // this.getIsDeadLine();
       const { data } = await getListByOrg(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;

@@ -165,6 +165,7 @@ export default {
       this.prize1 = row.prize1;
       this.prize2 = row.prize2;
       this.prize3 = row.prize3;
+      this.firstInsert = false;
       this.dialogFormVisible = true;
       this.fetchData();
     },
@@ -252,6 +253,7 @@ export default {
         this.firstInsert = true;
 
         var { data } = await getStandardList({
+          //TODO:这里参数写死了 需要调整
           year: 2022,
         });
         for(let i=0;i<data.length;i++){

@@ -2,6 +2,7 @@
   <div class="tenantManagement-container">
     <el-collapse-transition>
       <div class="more-query" v-show="this.moreQueryFlag">
+        
         <!-- 更多查找 -->
         <vab-query-form>
           <vab-query-form-left-panel :span="24">
@@ -19,6 +20,7 @@
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
+
         <!--        <el-button
             v-if="$perms('system_apply_insert')"
             icon="el-icon-plus"
@@ -43,8 +45,10 @@
           type="primary"
           @click="handlePrize"
         >
-          批量设置学科组
+          批量设置评审组
         </el-button>
+
+        
 
         <!-- <el-button
             v-if="$perms('system_apply_delete')"
@@ -54,9 +58,42 @@
             @click="handleDelete"
         > 批量删除 </el-button> -->
       </vab-query-form-left-panel>
+
+            
       <vab-query-form-right-panel :span="14">
+        <el-select
+          v-model="queryForm.subjectGroup_EQ"
+          placeholder="请选择组别"
+          clearable
+          :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+          @change="fetchData"
+          
+        >
+          <el-option
+            v-for="(item, index) in subjectGroupOptions"
+            :key="index"
+              :label="item.subjectGroupName"
+              :value="item.subjectGroupNo"
+              :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+
+        
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
+
+          
+
           <el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.applyName_LIKE"
+                placeholder="请输入成果名称"
+                clearable
+              />
+            </el-form-item>
+
             <el-form-item>
               <el-input
                 v-model.trim="queryForm.disciplineName_LIKE"
@@ -65,17 +102,40 @@
               />
             </el-form-item>
 
-            <el-form-item>
+            <!-- <el-form-item>
               <el-input
                 v-model.trim="queryForm.subjectGroupName_LIKE"
                 placeholder="请输入学科组名称"
                 clearable
               />
+            </el-form-item> -->
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.firstAuthor_LIKE"
+                placeholder="请输入申报人姓名"
+                clearable
+              />
             </el-form-item>
 
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
+                placeholder="请输入工作单位"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
             </el-button>
+          </el-form-item>
+            
+
+            
+
+
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -99,9 +159,14 @@
         show-overflow-tooltip
         prop="applyName"
         label="成果名称"
-        width="400"
+        width="300"
       ></el-table-column>
-
+      
+            <el-table-column
+              show-overflow-tooltip
+              prop="disciplineGroup"
+              label="学科组"
+      ></el-table-column>
       <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
           <span v-if="scope.row.disciplineName != null">
@@ -116,6 +181,19 @@
               prop="discipline"
               label="学科专业"
       ></el-table-column> -->
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="firstAuthor"
+        label="申报人"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="firstAuthorWorkplace"
+        label="工作单位"
+        width="200"
+      ></el-table-column>
 
       <!--      <el-table-column
               show-overflow-tooltip
@@ -147,7 +225,7 @@
  -->
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip label="修改学科组">
+      <el-table-column show-overflow-tooltip label="修改评审组">
         <template v-slot="scope">
           <!--          <el-button
             v-if="$perms('system_apply_delete')"
@@ -156,7 +234,7 @@
           > 删除 </el-button> -->
 
           <el-button type="text" @click="handlePrize(scope.row)">
-            设置学科组
+            设置评审组
           </el-button>
         </template>
       </el-table-column>
@@ -185,6 +263,7 @@ import {
   doDeleteAll,
   doExportExcel,
 } from "@/api/system/apply/SysApplyManagementApi";
+import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
 import Prize from "./components/selectSubjectGroup";
@@ -205,9 +284,11 @@ export default {
       selectRows: "",
       elementLoadingText: "正在加载...",
       moreQueryFlag: false,
+      subjectGroupOptions: [],
       queryForm: {
         pageNo: 1,
         pageSize: 10,
+        subjectGroup_EQ: "0",
       },
       dict: {},
       pickerOptions: {
@@ -312,6 +393,17 @@ export default {
       }
       // this.fetchData();
     },
+
+    async getOptions() {
+      let res = await getList({
+        pageSize: 1000,
+      });
+      if (res.code == 200) {
+        console.log(res.data);
+        this.subjectGroupOptions = res.data.rows;
+      }
+    },
+
     handleDelete(row) {
       if (row.id) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
@@ -363,6 +455,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
+      this.getOptions();
       const { data } = await getListAll(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;

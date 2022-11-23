@@ -41,7 +41,6 @@
           > 导入 </el-button> -->
 
         <el-button
-          
           icon="el-icon-download"
           type="warning"
           @click="handleExportExcel"
@@ -59,12 +58,38 @@
             批量删除
           </el-button> -->
       </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="14">
+      <vab-query-form-right-panel :span="20">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
+          <el-form-item>
+            <el-select
+              v-model="queryForm.isPass_EQ"
+              placeholder="是否推荐"
+              clearable
+              :style="{ width: '80%' }"
+              v-bind:disabled="disabled"
+              @change="fetchData"
+            >
+              <el-option
+                v-for="(item, index) in isPassOptions"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-input
               v-model.trim="queryForm.applyName_LIKE"
               placeholder="请输入成果名称"
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-input
+              v-model.trim="queryForm.orgName_LIKE"
+              placeholder="请输入推荐单位名称"
               clearable
             />
           </el-form-item>
@@ -130,9 +155,7 @@
       <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
           <span v-if="scope.row.disciplineName != null">
-            {{
-              scope.row.disciplineName
-            }}
+            {{ scope.row.disciplineName }}
           </span>
         </template>
       </el-table-column>
@@ -187,8 +210,14 @@
 
       <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
-          <el-button type="text" @click.native="handleViewFile(scope.row)"
-          v-bind:disabled = "scope.row.completedFilePath == '' && scope.row.completedFilePath != null">
+          <el-button
+            type="text"
+            @click.native="handleViewFile(scope.row)"
+            v-bind:disabled="
+              scope.row.completedFilePath == '' &&
+              scope.row.completedFilePath != null
+            "
+          >
             申报表查看
           </el-button>
         </template>
@@ -202,6 +231,12 @@
               ? "未上传"
               : "已上传"
           }}
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip label="是否推荐">
+        <template v-slot="scope">
+          {{ scope.row.isPass == "0" ? "不推荐" : "推荐" }}
         </template>
       </el-table-column>
 
@@ -306,6 +341,16 @@ export default {
         pageNo: 1,
         pageSize: 10,
       },
+      isPassOptions: [
+        {
+          value: "0",
+          label: "不推荐",
+        },
+        {
+          value: "1",
+          label: "推荐",
+        },
+      ],
       dict: {},
       pickerOptions: {
         shortcuts: [

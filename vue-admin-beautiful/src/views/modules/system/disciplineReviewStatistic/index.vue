@@ -54,6 +54,25 @@
           </el-button> -->
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
+
+        <el-select
+          v-model="queryForm.subjectGroup_EQ"
+          placeholder="请选择组别"
+          clearable
+          :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+          @change="fetchData"
+          
+        >
+          <el-option
+            v-for="(item, index) in subjectGroupOptions"
+            :key="index"
+              :label="item.subjectGroupName"
+              :value="item.subjectGroupNo"
+              :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
           <el-form-item>
             <el-input
@@ -265,7 +284,6 @@
   
 <script>
 import {
-  getList,
   getListAll,
   getListByDisciplineStatistic,
   doDelete,
@@ -277,7 +295,7 @@ import {
 //   import Edit from "./components/SysApplyManagementEdit";
 //   import Import from "./components/SysApplyManagementImport";
 //   import Upload from "./components/upload";
-
+import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
 import { formateDate } from "@/utils/format";
@@ -438,6 +456,16 @@ export default {
       }
     },
 
+    async getOptions() {
+      let res = await getList({
+        pageSize: 1000,
+      });
+      if (res.code == 200) {
+        console.log(res.data);
+        this.subjectGroupOptions = res.data.rows;
+      }
+    },
+
     handleViewFile(row) {
       if (row.wordPath) {
         window.open(row.wordPath, "_blank");
@@ -476,6 +504,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
+      this.getOptions();
       const { data } = await getListByDisciplineStatistic(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;
