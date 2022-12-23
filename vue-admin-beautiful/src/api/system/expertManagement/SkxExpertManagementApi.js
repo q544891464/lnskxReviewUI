@@ -92,6 +92,17 @@ export function doExportExcel(data) {
 }
 
 /**
+ * 导出Excel 目前只支持一层参数传递
+ * @param data
+ * @returns file
+ */
+export function doExportExcelRef(data) {
+  let requestURL = "/api/v1/system/expertManagement/exportExcelRef";
+  // 下载文件
+  downloadFileByData(requestURL, data);
+}
+
+/**
  * 下载模版
  * @returns file
  */

@@ -54,8 +54,8 @@
           <el-option
             v-for="(item, index) in pageNameOptions"
             :key="index"
-            :label="item.label"
-            :value="item.value"
+            :label="item.subjectGroupName"
+            :value="item.subjectGroupNo"
             :disabled="item.disabled"
           ></el-option>
         </el-select>
@@ -317,6 +317,7 @@ import {
   doExportExcel,
   doExportExcelZhongping
 } from "@/api/system/apply/SysApplyManagementApi";
+import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 import {getByCode} from "@/api/system/options/SysOptionsManagement";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
@@ -343,45 +344,46 @@ export default {
         pageNo: 1,
         pageSize: 10,
         pageName: "全部组别",
+        avgScore_ORDER: "DESC",
       },
       dict: {},
       pageNameOptions: [
-        {
-          label: "全部组别",
-          value: "全部组别",
-        },
-        {
-          label: "理科",
-          value: "理科",
-        },
-        {
-          label: "农科",
-          value: "农科",
-        },
-        {
-          label: "医药",
-          value: "医药",
-        },
-        {
-          label: "生命科学与基础医学",
-          value: "生命科学与基础医学",
-        },
-        {
-          label: "机械、材料、矿山、冶金",
-          value: "机械、材料、矿山、冶金",
-        },
-        {
-          label: "电气、电子与信息技术",
-          value: "电气、电子与信息技术",
-        },
-        {
-          label: "能源、化工与环境",
-          value: "能源、化工与环境",
-        },
-        {
-          label: "交通与基建",
-          value: "交通与基建",
-        },
+        // {
+        //   label: "全部组别",
+        //   value: "全部组别",
+        // },
+        // {
+        //   label: "理科",
+        //   value: "理科",
+        // },
+        // {
+        //   label: "农科",
+        //   value: "农科",
+        // },
+        // {
+        //   label: "医药",
+        //   value: "医药",
+        // },
+        // {
+        //   label: "生命科学与基础医学",
+        //   value: "生命科学与基础医学",
+        // },
+        // {
+        //   label: "机械、材料、矿山、冶金",
+        //   value: "机械、材料、矿山、冶金",
+        // },
+        // {
+        //   label: "电气、电子与信息技术",
+        //   value: "电气、电子与信息技术",
+        // },
+        // {
+        //   label: "能源、化工与环境",
+        //   value: "能源、化工与环境",
+        // },
+        // {
+        //   label: "交通与基建",
+        //   value: "交通与基建",
+        // },
       ],
       pickerOptions: {
         shortcuts: [
@@ -421,6 +423,16 @@ export default {
   },
   mounted() {},
   methods: {
+
+    async getOptions() {
+      let res = await getList({
+        pageSize: 1000,
+      });
+      if (res.code == 200) {
+        console.log(res.data);
+        this.pageNameOptions = res.data.rows;
+      }
+    },
 
     async getCount() {
       const { data } = await getCount({
@@ -590,6 +602,7 @@ export default {
 
     async fetchData() {
       this.listLoading = true;
+      this.getOptions();
       this.getCount();
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed

@@ -16,6 +16,14 @@ export function getSubmitInfoByCurrentUser() {
   });
 }
 
+export function setAvgScoreAll(data) {
+  return request({
+    url: "/api/v1/system/expertSubmit/setAvgScoreAll",
+    method: "get",
+    params: data,
+  });
+}
+
 export function doInsert(data) {
   return request({
     url: "/api/v1/system/expertSubmit/insert",

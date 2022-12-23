@@ -86,10 +86,12 @@
 
           <el-form-item>
 
+
+
             <el-form-item>
               <el-input
-                v-model.trim="queryForm.applyName_LIKE"
-                placeholder="请输入成果名称"
+                v-model.trim="queryForm.disciplineCode_LIKE"
+                placeholder="请输入专业代码"
                 clearable
               />
             </el-form-item>
@@ -101,6 +103,16 @@
                 clearable
               />
             </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.applyName_LIKE"
+                placeholder="请输入成果名称"
+                clearable
+              />
+            </el-form-item>
+
+
 
             <!-- <el-form-item>
               <el-input
@@ -288,7 +300,8 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
-        subjectGroup_EQ: "0",
+        subjectGroup_EQ: "",
+        isPass_EQ:"1",
       },
       dict: {},
       pickerOptions: {

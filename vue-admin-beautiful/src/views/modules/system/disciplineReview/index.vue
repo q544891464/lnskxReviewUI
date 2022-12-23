@@ -40,7 +40,7 @@
           {{ this.prize3 }}分-{{ this.prize2 }}分不得超过{{this.maxPrize3Count}}项；
       </h3>
 
-      <h3 v-if="this.prize1Count>this.maxPrize1Count ">
+      <!-- <h3 v-if="this.prize1Count>this.maxPrize1Count ">
         <span style="color: red">85分以上比例超过限制，请重新设置！</span>
       </h3>
       <h3 v-if="this.prize2Count>this.maxPrize2Count ">
@@ -48,7 +48,7 @@
       </h3>
       <h3 v-if="this.prize3Count>this.maxPrize3Count ">
         <span style="color: red">74-60分比例超过限制，请重新设置！</span>
-      </h3>
+      </h3> -->
 
       <h3 v-if="this.noPrizeCount>0">
         <span>尚未完成全部评分</span>
@@ -110,13 +110,13 @@
               />
             </el-form-item>
 
-            <el-form-item>
+            <!-- <el-form-item>
               <el-input
                 v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
                 placeholder="请输入工作单位名称"
                 clearable
               />
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item>
               <el-input
@@ -130,6 +130,14 @@
               <el-input
                 v-model.trim="queryForm.disciplineName_LIKE"
                 placeholder="请输入学科"
+                clearable
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model.trim="queryForm.orgName_LIKE"
+                placeholder="请输入初评单位"
                 clearable
               />
             </el-form-item>
@@ -332,6 +340,7 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
+        applyCode_ORDER: "asc",
       },
       dict: {},
       pickerOptions: {
@@ -436,10 +445,12 @@ export default {
     },
 
     handleViewDetailInfo(row) {
-      if (row.wordPath) {
+      if (row.completedFilePath) {
+        window.open(row.completedFilePath, "_blank");
+      } else if(row.wordPath) {
         window.open(row.wordPath, "_blank");
       } else {
-        this.$baseMessage("暂时无法查看", "error");
+        this.$baseMessage("未上传完成文件", "error");
       }
     },
 
@@ -457,6 +468,7 @@ export default {
         prize1: this.prize1,
         prize2: this.prize2,
         prize3: this.prize3,
+        year: row.year,
       });
     },
     handleDelete(row) {
@@ -550,20 +562,22 @@ export default {
       const { data } = await getCount({
         pageName: "disciplineReview",
       });
-      this.totalCount = data.count;
+      // this.totalCount = data.count;
       this.prize1Count = data.prize1Count;
       this.prize2Count = data.prize2Count;
       this.prize3Count = data.prize3Count;
       this.prize4Count = data.prize4Count;
       this.noPrizeCount = this.totalCount-this.prize1Count-this.prize2Count-this.prize3Count-this.prize4Count;
-      this.maxPrize1Count = data.maxPrize1Count;
-      this.maxPrize2Count = data.maxPrize2Count;
-      this.maxPrize3Count = data.maxPrize3Count;
-      if(this.prize1Count>this.maxPrize1Count || this.prize2Count>this.maxPrize2Count || this.prize3Count>this.maxPrize3Count)
-      {
-        this.submitDisabled = true;
-        this.$baseMessage("奖项数量超过标准，请及时修改", "error");
-      }
+      // 紧急修改 评完改回去
+      this.maxPrize1Count = Math.ceil(this.totalCount * 0.15);
+      this.maxPrize2Count = Math.ceil(this.totalCount * 0.25);
+      this.maxPrize3Count = Math.ceil(this.totalCount * 0.6);
+      // if(this.prize1Count>this.maxPrize1Count || this.prize2Count>this.maxPrize2Count || this.prize3Count>this.maxPrize3Count)
+      // {
+      //   this.submitDisabled = true;
+      //   this.$baseMessage("奖项数量超过标准，请及时修改", "error");
+      // }
+      // TODO:修改为不评全部也能提交 又改回去了
       if(this.noPrizeCount>0)
       {
         this.submitDisabled = true;
@@ -594,6 +608,7 @@ export default {
       if (isNotNull(data)) {
         this.list = data.rows;
         this.total = data.total;
+        this.totalCount = data.total;
       }
       this.getPrize1Stantard();
       this.getPrize2Stantard();

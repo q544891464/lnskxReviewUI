@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       title: "上传初评报告",
+      orgId:"",
       importExcelUrl: "",
       uploadPath: "",
       fileList:[],
@@ -68,7 +69,8 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    show() {
+    show(orgId) {
+      this.orgId = orgId;
       this.dialogFormVisible = true;
     },
     close() {
@@ -113,6 +115,7 @@ export default {
       const { data } = await doUpdate({
         completeFilePath: this.uploadPath,
         isSubmit: 1,
+        orgId:this.orgId,
       });
       this.close();
     },

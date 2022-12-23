@@ -45,12 +45,7 @@
             @click="handleImportExcel"
         > 导入 </el-button>
 
-        <el-button
-            v-if="$perms('system_expertmanagement_export')"
-            icon="el-icon-download"
-            type="warning"
-            @click="handleExportExcel"
-        > 导出 </el-button>
+
 
         <el-button
             v-if="$perms('system_expertmanagement_delete')"
@@ -59,6 +54,13 @@
             type="danger"
             @click="handleDelete"
         > 批量删除 </el-button> -->
+
+        <el-button
+         
+            icon="el-icon-download"
+            type="warning"
+            @click="handleExportExcel"
+        > 导出 </el-button>
 
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
@@ -217,7 +219,7 @@
 </template>
 
 <script>
-  import { getList,getListRef,setSubjectGroup,doDelete, doDeleteAll, doExportExcel } from "@/api/system/expertManagement/SkxExpertManagementApi";
+  import { getList,getListRef,setSubjectGroup,doDelete, doDeleteAll, doExportExcelRef} from "@/api/system/expertManagement/SkxExpertManagementApi";
   import Edit from "./components/SkxExpertManagementEdit";
   import Import from "./components/SkxExpertManagementImport";
   import Group from "./components/selectSubjectGroup";
@@ -329,8 +331,11 @@
         // 导出按钮防抖处理 默认限制为10秒
         vueButtonClickBan(el, 10);
 
+        // let queryForm = this.queryForm;
+        // queryForm.pageSize = this.total;
+
         // 执行导出
-        doExportExcel(this.queryForm);
+        doExportExcelRef(this.queryForm);
       },
       // 导入excel
       handleImportExcel(){

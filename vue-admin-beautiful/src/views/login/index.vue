@@ -340,10 +340,13 @@ export default {
 
 <style lang="scss" scoped>
 .login-container {
+  
   height: 100vh;
   background: url("~@/assets/login_images/background2.jpg") center center fixed
     no-repeat;
   background-size: cover;
+  // 首页全局变灰
+  // filter: grayscale(100%);
 
   .title {
     font-size: 54px;
