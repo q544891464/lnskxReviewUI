@@ -88,21 +88,19 @@
        
           <br />
         <div class="spanclasscontent">
-          1.被评审成果为1篇代表性论文（或著作），申报人同时提供5项以上（含）与该代表性作品相关的研究证明作为支撑。评审时，在对代表性成果进行评审时，可充分参考支撑材料。
+          1.被评审成果为1篇代表性论文（或著作），同时提供5项以上（含）与该代表性作品相关的研究证明作为支撑。高校科研院所类支撑材料为5篇（部）以上（含）与该代表性作品相关的论文（或著作），其中至少1篇（部）为中国境内发表（或出版）；非高校科研院所类支撑材料为5项以上（含）与该代表性作品相关的研究证明，可以是论文（或著作），也可以是已获得的专利或者已获认证的项目等。未发表论文或未获得认定的项目不在申报范围。
          
           <br />
-          2.成果按申报人所在单位类别分为高校科研院所类和非高校科研院所类。高校科研院所类支撑材料为5篇（部）以上（含）与该代表性作品相关的论文（或著作），其中至少1篇（部）为中国境内发表（或出版）；非高校科研院所类支撑材料为5项以上（含）与该代表性作品相关的研究证明，可以是论文（或著作），也可以是已获得的专利或者已获认证的项目等。未发表论文或未获得认定的项目不在申报范围。
+          2.根据评分表进行赋分评选。建议一等奖（85分以上）比例为xx%，建议二等奖（75-84分）比例为xx%，建议三等奖（60-74分）比例为xx%，建议不授奖（60分以下）比例为xx%。对一等奖（85分以上）成果须写明评分依据说明，对建议不授奖（60分以下）成果也要根据成果情况有差别评分。
           
           <br />
-          3.根据《辽宁省自然科学学术成果奖评分表》进行赋分评选。建议85分以上比例为15%，建议75-84分比例为25%，建议60-74分比例为60%。每项成果都要评分，对得分85分以上的成果须写明评分依据说明。
-          <br />
-          4.坚持实绩导向和公开公平公正原则，面向基层和工作一线，一般不评选副厅局级以上单位和干部、县级以上党委或者政府，县处级干部比例控制在20%以内。
+          3.坚持实绩导向和公开公平公正原则，面向基层和工作一线，一般不评选副厅局级以上单位和干部、县级以上党委或者政府，县处级干部比例控制在20%以内；非高校科研院所类成果入围（60分以上）比例不低于xx%
           
           <br />
-          5.考虑单位平衡情况，同一单位建议一等奖成果数量不超过2项。
+          4.评审中，每个单位每学科每个奖次获奖成果数量不超过1项（以学科代码为准），每个单位获奖成果总数不超过5项（其中一等奖总数不超过2项）。
           
           <br />
-          6.网评采取专家实名制评审，评分后，请评审专家导出汇总表手写签字后回传至评审系统。
+          5.评选工作结束后，专家导出汇总表手写签字上传。
           
           <br />
         </div>
@@ -110,6 +108,80 @@
       <el-col v-if="$perms('system_fuping_user')">
         <h1 class="title">欢迎进入辽宁省自然科学学术成果奖评审系统</h1>
         请在规定的复评时间内完成成果的复评工作！
+      </el-col>
+
+      <el-col v-if="$perms('system_zhongping_user')">
+        <div>
+        <p
+            style="margin-top:0pt; margin-bottom:0pt; text-indent:44pt; text-align:center; line-height:125%; font-size:22pt">
+            <span style="font-family:华文中宋">2022年辽宁省自然科学学术成果奖</span></p>
+        <p
+            style="margin-top:0pt; margin-bottom:0pt; text-indent:44pt; text-align:center; line-height:125%; font-size:22pt">
+            <span style="font-family:华文中宋">终评会议评审须知</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">各位专家：</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">2022年辽宁省自然科学学术成果奖终评工作将于2022年12月26日完成。具体评审流程和评审建议说明如下：</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:黑体">一、评审任务</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">通过前期网络评审和复评，系统中共有45项成果推荐为一等奖候选成果，经终评会评审，将确定30项成果为成果奖一等奖。</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:黑体">二、评审流程</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">请各位评审专家登录“2022年辽宁省自然科学学术成果奖评审系统”（www.lncgj.cn）进行评审。</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">沿用2021年成果奖终评会工作流程，考虑评审专家专业领域优势及特点，本次评审分为预评审和终评两个阶段。</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体; font-weight:bold">（一）预评审（2022年12月25日19：00—12月26日10：00）</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">专家进入评审页面后，左侧目录栏点击“预评审”；右侧“评审项目数量”下面“请选择组别”下拉栏中选择学科组后，进行分学科评审。在每项成果最后一栏“预评审”的“奖项设置”处，选择“一等奖”或“二等奖”。专家须根据每个学科评审数和淘汰数进行评审。</span>
+        </p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">在预评审阶段，专家将</span><span style="font-family:黑体; font-weight:bold">分学科</span><span
+                style="font-family:宋体">对成果进行评审，其中：</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">理工一组共有成果69项，已推荐一等奖候选成果9项，需要评审出7项，淘汰2项；</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">理工二组共有成果45项，已推荐一等奖候选成果7项，需要评审出5项，淘汰2项；</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">理工三组共有成果45项，已推荐一等奖候选成果7项，需要评审出4项，淘汰3项；</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">理工四组共有成果30项，已推荐一等奖候选成果5项，需要评审出3项，淘汰2项；</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">医科组共有成果79项，已推荐一等奖候选成果11项，需要评审出7项，淘汰4项；</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">农科组共有成果38项，已推荐一等奖候选成果6项，需要评审出4项，淘汰2项。</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体; font-weight:bold">（二）终评（2022年12月26日13：00-15：00）</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">专家参考预评审结果完成终评工作，操作流程同预评审。全部专家评审后，系统自动将票数累加后显示“一等奖”的前30项成果，如有成绩并列30项，予以保留，其他成果自动下调至二等奖。</span>
+        </p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体; font-weight:bold">（三）学科平衡</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">为既能体现出成果奖的学术前沿性，又能体现出奖项的平衡性，建议专家尽量考虑成果学科平衡性。同一学科同等条件下，尽量保留学科实力整体偏弱单位的成果为一等奖。</span>
+        </p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:黑体">三、保障电话</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">成果奖业务服务：王婷13252728181</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt; text-indent:32pt; line-height:125%; font-size:16pt"><span
+                style="font-family:宋体">系统平台技术服务：陈维帆13322424050</span></p>
+        <p style="margin-top:0pt; margin-bottom:0pt"><span style="-aw-import:ignore">&#xa0;</span></p>
+        <div style="-aw-headerfooter-type:footer-primary; clear:both">
+            <div style="-aw-sdt-tag:''">
+                <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:9pt"><span
+                        style="-aw-field-start:true"></span><span
+                        style="-aw-field-code:' PAGE   \\* MERGEFORMAT '"></span><span
+                        style="-aw-field-separator:true"></span><span>1</span><span style="-aw-field-end:true"></span>
+                </p>
+            </div>
+            <p style="margin-top:0pt; margin-bottom:0pt; text-align:left; font-size:9pt"><span
+                    style="-aw-import:ignore">&#xa0;</span></p>
+        </div>
+    </div>
+
       </el-col>
     </el-row>
   </div>

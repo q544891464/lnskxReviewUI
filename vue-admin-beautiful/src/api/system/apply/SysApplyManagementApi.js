@@ -16,6 +16,14 @@ export function getIsDeadLine() {
   });
 }
 
+export function getIsDeadLineByType(data) {
+  return request({
+    url: "/api/v1/system/apply/getIsDeadLineByType",
+    method: "get",
+    params: data,
+  });
+}
+
 export function getList(data) {
   return request({
     url: "/api/v1/system/apply/findPage",
@@ -66,7 +74,7 @@ export function getListByIsPassed(data) {
 
 export function getListByFinal(data) {
   return request({
-    url: "/api/v1/system/apply/findPageByFinal",
+    url: "/api/v1/system/apply/findPageByZhongping",
     method: "get",
     params: data,
   });
@@ -83,6 +91,14 @@ export function doIsPassApply(data) {
 export function doSetPreRank(data) {
   return request({
     url: "/api/v1/system/apply/setPreRank",
+    method: "post",
+    params: data,
+  });
+}
+
+export function doSetPrePrize(data) {
+  return request({
+    url: "/api/v1/system/apply/setPrePrize",
     method: "post",
     params: data,
   });

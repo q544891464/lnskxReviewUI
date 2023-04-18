@@ -1,56 +1,52 @@
 import request from "@/utils/request";
 import { downloadFileByData } from "@/utils/download";
 
-export function getByUserId() {
-  return request({
-    url: "/api/v1/system/expertManagement/getByUserId",
-    method: "get",
-  });
-}
-
 export function getList(data) {
   return request({
-    url: "/api/v1/system/expertManagement/findPage",
+    url: "/api/v1/system/zhongping/findPage",
     method: "get",
     params: data,
   });
 }
 
-export function getListRef(data) {
+export function balanceCount() {
   return request({
-    url: "/api/v1/system/expertManagement/findPageRef",
+    url: "/api/v1/system/zhongping/balanceCount",
     method: "get",
-    params: data,
   });
 }
 
-export function doSetSubjectGroup(data) {
+export function prePrizeCount() {
   return request({
-    url: "/api/v1/system/expertManagement/setSubjectGroup",
-    method: "post",
-    params: data,
+    url: "/api/v1/system/zhongping/prePrizeCount",
+    method: "get",
   });
 }
 
-export function doSetSubjectGroupAll(data) {
+export function prizeCount() {
   return request({
-    url: "/api/v1/system/expertManagement/setSubjectGroupAll",
-    method: "post",
-    params: data,
+    url: "/api/v1/system/zhongping/prizeCount",
+    method: "get",
   });
 }
 
-export function doImportUser(data) {
+export function getExpertVotePre() {
   return request({
-    url: "/api/v1/system/expertManagement/importUser",
-    method: "post",
-    params: data,
+    url: "/api/v1/system/zhongping/getExpertVotePre",
+    method: "get",
+  });
+}
+
+export function getExpertVote() {
+  return request({
+    url: "/api/v1/system/zhongping/getExpertVote",
+    method: "get",
   });
 }
 
 export function doInsert(data) {
   return request({
-    url: "/api/v1/system/expertManagement/insert",
+    url: "/api/v1/system/zhongping/insert",
     method: "post",
     data,
   });
@@ -58,7 +54,15 @@ export function doInsert(data) {
 
 export function doUpdate(data) {
   return request({
-    url: "/api/v1/system/expertManagement/update",
+    url: "/api/v1/system/zhongping/update",
+    method: "post",
+    data,
+  });
+}
+
+export function setBalance(data) {
+  return request({
+    url: "/api/v1/system/zhongping/setBalance",
     method: "post",
     data,
   });
@@ -66,7 +70,7 @@ export function doUpdate(data) {
 
 export function doDelete(data) {
   return request({
-    url: "/api/v1/system/expertManagement/del",
+    url: "/api/v1/system/zhongping/del",
     method: "post",
     params: data,
   });
@@ -74,7 +78,7 @@ export function doDelete(data) {
 
 export function doDeleteAll(data) {
   return request({
-    url: "/api/v1/system/expertManagement/delAll",
+    url: "/api/v1/system/zhongping/delAll",
     method: "post",
     params: data,
   });
@@ -86,7 +90,7 @@ export function doDeleteAll(data) {
  * @returns file
  */
 export function doExportExcel(data) {
-  let requestURL = "/api/v1/system/expertManagement/exportExcel";
+  let requestURL = "/api/v1/system/zhongping/exportExcel";
   // 下载文件
   downloadFileByData(requestURL, data);
 }
@@ -97,7 +101,7 @@ export function doExportExcel(data) {
  */
 export function doDownloadTemplate() {
   let data = {};
-  let requestURL = "/api/v1/system/expertManagement/importExcel/template";
+  let requestURL = "/api/v1/system/zhongping/importExcel/template";
   // 下载文件
   downloadFileByData(requestURL, data);
 }
@@ -108,7 +112,7 @@ export function doDownloadTemplate() {
  */
 export function doImportExcel(data) {
   return request({
-    url: "/api/v1/system/expertManagement/importExcel",
+    url: "/api/v1/system/zhongping/importExcel",
     method: "post",
     // 最长超时时间 3 分钟
     timeout: 180000,

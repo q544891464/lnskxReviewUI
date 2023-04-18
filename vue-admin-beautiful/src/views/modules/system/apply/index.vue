@@ -169,21 +169,6 @@
 
       <el-table-column
         show-overflow-tooltip
-        label="撤回"
-        
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
-      >
-        <template v-slot="scope">
-          <el-button type="text" @click.native="handelCancel(scope.row)"
-          v-bind:disabled ="disabled"
-          >
-            撤回申报表
-          </el-button>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
         label="删除"
         width="200"
         v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
@@ -244,7 +229,6 @@ import {
   doDeleteAll,
   doExportExcelById,
   getIsDeadLine,
-  doSetCompletedFile,
 } from "@/api/system/apply/SysApplyManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
@@ -467,21 +451,6 @@ export default {
         this.disabled = false;
       }
       return success;
-    },
-
-    async handelCancel(row) {
-
-      this.$baseConfirm("你确定要撤回申报表吗?", null, async () => {
-            const { msg } = await doSetCompletedFile({
-              applyId: row.id,
-              completedFilePath: "",
-            });
-            this.$baseMessage(msg, "success");
-            await this.fetchData();
-          });
-
-
-      // console.log("prize:"+this.formData.setPrize);
     },
 
     async fetchData() {

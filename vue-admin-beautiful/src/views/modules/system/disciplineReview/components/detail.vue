@@ -119,7 +119,6 @@ export default {
       },
       firstInsert: false,
       id: "",
-      year: "2022",
       prize1: 0,
       prize2: 0,
       prize3: 0,
@@ -166,7 +165,6 @@ export default {
       this.prize1 = row.prize1;
       this.prize2 = row.prize2;
       this.prize3 = row.prize3;
-      this.year = row.year;
       this.firstInsert = false;
       this.dialogFormVisible = true;
       this.fetchData();
@@ -255,8 +253,8 @@ export default {
         this.firstInsert = true;
 
         var { data } = await getStandardList({
-          
-          year: this.year,
+          //TODO:这里参数写死了 需要调整
+          year: 2022,
         });
         for(let i=0;i<data.length;i++){
           this.remarks.push(data[i].remarks);
@@ -315,8 +313,8 @@ export default {
             standardScore: this.tableData[i].standardScore,
             standardRemarks: this.remarks[i],
             getScore: this.tableData[i].getScore,
-            
-            year: this.year,
+            // TODO:这里年份先写死 后续需要通过改参数调整
+            year: 2022,
           });
         } else {
           await doUpdate({
@@ -327,8 +325,8 @@ export default {
             standardScore: this.tableData[i].standardScore,
             standardRemarks: this.tableData[i].standardRemarks,
             getScore: this.tableData[i].getScore,
-            
-            year: this.year,
+            // TODO:这里年份先写死 后续需要通过改参数调整
+            year: 2022,
           });
         }
       }

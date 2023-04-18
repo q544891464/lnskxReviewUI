@@ -8,8 +8,6 @@
       @click.native="handleViewFile(url)"
     ></el-alert>  -->
 
-
-
     <el-row>
       <!-- <div class="vab-ad">
       <el-carousel
@@ -28,12 +26,12 @@
       </el-carousel>
     </div> -->
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-        
         <h3 class="titlename">
           <img
             style="width: 80px; float: left; margin-top: -20px"
             src="~@/assets/login_images/logo.png"
           />
+
           2022年辽宁省自然科学学术成果奖申报系统
           <!-- 2022年学会优秀论文申报系统 -->
         </h3>
@@ -87,6 +85,7 @@
               @keyup.enter.native="handleLogin"
             />
           </el-form-item>
+
 
           <el-form-item v-if="captchaFlag" prop="captcha">
             <span class="svg-container">
@@ -243,6 +242,16 @@ export default {
         captcha: "",
         uuid: "",
       },
+      field122Options: [
+        {
+          label: "选项一",
+          value: 1,
+        },
+        {
+          label: "选项二",
+          value: 2,
+        },
+      ],
       rules: {
         username: [
           { required: true, trigger: "blur", message: "请输入用户名" },
@@ -340,13 +349,10 @@ export default {
 
 <style lang="scss" scoped>
 .login-container {
-  
   height: 100vh;
   background: url("~@/assets/login_images/background2.jpg") center center fixed
     no-repeat;
   background-size: cover;
-  // 首页全局变灰
-  // filter: grayscale(100%);
 
   .title {
     font-size: 54px;

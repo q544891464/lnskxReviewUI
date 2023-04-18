@@ -40,14 +40,14 @@
               ></el-input>
             </el-form-item>
           </el-col>
+
+          <el-col :span="24" class="line">
             <!-- <el-form-item label="专业" prop="process" style="font-weight: bold">
               <el-input
                 v-model="baseForm.process"
                 autocomplete="off"
               ></el-input>
             </el-form-item> -->
-          <!-- <el-col :span="24" class="line">
-
 
             <el-form-item
               label-width="150px"
@@ -59,12 +59,12 @@
                 :options="disciplineOptions"
                 :props="disciplineProps"
                 @change="disciplinOptionChange"
-                :style="{ width: '100%' }"
+                :style="{ width: '50%' }"
                 placeholder="请选择学科专业分类!"
                 v-bind:disabled="disabled"
               ></el-cascader>
             </el-form-item>
-          </el-col> -->
+          </el-col>
 
           <el-col :span="24" class="line">
             <el-form-item
@@ -242,19 +242,19 @@ export default {
       this.$refs["baseForm"].validate(async (valid) => {
         
 
-        // this.baseForm.disciplineName = this.baseForm.discipline[1].substring(
-        //   0,
-        //   this.baseForm.discipline[1].length - 2
-        // );
+        this.baseForm.disciplineName = this.baseForm.discipline[1].substring(
+          0,
+          this.baseForm.discipline[1].length - 2
+        );
 
-        // this.baseForm.disciplineCode = this.baseForm.discipline[1].substring(
-        //   this.baseForm.discipline[1].length - 2,
-        //   this.baseForm.discipline[1].length
-        // );
+        this.baseForm.disciplineCode = this.baseForm.discipline[1].substring(
+          this.baseForm.discipline[1].length - 2,
+          this.baseForm.discipline[1].length
+        );
 
-        // this.baseForm.disciplineGroup = this.baseForm.discipline[0];
+        this.baseForm.disciplineGroup = this.baseForm.discipline[0];
 
-        // this.baseForm.discipline = JSON.stringify(this.baseForm.discipline);
+        this.baseForm.discipline = JSON.stringify(this.baseForm.discipline);
 
         if (valid) {
           if (!isNull(this.baseForm.id)) {
@@ -265,7 +265,7 @@ export default {
           }
         }
 
-        // this.baseForm.discipline = JSON.parse(this.baseForm.discipline);
+        this.baseForm.discipline = JSON.parse(this.baseForm.discipline);
 
       });
     },

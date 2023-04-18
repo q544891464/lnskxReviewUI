@@ -25,11 +25,10 @@ export function doInsert(data) {
   });
 }
 
-export function getSubmitInfoByCurrentUser(data) {
+export function getSubmitInfoByCurrentUser() {
   return request({
     url: "/api/v1/system/orgSubmit/getSubmitInfoByCurrentUser",
     method: "get",
-    params: data,
   });
 }
 

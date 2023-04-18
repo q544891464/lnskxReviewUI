@@ -51,8 +51,8 @@
           <el-option
             v-for="(item, index) in pageNameOptions"
             :key="index"
-            :label="item.label"
-            :value="item.value"
+            :label="item.subjectGroupName"
+            :value="item.subjectGroupNo"
             :disabled="item.disabled"
           ></el-option>
         </el-select>
@@ -275,6 +275,7 @@ import {
   doExportExcel,
   doExportExcelFuping,
 } from "@/api/system/apply/SysApplyManagementApi";
+import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
 import Prize from "./components/selectPrize";
@@ -300,6 +301,8 @@ export default {
         pageNo: 1,
         pageSize: 10,
         pageName: "全部组别",
+        avgScore_ORDER: "DESC",
+
       },
       dict: {},
       pageNameOptions: [
@@ -378,6 +381,17 @@ export default {
   },
   mounted() {},
   methods: {
+
+    async getOptions() {
+      let res = await getList({
+        pageSize: 1000,
+      });
+      if (res.code == 200) {
+        console.log(res.data);
+        this.pageNameOptions = res.data.rows;
+      }
+    },
+
     async getCount() {
       const { data } = await getCount({
         pageName: "fuping,"+this.queryForm.pageName,
@@ -527,6 +541,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
+      this.getOptions();
       this.getCount();
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed

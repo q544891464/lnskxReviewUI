@@ -40,25 +40,8 @@
               @click="handleImportExcel"
           > 导入 </el-button> -->
 
-          <el-button
-          type="warning"
-          @click="handleSetAvgScoreAll"
-        >
-          计算当前平均分
-          <div style=":inline=true">
-          （测试用，正常情况专家完成评分即可自动计算）
-        </div>
-        </el-button>
-
-
-        <el-button
-          v-if="$perms('system_apply_export')"
-          icon="el-icon-download"
-          type="warning"
-          @click="handleExportExcel"
-        >
-          导出
-        </el-button>
+               <el-button v-if="$perms('system_apply_export')" icon="el-icon-download" type="warning"
+            @click="handleExportExcel"> 导出 </el-button>
         <!--   
           <el-button
             v-if="$perms('system_apply_delete')"
@@ -71,6 +54,7 @@
           </el-button> -->
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="14">
+
         <el-select
           v-model="queryForm.subjectGroup_EQ"
           placeholder="请选择组别"
@@ -78,13 +62,14 @@
           :style="{ width: '50%' }"
           v-bind:disabled="disabled"
           @change="fetchData"
+          
         >
           <el-option
             v-for="(item, index) in subjectGroupOptions"
             :key="index"
-            :label="item.subjectGroupName"
-            :value="item.subjectGroupNo"
-            :disabled="item.disabled"
+              :label="item.subjectGroupName"
+              :value="item.subjectGroupNo"
+              :disabled="item.disabled"
           ></el-option>
         </el-select>
 
@@ -112,26 +97,6 @@
               clearable
             />
           </el-form-item>
-
-          <!-- <el-form-item>
-            <el-select
-              v-model="queryForm.subjectGroup_EQ"
-              placeholder="请选择组别"
-              clearable
-              :style="{ width: '50%' }"
-              v-bind:disabled="disabled"
-              @change="fetchData"
-            >
-              <el-option
-                v-for="(item, index) in subjectGroupOptions"
-                :key="index"
-                :label="item.subjectGroupName"
-                :value="item.subjectGroupNo"
-                :disabled="item.disabled"
-              ></el-option>
-            </el-select>
-          </el-form-item> -->
-
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
@@ -178,7 +143,9 @@
       <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
           <span v-if="scope.row.disciplineName != null">
-            {{ scope.row.disciplineName }}
+            {{
+              scope.row.disciplineName
+            }}
           </span>
         </template>
       </el-table-column>
@@ -206,6 +173,16 @@
         prop="avgScore"
         label="平均分"
       ></el-table-column>
+
+<<<<<<< HEAD
+      <el-table-column
+        show-overflow-tooltip
+        prop="subjectGroupRank"
+        label="组内排名"
+      ></el-table-column>
+=======
+
+>>>>>>> parent of 55629c74 (111)
 
       <!--      <el-table-column
                 show-overflow-tooltip
@@ -246,6 +223,8 @@
           </el-button>
         </template>
       </el-table-column> -->
+
+
 
       <el-table-column
         show-overflow-tooltip
@@ -319,13 +298,12 @@ import {
   doDeleteAll,
   doExportExcelById,
   doExportExcelApplyStatistics,
-  doExportExcelDisciplineStatistics,
+  doExportExcelDisciplineStatistics
 } from "@/api/system/apply/SysApplyManagementApi";
 //   import Edit from "./components/SysApplyManagementEdit";
 //   import Import from "./components/SysApplyManagementImport";
 //   import Upload from "./components/upload";
 import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
-import { setAvgScoreAll } from "@/api/system/expertSubmit/SkxExpertSubmitManagementApi";
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
 import { formateDate } from "@/utils/format";
@@ -349,8 +327,6 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
-        avgScore_ORDER: "DESC",
-        applyCode_ORDER: "ASC",
       },
       dict: {},
       pickerOptions: {
@@ -513,19 +489,6 @@ export default {
 
       // 执行导出
       doExportExcelDisciplineStatistics(this.queryForm);
-    },
-
-    async handleSetAvgScoreAll(el) {
-      vueButtonClickBan(el, 5);
-
-      this.listLoading = true;
-      const { msg } = await setAvgScoreAll();
-      this.$baseMessage(msg, "success");
-      setTimeout(() => {
-        this.listLoading = false;
-      }, 300);
-      await this.fetchData();
-      
     },
     // 导入excel
     handleImportExcel() {

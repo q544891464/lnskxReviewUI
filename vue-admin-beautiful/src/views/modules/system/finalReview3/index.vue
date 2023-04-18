@@ -27,9 +27,49 @@
       </h3>
     </el-row>
 
+    <el-row>
+      <h3 v-if="queryForm.pageName == '1'">
+        农科组目前推荐一等奖{{ this.countData.count }}项，需要评审出一等奖{{ this.group1 }}项，淘汰{{ this.countData.count-this.group1 }}项；
+        <div v-if="this.countData.prize1Count-this.group1>0" style="color:red">
+          一等奖已经超出{{ this.group1 }}项，建议重新调整。
+        </div>
+      </h3>
+      <h3 v-if="queryForm.pageName == '2'">
+        医科组目前推荐一等奖{{ this.countData.count }}项，需要评审出一等奖{{ this.group2 }}项，淘汰{{ this.countData.count-this.group2 }}项；
+        <div v-if="this.countData.prize1Count-this.group2>0" style="color:red">
+          一等奖已经超出{{ this.group2 }}项，建议重新调整。
+        </div>
+      </h3>
+      <h3 v-if="queryForm.pageName == '3'">
+        理工一组目前推荐一等奖{{ this.countData.count }}项，需要评审出一等奖{{ this.group3 }}项，淘汰{{ this.countData.count-this.group3 }}项；
+        <div v-if="this.countData.prize1Count-this.group3>0" style="color:red">
+          一等奖已经超出{{ this.group3 }}项，建议重新调整。
+        </div>
+      </h3>
+      <h3 v-if="queryForm.pageName == '4'">
+        理工二组目前推荐一等奖{{ this.countData.count }}项，需要评审出一等奖{{ this.group4 }}项，淘汰{{ this.countData.count-this.group4 }}项；
+      </h3>
+      <h3 v-if="queryForm.pageName == '5'">
+        理工三组目前推荐一等奖{{ this.countData.count }}项，需要评审出一等奖{{ this.group5 }}项，淘汰{{ this.countData.count-this.group5 }}项；
+        <div v-if="this.countData.prize1Count-this.group5>0" style="color:red">
+          一等奖已经超出{{ this.group5 }}项，建议重新调整。
+        </div>
+      </h3>
+      <h3 v-if="queryForm.pageName == '6'">
+        理工四组目前推荐一等奖{{ this.countData.count }}项，需要评审出一等奖{{ this.group6 }}项，淘汰{{ this.countData.count-this.group6 }}项；
+        <div v-if="this.countData.prize1Count-this.group6>0" style="color:red">
+          一等奖已经超出{{ this.group6 }}项，建议重新调整。
+        </div>
+      </h3>
+
+      <h3 v-if="this.countTotalData.prize1Count+this.countTotalData.prize2Count<this.countTotalData.count" style="color:red">
+        尚未完成全部评审，已评{{ this.countTotalData.prize1Count+this.countTotalData.prize2Count }}项，还有{{ this.countTotalData.count-this.countTotalData.prize1Count-this.countTotalData.prize2Count }}项未评审。
+      </h3>
+    </el-row>
+
     <!-- 主要操作  -->
     <vab-query-form>
-      <vab-query-form-left-panel :span="10">
+      <vab-query-form-left-panel :span="20">
         <!-- <el-button
           v-if="$perms('system_apply_export')"
           type="warning"
@@ -44,23 +84,38 @@
             type="warning"
             @click="handleImportExcel"
         > 导入 </el-button> -->
-        <el-select
+
+
+        <!-- v-if="queryForm.pageName == '全部组别' || queryForm.pageName == ''" -->
+
+
+
+
+
+        <el-col>
+          <el-select
           v-model="queryForm.pageName"
           placeholder="请选择组别"
           clearable
-          :style="{ width: '50%' }"
+          :style="{ width: '50%',marginBottom:'10px' }"
           v-bind:disabled="disabled"
           @change="handlePageNameChange"
         >
           <el-option
             v-for="(item, index) in pageNameOptions"
             :key="index"
-            :label="item.label"
-            :value="item.value"
+            :label="item.subjectGroupName"
+            :value="item.subjectGroupNo"
             :disabled="item.disabled"
           ></el-option>
         </el-select>
-
+          <h3 >
+          为保障成果的学科平衡，请专家在上方下拉栏选择学科组组别后，根据提示进行评审。
+        </h3>
+          <h3>
+          请在12月26日 15:00前完成评审
+        </h3>
+        </el-col>
         <el-button
           v-if="$perms('system_apply_export')"
           icon="el-icon-download"
@@ -70,45 +125,11 @@
           导出
         </el-button>
 
-        <el-button
-          v-if="$perms('system_apply_export')"
-          type="warning"
-          @click="handleCountBalance"
-        >
-          单位平衡计数
-        </el-button>
 
-        <el-button
-          v-if="$perms('system_apply_export')"
-          type="warning"
-          @click="handleCountPrePrize"
-        >
-          预评计数
-        </el-button>
 
-        <el-button
-          v-if="$perms('system_apply_export')"
-          type="warning"
-          @click="handleCountPrize"
-        >
-          终评计数
-        </el-button>
 
-        <el-button
-          v-if="$perms('system_apply_export')"
-          type="warning"
-          @click="handleExpertPrizeView('pre')"
-        >
-          查看专家预评审情况
-        </el-button>
 
-        <el-button
-          v-if="$perms('system_apply_export')"
-          type="warning"
-          @click="handleExpertPrizeView('final')"
-        >
-          查看专家终评评审情况
-        </el-button>
+        
 
         <!-- <el-button
             v-if="$perms('system_apply_delete')"
@@ -290,60 +311,29 @@
 
       </el-table-column>
       
-      <el-table-column
+      <!-- <el-table-column
         show-overflow-tooltip
         label="复评意见"
         prop="disciplineReviewMark"
         
       >
 
-      </el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        label="单位平衡结果"
-        prop="balanceCount"
-        
-      >
-      </el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        label="预评选结果"
-        prop="prePrize"
-        
-      >
-      <!-- :formatter="prePrizeFormat" -->
-      </el-table-column>
-
-      <!-- <el-table-column
-        show-overflow-tooltip
-        label="预评选"
-      >
-      <template v-slot="scope">
-          <el-button
-           
-            type="text"
-            v-bind:disabled="preDisabled"
-            @click="handlePrize(scope.row, 'pre')"
-          >
-            设置奖项
-          </el-button>
-        </template>
       </el-table-column> -->
 
       <el-table-column
         show-overflow-tooltip
-        label="终评计数结果"
-        prop="prizeCount"
+        label="预评审得票"
+        prop="prePrize"
         
       >
-      </el-table-column>
 
+      </el-table-column>
+      
+      <!-- :formatter="prePrizeFormat" -->
       <el-table-column
         show-overflow-tooltip
-        label="当前评奖"
-        prop="prize"
+        label="终评结果"
+        prop="finalPrize"
         :formatter="prizeFormat"
         
       >
@@ -373,7 +363,7 @@
           <el-button
            
             type="text"
-            v-bind:disabled="disabled"
+            v-bind:disabled="finalDisabled"
             @click="handlePrize(scope.row, 'final')"
           >
             设置奖项
@@ -394,7 +384,6 @@
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData"></import>
     <prize ref="prize" @fetchData="fetchData" @refresh="fetchData"></prize>
-    <detail ref="detail" @fetchData="fetchData"></detail>
   </div>
 </template>
 
@@ -409,12 +398,11 @@ import {
   doExportExcelZhongping,
   getIsDeadLineByType
 } from "@/api/system/apply/SysApplyManagementApi";
+import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 import {getByCode} from "@/api/system/options/SysOptionsManagement";
-import { balanceCount,prePrizeCount,prizeCount } from "@/api/system/zhongping/SkxGetScoreFinalManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
-import Prize from "./components/selectPrize";
-import Detail from "./components/detail";
+import Prize from "./components/finalVote";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
@@ -422,12 +410,21 @@ import { formateDate } from "@/utils/format";
 
 export default {
   name: "SysApplyManagement",
-  components: { Edit, Import, Prize ,Detail},
+  components: { Edit, Import, Prize },
   data() {
     return {
+      limit: 17,
+      group1:4,
+      group2:7,
+      group3:7,
+      group4:5,
+      group5:4,
+      group6:3,
+      pageType: "prize",
       preDisabled: true,
       finalDisabled: true,
       countData: {},
+      countTotalData: {},
       list: [],
       listLoading: true,
       layout: "total, prev, pager, next, sizes, jumper",
@@ -439,54 +436,49 @@ export default {
         pageNo: 1,
         pageSize: 10,
         pageName: "全部组别",
-<<<<<<< HEAD
-        pageType: "zhongping",
+        pageType: "prize",
+        prePrize_ORDER: "DESC",
         avgScore_ORDER: "DESC",
         disciplineReviewPrize_EQ: "1",
-        balanceCount_ORDER: "DESC",
-        prePrize_ORDER: "DESC",
-        prizeCount_ORDER: "DESC",
-=======
->>>>>>> parent of 55629c74 (111)
       },
       dict: {},
       pageNameOptions: [
-        {
-          label: "全部组别",
-          value: "全部组别",
-        },
-        {
-          label: "理科",
-          value: "理科",
-        },
-        {
-          label: "农科",
-          value: "农科",
-        },
-        {
-          label: "医药",
-          value: "医药",
-        },
-        {
-          label: "生命科学与基础医学",
-          value: "生命科学与基础医学",
-        },
-        {
-          label: "机械、材料、矿山、冶金",
-          value: "机械、材料、矿山、冶金",
-        },
-        {
-          label: "电气、电子与信息技术",
-          value: "电气、电子与信息技术",
-        },
-        {
-          label: "能源、化工与环境",
-          value: "能源、化工与环境",
-        },
-        {
-          label: "交通与基建",
-          value: "交通与基建",
-        },
+        // {
+        //   label: "全部组别",
+        //   value: "全部组别",
+        // },
+        // {
+        //   label: "理科",
+        //   value: "理科",
+        // },
+        // {
+        //   label: "农科",
+        //   value: "农科",
+        // },
+        // {
+        //   label: "医药",
+        //   value: "医药",
+        // },
+        // {
+        //   label: "生命科学与基础医学",
+        //   value: "生命科学与基础医学",
+        // },
+        // {
+        //   label: "机械、材料、矿山、冶金",
+        //   value: "机械、材料、矿山、冶金",
+        // },
+        // {
+        //   label: "电气、电子与信息技术",
+        //   value: "电气、电子与信息技术",
+        // },
+        // {
+        //   label: "能源、化工与环境",
+        //   value: "能源、化工与环境",
+        // },
+        // {
+        //   label: "交通与基建",
+        //   value: "交通与基建",
+        // },
       ],
       pickerOptions: {
         shortcuts: [
@@ -526,11 +518,10 @@ export default {
   },
   mounted() {
     // this.getIsDeadLinePre();
-    // this.getIsDeadLineFinal();
+    this.getIsDeadLineFinal();
   },
   methods: {
 
-<<<<<<< HEAD
     async getIsDeadLinePre() {
       const { success, msg, data } = await getIsDeadLineByType({
         type: "pre",
@@ -538,7 +529,7 @@ export default {
       });
       if (!success) {
         this.preDisabled = true;
-        this.$baseMessage(msg, "error");
+        this.$baseMessage("未在评审时间内", "error");
       } else {
         this.preDisabled = false;
       }
@@ -551,54 +542,11 @@ export default {
       });
       if (!success) {
         this.finalDisabled = true;
-        this.$baseMessage(msg, "error");
+        this.$baseMessage("未在评审时间内", "error");
       } else {
         this.finalDisabled = false;
       }
       return success;
-    },
-
-    async handleCountBalance() {
-      const { success, msg, data } = await balanceCount();
-      if (success) {
-        this.$baseMessage("计算成功", "success");
-        this.queryForm.prePrize_ORDER = "";
-        this.queryForm.avgScore_ORDER ="";
-        this.queryForm.balanceCount_ORDER= "DESC";
-        this.queryForm.prizeCount_ORDER= "";
-        this.fetchData();
-        
-      } else {
-        this.$baseMessage(msg, "error");
-      }
-    },
-
-    async handleCountPrePrize() {
-      const { success, msg, data } = await prePrizeCount();
-      if (success) {
-        this.$baseMessage("计算成功", "success");
-        this.queryForm.prePrize_ORDER = "DESC";
-        this.queryForm.avgScore_ORDER ="";
-        this.queryForm.balanceCount_ORDER= "";
-        this.queryForm.prizeCount_ORDER= "";
-        this.fetchData();
-      } else {
-        this.$baseMessage(msg, "error");
-      }
-    },
-
-    async handleCountPrize() {
-      const { success, msg, data } = await prizeCount();
-      if (success) {
-        this.$baseMessage("计算成功", "success");
-        this.queryForm.prePrize_ORDER = "";
-        this.queryForm.avgScore_ORDER ="";
-        this.queryForm.balanceCount_ORDER= "";
-        this.queryForm.prizeCount_ORDER= "DESC";
-        this.fetchData();
-      } else {
-        this.$baseMessage(msg, "error");
-      }
     },
 
     async getOptions() {
@@ -611,36 +559,39 @@ export default {
       }
     },
 
-=======
->>>>>>> parent of 55629c74 (111)
+    async getTotalCount() {
+      const { data } = await getCount({
+        pageName: "zhongpingVote,"+"全部组别"+","+this.pageType,
+      });
+      console.log("获取全部计数",data);
+      this.countTotalData = data;
+    },
+
     async getCount() {
       const { data } = await getCount({
-        pageName: "zhongping,"+this.queryForm.pageName,
+        pageName: "zhongpingVote,"+this.queryForm.pageName+","+this.pageType,
       });
       this.countData = data;
     },
 
     prePrizeFormat(row, column) {
-      if (row.prePrize == 1) {
-        return "一等奖";
-      } else if (row.prePrize == 2) {
-        return "二等奖";
-      } else if (row.prePrize == 3) {
-        return "三等奖";
-      }
+      if (row.prePrize >= this.limit) {
+        return row.prePrize+"(一等奖)";
+      } 
     },
 
     prizeFormat(row, column) {
-      if (row.prize == 1) {
+      if (row.finalPrize == 1) {
         return "一等奖";
-      } else if (row.prize == 2) {
+      } else if (row.finalPrize == 0) {
         return "二等奖";
-      } else if (row.prize == 3) {
+      } else if (row.finalPrize == 3) {
         return "三等奖";
       }
     },
 
     handlePageNameChange(value) {
+      this.queryForm.pageNo = 1;
       this.queryForm.pageName = value;
       this.fetchData();
     },
@@ -697,6 +648,7 @@ export default {
     },
     handleViewInfo(row) {
       if (row.id) {
+        window.sessionStorage.setItem("queryForm",  JSON.stringify(this.queryForm));
         // this.$refs["edit"].showEdit(row);
         this.$router.push({
           path: "/applyInfo/applyInfo",
@@ -708,15 +660,11 @@ export default {
     },
 
     handleViewDetailInfo(row) {
-      if (row.wordPath) {
-        window.open(row.wordPath, "_blank");
+      if (row.completedFilePath) {
+        window.open(row.completedFilePath, "_blank");
       } else {
         this.$baseMessage("暂时无法查看", "error");
       }
-    },
-
-    handleExpertPrizeView(type) {
-      this.$refs["detail"].show(type);
     },
 
     async handlePrize(row, type) {
@@ -794,7 +742,17 @@ export default {
     },
 
     async fetchData() {
+
+      //存储queryform 使得刷新页面后还能保留查询条件
+      if(window.sessionStorage.getItem("queryForm"))
+      {
+        this.queryForm = JSON.parse(window.sessionStorage.getItem("queryForm"));
+        window.sessionStorage.removeItem("queryForm");
+      }
+
       this.listLoading = true;
+      this.getOptions();
+      this.getTotalCount();
       this.getCount();
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed

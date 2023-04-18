@@ -28,9 +28,7 @@
       完成初评后，导出初评报告模板，按要求完善初评报告内容，签字盖章后扫描成pdf并上传系统。
     </h3>
 
-    <h3 style="color: red">
-      初评报告上传提交后不能再进行初评操作，请确保内容无误后再进行上传提交。
-    </h3>
+    <h3 style="color: red;">初评报告上传提交后不能再进行初评操作，请确保内容无误后再进行上传提交。</h3>
 
     <!-- 主要操作  -->
     <!-- v-if="$perms('system_apply_insert')" -->
@@ -68,22 +66,20 @@
 
         <el-button
           type="primary"
-          v-if="submitInfo.completeFilePath == null"
+          v-if="submitInfo.completeFilePath == null "
           v-bind:disabled="disabled"
           @click="uploadChuping"
         >
           上传初评报告并提交
         </el-button>
 
-        <el-button
+        <!-- <el-button
           type="warning"
           v-if="submitInfo.completeFilePath != null"
           @click="uploadChuping"
-          v-bind:disabled="disabled"
-
         >
           重新上传
-        </el-button>
+        </el-button> -->
 
         <el-button
           type="warning"
@@ -102,53 +98,8 @@
         > 批量删除 </el-button> -->
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="24">
-        
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-
-          <el-form-item label="推荐单位选择" prop="orgId">
-            <el-select
-              v-if="$perms('system_admin_user')"
-              v-model="queryForm.orgId"
-              :collapse-tags="false"
-              @visible-change="clearDrop($event)"
-              placeholder="请选择推荐单位"
-              @change = fetchDataAdmin()
-            >
-              <div class="search-input">
-                <el-input
-                  placeholder="请输入内容"
-                  size="mini"
-                  prefix-icon="el-icon-search"
-                  v-model="dropDownValue"
-                  @input="dropDownSearch"
-                  clearable
-                ></el-input>
-                <!-- <input type="text" placeholder="请输入" class="el-input__inner" v-model="dropDownValue" @keyup="dropDownSearch" clearable> -->
-              </div>
-              <div slot="empty" class="search-input">
-                <el-input
-                  placeholder="请输入内容"
-                  size="mini"
-                  prefix-icon="el-icon-search"
-                  v-model="dropDownValue"
-                  @input="dropDownSearch"
-                  clearableoption
-                ></el-input>
-                <p>无搜索内容</p>
-              </div>
-              <el-option
-                v-for="(item, index) in optionsMetaShow"
-                :key="index"
-                :label="item.unitName"
-                :value="item.orgId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
           <el-form-item>
-
-           
-
             <el-form-item>
               <el-input
                 v-model.trim="queryForm.applyName_LIKE"
@@ -173,6 +124,7 @@
               />
             </el-form-item>
 
+
             <el-form-item>
               <el-input
                 v-model.trim="queryForm.disciplineGroup_LIKE"
@@ -190,14 +142,12 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button
-                icon="el-icon-search"
-                type="primary"
-                @click="queryData"
-              >
-                查询
-              </el-button>
+              <el-button icon="el-icon-search" type="primary" @click="queryData">
+              查询
+            </el-button>
             </el-form-item>
+
+
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -229,6 +179,7 @@
             v-model="scope.row.preRank"
             type="number"
             style="width: 80px"
+        
             @change="handleRankChange(scope.row)"
             v-bind:disabled="disabled"
           ></el-input>
@@ -274,14 +225,8 @@
 
       <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
-          <el-button
-            type="text"
-            @click="handleViewDetailInfo(scope.row)"
-            v-bind:disabled="
-              scope.row.completedFilePath == '' &&
-              scope.row.completedFilePath != null
-            "
-          >
+          <el-button type="text" @click="handleViewDetailInfo(scope.row)"
+          v-bind:disabled = "scope.row.completedFilePath == '' && scope.row.completedFilePath != null">
             查看
           </el-button>
         </template>
@@ -298,23 +243,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="编辑"
-        v-if="$perms('system_apply_update') || $perms('system_apply_delete')"
-      >
-        <template v-slot="scope">
-          <el-button
-            v-if="$perms('system_apply_update')"
-            type="text"
-            @click="handleUpdate(scope.row)"
-            v-bind:disabled = "disabled"
-          >
-            编辑
-          </el-button>
-        </template>
-      </el-table-column>
-
       <!-- <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
           <el-button type="text" @click="handleCancel(scope.row)"
@@ -323,6 +251,8 @@
           </el-button>
         </template>
       </el-table-column> -->
+
+      
 
       <el-table-column show-overflow-tooltip label="详细信息">
         <template v-slot="scope">
@@ -335,7 +265,9 @@
       <el-table-column show-overflow-tooltip label="专业">
         <template v-slot="scope">
           <span v-if="scope.row.disciplineName != null">
-            {{ scope.row.disciplineName }}
+            {{
+              scope.row.disciplineName
+            }}
           </span>
         </template>
       </el-table-column>
@@ -350,6 +282,8 @@
         prop="firstAuthorWorkplace"
         label="工作单位"
       ></el-table-column>
+
+
 
       <!-- v-if="$perms('system_apply_update') || $perms('system_apply_delete') ||  $perms('system_apply_setpass')" -->
       <!-- <el-table-column
@@ -402,11 +336,13 @@ import {
   doUpdate,
   getIsDeadLine,
 } from "@/api/system/apply/SysApplyManagementApi";
-import { getByCurrentUser } from "@/api/system/orgInfo/OrgInfoManagementApi";
+import {
+  getByCurrentUser,
+  
+} from "@/api/system/orgInfo/OrgInfoManagementApi";
 import { getSubmitInfoByCurrentUser } from "@/api/system/orgSubmit/SkxOrgSubmitManagementApi";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
-import { getUnitNames } from "@/api/system/orgInfo/OrgInfoManagementApi";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
@@ -418,11 +354,6 @@ export default {
   components: { Edit, Import, Upload },
   data() {
     return {
-      isAdmin:false,
-      dropDownValue: "",
-      optionsMetaAll: [],
-      optionsMetaShow: [],
-      valueMeta: [],
       disabled: true,
       list: null,
       listLoading: true,
@@ -438,7 +369,6 @@ export default {
       queryForm: {
         pageNo: 1,
         pageSize: 10,
-        orgId:"",
       },
       dict: {},
       pickerOptions: {
@@ -475,7 +405,6 @@ export default {
     };
   },
   created() {
-    this.getUnitNames();
     this.fetchData();
   },
   mounted() {
@@ -497,7 +426,6 @@ export default {
         const { msg } = await doIsPassApply({
           applyId: row.id,
           isPass: isPass,
-          orgId: this.queryForm.orgId,
         });
         row.isPass = isPass;
         this.$baseMessage(msg, "success");
@@ -506,27 +434,16 @@ export default {
       }
     },
 
-    handleUpdate(row) {
-      if (row.id) {
-        // this.$refs["edit"].showEdit(row);
-        this.$router.push({
-          path: "/createApply",
-          query: {
-            form: row,
-            disabled: true,
-
-          },
-        });
-      }
-    },
-
     async handleRankChange(row) {
+
+      
+
       // if(parseInt(row.preRank)>this.orgInfo.quota){
       //   this.$baseMessage("排序不能大于推荐名额", "error");
       //   row.preRank = this.orgInfo.quota;
       // }
 
-      if (parseInt(row.preRank) <= 0) {
+      if(parseInt(row.preRank)<=0){
         this.$baseMessage("排序不能小于1", "error");
         row.preRank = 1;
       }
@@ -538,13 +455,12 @@ export default {
         return;
       } else {
         if (row.id) {
-          const { success, msg } = await doSetPreRank({
+          const { success,msg } = await doSetPreRank({
             applyId: row.id,
             preRank: preRank,
-            orgId: this.queryForm.orgId,
           });
           row.preRank = preRank;
-          if (!success) {
+          if(!success){
             row.isPass = "0";
           }
 
@@ -570,6 +486,7 @@ export default {
           await this.fetchData();
         }
       });
+      
     },
     setSelectRows(val) {
       this.selectRows = val;
@@ -661,7 +578,7 @@ export default {
     },
 
     async handleExportWord() {
-      const { code, msg, data } = await doExportChupingWord(this.queryForm);
+      const { code, msg, data } = await doExportChupingWord();
       if (code === 200) {
         window.open(data, "_blank");
       } else {
@@ -670,7 +587,7 @@ export default {
     },
 
     async uploadChuping() {
-      this.$refs["upload"].show(this.queryForm.orgId);
+      this.$refs["upload"].show();
     },
     // 导出excel
     handleExportExcel(el) {
@@ -721,55 +638,16 @@ export default {
     },
 
     async getSubmitInfo() {
-      const { data } = await getSubmitInfoByCurrentUser(
-        {
-          orgId:this.queryForm.orgId
-        }
-      );
+      const { data } = await getSubmitInfoByCurrentUser();
       this.submitInfo = data;
-      if (data.completeFilePath) {
+      if(data.completeFilePath){
         this.disabled = true;
       }
-      if(this.isAdmin){
-        this.disabled = false;
-      }
-
-    },
-    dropDownSearch() {
-      var _this = this;
-      // _this.valueMeta = [];
-      _this.optionsMetaShow = _this.optionsMetaAll.filter(_this.filterSearch);
-    },
-    filterSearch(item) {
-      return item.unitName.includes(this.dropDownValue);
-    },
-    clearDrop($event) {
-      //此处的clearDrop用于解决搜索内容不存在时，所有内容无法显示的bug
-      if ($event) {
-        // alert('active')
-        this.dropDownValue = "";
-        this.optionsMetaShow = this.optionsMetaAll;
-      }
-    },
-    // 获取推荐单位名字列表
-    async getUnitNames() {
-      const { success, msg, data } = await getUnitNames();
-      if (success) {
-        this.optionsMetaAll = data;
-        this.optionsMetaShow = data;
-      } else {
-        this.$message.error(msg);
-      }
-    },
-
-    async fetchDataAdmin(){
-      this.isAdmin = true;
-      this.fetchData();
     },
 
     async fetchData() {
       this.listLoading = true;
-
+      
       this.getOrgInfo();
       this.getSubmitInfo();
       // this.getIsDeadLine();

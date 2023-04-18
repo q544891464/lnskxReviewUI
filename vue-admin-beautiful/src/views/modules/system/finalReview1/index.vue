@@ -15,125 +15,121 @@
         <el-divider></el-divider>
       </div>
     </el-collapse-transition>
-
     <el-row>
-      <!-- <h3>
-        {{ this.prize1 }}分以上为一等奖； {{ this.prize2 }}分-{{
-          this.prize1
-        }}分为二等奖； {{ this.prize3 }}分-{{ this.prize2 }}分为三等奖；
-      </h3> -->
       <h3>
-        评审项目数量：{{ this.totalCount }} 。当前{{
-          this.prize1
-        }}分以上数量：{{ this.prize1Count }}； {{ this.prize2 }}分-{{
-          this.prize1 - 1
-        }}分数量：{{ this.prize2Count }}； {{ this.prize3 }}分-{{
-          this.prize2 - 1
-        }}分数量：{{ this.prize3Count }}； {{ this.prize3 }}分以下数量：{{
-          this.prize4Count
-        }};
-        未评分数量：{{this.noPrizeCount}}
+        评审项目数量：{{ this.countData.count }} 当前一等奖数量：{{
+          this.countData.prize1Count
+        }}
+        当前二等奖数量：{{ this.countData.prize2Count }}
+        <!-- 当前三等奖数量：{{
+          this.countData.prize3Count
+        }} -->
       </h3>
       <h3>
-        根据评奖比例，{{this.prize1}}分以上数不得超过{{this.maxPrize1Count}}项；
-         {{ this.prize2 }}分-{{this.prize1}}分不得超过{{this.maxPrize2Count}}项；
-          {{ this.prize3 }}分-{{ this.prize2 }}分不得超过{{this.maxPrize3Count}}项；
+        每个单位一等奖数量不能超过2项
+        <!-- 当前三等奖金额：{{
+          this.countData.prize3Money
+        }} -->
       </h3>
-
-      <h3 v-if="this.prize1Count>this.maxPrize1Count ">
-        <span style="color: red">85分以上比例超过限制，请重新设置！</span>
-      </h3>
-      <h3 v-if="this.prize2Count>this.maxPrize2Count ">
-        <span style="color: red">84-75分比例超过限制，请重新设置！</span>
-      </h3>
-      <h3 v-if="this.prize3Count>this.maxPrize3Count ">
-        <span style="color: red">74-60分比例超过限制，请重新设置！</span>
-      </h3>
-
-      <h3 v-if="this.noPrizeCount>0">
-        <span>尚未完成全部评分</span>
-      </h3>
-
-      <h3 style="color: red">注：对所有成果进行评分后才能导出汇总表，签字盖章后扫描成pdf文件，再进行汇总表上传，汇总表上传后将不能再进行评分结果的修改，请认真核对后再操作</h3>
     </el-row>
 
     <!-- 主要操作  -->
     <vab-query-form>
       <vab-query-form-left-panel :span="10">
+        <!-- <el-button
+          v-if="$perms('system_apply_export')"
+          type="warning"
+          @click="fetchData"
+        >
+          刷新
+        </el-button> -->
+
         <!--        <el-button
             v-if="$perms('system_apply_import')"
             icon="el-icon-upload2"
             type="warning"
             @click="handleImportExcel"
         > 导入 </el-button> -->
-
-        <!-- <el-button type="warning" @click="fetchData">刷新</el-button> -->
-
-        <el-button type="primary" @click="exportExpertWord">
-          导出汇总表
-        </el-button>
-
-        <el-button 
-        type="primary" 
-        @click="uploadExpertWord"
-        v-bind:disabled="submitDisabled"
-        v-if="submitInfo.completeFilePath == null ">
-          上传汇总表并提交
-        </el-button>
+        <el-select
+          v-model="queryForm.pageName"
+          placeholder="请选择组别"
+          clearable
+          :style="{ width: '50%' }"
+          v-bind:disabled="disabled"
+          @change="handlePageNameChange"
+        >
+          <el-option
+            v-for="(item, index) in pageNameOptions"
+            :key="index"
+            :label="item.subjectGroupName"
+            :value="item.subjectGroupNo"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
 
         <el-button
+          v-if="$perms('system_apply_export')"
+          icon="el-icon-download"
           type="warning"
-          v-if="submitInfo.completeFilePath != null"
-          @click="handleViewCompleteFile"
+          @click="handleExportExcel"
         >
-          查看已上传汇总表
+          导出
         </el-button>
 
         <!-- <el-button
-          v-if="$perms('system_apply_delete')"
-          :disabled="!selectRows.length > 0"
-          icon="el-icon-delete"
-          type="danger"
-          @click="handleDelete"
-        >
-          批量删除
-        </el-button> -->
+            v-if="$perms('system_apply_delete')"
+            :disabled="!selectRows.length > 0"
+            icon="el-icon-delete"
+            type="danger"
+            @click="handleDelete"
+        > 批量删除 </el-button> -->
       </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="14">
+      <vab-query-form-right-panel :span="24">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
           <el-form-item>
-            <el-form-item>
-              <el-input
-                v-model.trim="queryForm.applyName_LIKE"
-                placeholder="请输入成果名称"
-                clearable
-              />
-            </el-form-item>
+            <el-input
+              v-model.trim="queryForm.applyName_LIKE"
+              placeholder="请输入成果名称"
+              clearable
+            />
+          </el-form-item>
 
-            <el-form-item>
-              <el-input
-                v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
-                placeholder="请输入工作单位名称"
-                clearable
-              />
-            </el-form-item>
+          <el-form-item>
+            <el-select
+              v-model.trim="queryForm.firstAuthorWorkplace_LIKE"
+              placeholder="请选择工作单位"
+              clearable
+              :style="{ width: '100%' }"
+              v-bind:disabled="disabled"
+              @change="fetchData"
+            >
+              <el-option
+                v-for="(item, index) in workplaceOptions"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
 
-            <el-form-item>
-              <el-input
-                v-model.trim="queryForm.disciplineGroup_LIKE"
-                placeholder="请输入学科组别"
-                clearable
-              />
-            </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model.trim="queryForm.disciplineGroup_LIKE"
+              placeholder="请输入学科组别"
+              clearable
+            />
+          </el-form-item>
 
-            <el-form-item>
-              <el-input
-                v-model.trim="queryForm.disciplineName_LIKE"
-                placeholder="请输入学科"
-                clearable
-              />
-            </el-form-item>
+          <el-form-item>
+            <el-input
+              v-model.trim="queryForm.disciplineName_LIKE"
+              placeholder="请输入学科"
+              clearable
+            />
+          </el-form-item>
 
+          <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
             </el-button>
@@ -158,52 +154,22 @@
 
       <el-table-column
         show-overflow-tooltip
-        prop="applyCode"
-        label="成果编码"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
         prop="applyName"
         label="成果名称"
-        width="400"
+        width="300"
       ></el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="disciplineGroup"
-        label="学科组别"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="disciplineName"
-        label="学科"
-      ></el-table-column>
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="discipline"
-              label="学科专业"
-      ></el-table-column> -->
-
-      <!--      <el-table-column
-              show-overflow-tooltip
-              prop="keywords"
-              label="关键词"
-      ></el-table-column> -->
-
-      <el-table-column show-overflow-tooltip label="申报表">
+      <el-table-column show-overflow-tooltip label="详细信息">
         <template v-slot="scope">
-          <el-button type="text" @click="handleViewDetailInfo(scope.row)">
+          <el-button type="text" @click="handleViewInfo(scope.row)">
             查看
           </el-button>
         </template>
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip label="详细信息">
+      <el-table-column show-overflow-tooltip label="申报表">
         <template v-slot="scope">
-          <el-button type="text" @click="handleViewInfo(scope.row)">
+          <el-button type="text" @click="handleViewDetailInfo(scope.row)">
             查看
           </el-button>
         </template>
@@ -222,17 +188,42 @@
 
       <el-table-column
         show-overflow-tooltip
-        label="初评单位"
-        prop="orgName"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="初评排序"
-        prop="preRank"
+        prop="disciplineGroup"
+        label="学科组别"
       ></el-table-column>
 
-      <!-- :formatter="prizeFormat" -->
-      <el-table-column show-overflow-tooltip label="当前评分" prop="totalScore">
+      <el-table-column
+        show-overflow-tooltip
+        prop="disciplineName"
+        label="学科"
+      ></el-table-column>
+
+      <el-table-column show-overflow-tooltip label="初评单位" prop="orgName">
+        <template slot-scope="scope">
+          <span>{{ scope.row.orgName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip label="初评排序" prop="preRank">
+        <template slot-scope="scope">
+          <span>{{ scope.row.preRank }}</span>
+        </template>
+      </el-table-column>
+
+      <!--      <el-table-column
+              show-overflow-tooltip
+              prop="discipline"
+              label="学科专业"
+      ></el-table-column> -->
+
+      <!--      <el-table-column
+              show-overflow-tooltip
+              prop="keywords"
+              label="关键词"
+      ></el-table-column> -->
+
+      <el-table-column show-overflow-tooltip label="网评结果" prop="avgScore">
+        <!-- :formatter="disciplineReviewPrizeFormat" -->
         <!--        <template v-slot="scope">
 
           <el-button
@@ -244,7 +235,33 @@
  -->
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip label="操作">
+      <el-table-column
+        show-overflow-tooltip
+        prop="subjectGroupRank"
+        label="组内排名"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="复评结果"
+        prop="disciplineReviewPrize"
+        :formatter="disciplineReviewPrizeFormat"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="复评意见"
+        prop="disciplineReviewMark"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="单位平衡结果"
+        prop="finalBalance"
+        :formatter="finalBalanceFormat"
+      ></el-table-column>
+
+      <el-table-column show-overflow-tooltip label="设置奖项">
         <template v-slot="scope">
           <!--          <el-button
             v-if="$perms('system_apply_delete')"
@@ -252,8 +269,12 @@
             @click="handleDelete(scope.row)"
           > 删除 </el-button> -->
 
-          <el-button type="text" @click="handlePrize(scope.row)" v-bind:disabled="disabled">
-            评分
+          <el-button
+            type="text"
+            v-bind:disabled="balanceDisabled"
+            @click="handlePrize(scope.row, 'balance')"
+          >
+            设置奖项
           </el-button>
         </template>
       </el-table-column>
@@ -271,8 +292,6 @@
     <edit ref="edit" @fetchData="fetchData"></edit>
     <import ref="import" @fetchData="fetchData"></import>
     <prize ref="prize" @fetchData="fetchData" @refresh="fetchData"></prize>
-    <detail ref="detail" @fetchData="fetchData" @refresh="fetchData"></detail>
-    <upload ref="upload" @fetchData="fetchData" @refresh="fetchData"></upload>
   </div>
 </template>
 
@@ -280,60 +299,111 @@
 import {
   getCount,
   getListAll,
-  getListByDiscipline,
+  getListByFinal,
   doDelete,
   doDeleteAll,
-  doExportExcelByIsPass,
+  doExportExcel,
+  doExportExcelZhongping,
+  getIsDeadLineByType,
 } from "@/api/system/apply/SysApplyManagementApi";
-import {
-  doExportExpertWord,
-  getSubmitInfoByCurrentUser,
-} from "@/api/system/expertSubmit/SkxExpertSubmitManagementApi";
+import { getList } from "@/api/system/subjectGroup/SkxSubjectGroupManagementApi";
 import { getByCode } from "@/api/system/options/SysOptionsManagement";
 import Edit from "./components/SysApplyManagementEdit";
 import Import from "./components/SysApplyManagementImport";
-import Prize from "./components/selectPrize";
-import Detail from "./components/detail";
-import Upload from "./components/upload";
+import Prize from "./components/finalVote";
 
 import { vueButtonClickBan } from "@/utils";
 import { isNotNull } from "@/utils/valiargs";
 import { formateDate } from "@/utils/format";
-import { get } from "sortablejs";
 
 export default {
   name: "SysApplyManagement",
-  components: { Edit, Import, Prize, Detail, Upload },
+  components: { Edit, Import, Prize },
   data() {
     return {
+      balanceDisabled: true,
+      preDisabled: true,
+      finalDisabled: true,
+      countData: {},
       list: [],
       listLoading: true,
-      submitInfo: {},
-      disabled: false,
-      submitDisabled: false,
-      totalCount: 0,
-      prize1: 0,
-      prize2: 0,
-      prize3: 0,
-      prize1Count: 0,
-      prize2Count: 0,
-      prize3Count: 0,
-      prize4Count: 0,
-      noPrizeCount: 0,
-      maxPrize1Count:0,
-      maxPrize2Count:0,
-      maxPrize3Count:0,
-
       layout: "total, prev, pager, next, sizes, jumper",
       total: 0,
       selectRows: "",
       elementLoadingText: "正在加载...",
       moreQueryFlag: false,
+      pageType: "balance",
       queryForm: {
         pageNo: 1,
         pageSize: 10,
+        pageName: "全部组别",
+        pageType: "balance",
+        firstAuthorWorkplace_ORDER: "ASC",
+        avgScore_ORDER: "DESC",
+        disciplineReviewPrize_EQ: "1",
+        disciplineReviewMark_LIKE: "*",
       },
       dict: {},
+      workplaceOptions: [
+        {
+          label: "东北大学",
+          value: "东北大学",
+        },
+        {
+          label: "中国科学院大连化学物理研究所",
+          value: "中国科学院大连化学物理研究所",
+        },
+        {
+          label: "中国医科大学",
+          value: "中国医科大学",
+        },
+        {
+          label: "大连医科大学",
+          value: "大连医科大学",
+        },
+        {
+          label: "大连理工大学",
+          value: "大连理工大学",
+        }
+      ],
+      pageNameOptions: [
+        // {
+        //   label: "全部组别",
+        //   value: "全部组别",
+        // },
+        // {
+        //   label: "理科",
+        //   value: "理科",
+        // },
+        // {
+        //   label: "农科",
+        //   value: "农科",
+        // },
+        // {
+        //   label: "医药",
+        //   value: "医药",
+        // },
+        // {
+        //   label: "生命科学与基础医学",
+        //   value: "生命科学与基础医学",
+        // },
+        // {
+        //   label: "机械、材料、矿山、冶金",
+        //   value: "机械、材料、矿山、冶金",
+        // },
+        // {
+        //   label: "电气、电子与信息技术",
+        //   value: "电气、电子与信息技术",
+        // },
+        // {
+        //   label: "能源、化工与环境",
+        //   value: "能源、化工与环境",
+        // },
+        // {
+        //   label: "交通与基建",
+        //   value: "交通与基建",
+        // },
+      ],
       pickerOptions: {
         shortcuts: [
           {
@@ -370,9 +440,93 @@ export default {
   created() {
     this.fetchData();
   },
-  mounted() {},
+  mounted() {
+    this.getIsDeadLineBalance();
+    // this.getIsDeadLinePre();
+    // this.getIsDeadLineFinal();
+  },
   methods: {
+    async getIsDeadLineBalance() {
+      const { success, msg, data } = await getIsDeadLineByType({
+        type: "balance",
+      });
+      if (!success) {
+        this.balanceDisabled = true;
+        this.$baseMessage(msg, "error");
+      } else {
+        this.balanceDisabled = false;
+      }
+      return success;
+    },
+
+    async getIsDeadLinePre() {
+      const { success, msg, data } = await getIsDeadLineByType({
+        type: "pre",
+      });
+      if (!success) {
+        this.preDisabled = true;
+        this.$baseMessage(msg, "error");
+      } else {
+        this.preDisabled = false;
+      }
+      return success;
+    },
+
+    async getIsDeadLineFinal() {
+      const { success, msg, data } = await getIsDeadLineByType({
+        type: "final",
+      });
+      if (!success) {
+        this.finalDisabled = true;
+        this.$baseMessage(msg, "error");
+      } else {
+        this.finalDisabled = false;
+      }
+      return success;
+    },
+
+    async getOptions() {
+      let res = await getList({
+        pageSize: 1000,
+      });
+      if (res.code == 200) {
+        console.log(res.data);
+        this.pageNameOptions = res.data.rows;
+      }
+    },
+
+    async getCount() {
+      const { data } = await getCount({
+        pageName:
+          "zhongpingVote," + this.queryForm.pageName + "," + this.pageType,
+      });
+      this.countData = data;
+    },
+
+    finalBalanceFormat(row, column) {
+      if (row.finalBalance == 1) {
+        return "一等奖";
+      } else if (row.finalBalance == 0) {
+        return "二等奖";
+      }
+    },
+
     prizeFormat(row, column) {
+      if (row.prize == 1) {
+        return "一等奖";
+      } else if (row.prize == 2) {
+        return "二等奖";
+      } else if (row.prize == 3) {
+        return "三等奖";
+      }
+    },
+
+    handlePageNameChange(value) {
+      this.queryForm.pageName = value;
+      this.fetchData();
+    },
+
+    disciplineReviewPrizeFormat(row, column) {
       if (row.disciplineReviewPrize == 1) {
         return "一等奖";
       } else if (row.disciplineReviewPrize == 2) {
@@ -425,7 +579,6 @@ export default {
     handleViewInfo(row) {
       if (row.id) {
         // this.$refs["edit"].showEdit(row);
-        window.sessionStorage.setItem("queryForm",  JSON.stringify(this.queryForm));
         this.$router.push({
           path: "/applyInfo/applyInfo",
           query: {
@@ -443,21 +596,8 @@ export default {
       }
     },
 
-    handleViewCompleteFile() {
-      if (this.submitInfo.completeFilePath) {
-        window.open(this.submitInfo.completeFilePath, "_blank");
-      } else {
-        this.$baseMessage("请先上传文件", "error");
-      }
-    },
-
-    handlePrize(row) {
-      this.$refs["detail"].show({
-        id: row.id,
-        prize1: this.prize1,
-        prize2: this.prize2,
-        prize3: this.prize3,
-      });
+    async handlePrize(row, type) {
+      await this.$refs["prize"].show(row, type);
     },
     handleDelete(row) {
       if (row.id) {
@@ -486,24 +626,8 @@ export default {
       vueButtonClickBan(el, 10);
 
       // 执行导出
-      doExportExcelByIsPass(this.queryForm);
+      doExportExcelZhongping(this.queryForm);
     },
-
-    // 导出专家评分表
-    async exportExpertWord() {
-      const { code, msg, data } = await doExportExpertWord();
-      if (code === 200) {
-        window.open(data, "_blank");
-      } else {
-        this.$baseMessage(msg, "error");
-      }
-    },
-
-    // 导出专家评分表
-    async uploadExpertWord() {
-      this.$refs["upload"].show();
-    },
-
     // 导入excel
     handleImportExcel() {
       this.$refs["import"].show();
@@ -546,63 +670,18 @@ export default {
       this.prize3 = data.optionValue;
     },
 
-    async getCount() {
-      const { data } = await getCount({
-        pageName: "disciplineReview",
-      });
-      this.totalCount = data.count;
-      this.prize1Count = data.prize1Count;
-      this.prize2Count = data.prize2Count;
-      this.prize3Count = data.prize3Count;
-      this.prize4Count = data.prize4Count;
-      this.noPrizeCount = this.totalCount-this.prize1Count-this.prize2Count-this.prize3Count-this.prize4Count;
-      this.maxPrize1Count = data.maxPrize1Count;
-      this.maxPrize2Count = data.maxPrize2Count;
-      this.maxPrize3Count = data.maxPrize3Count;
-      if(this.prize1Count>this.maxPrize1Count || this.prize2Count>this.maxPrize2Count || this.prize3Count>this.maxPrize3Count)
-      {
-        this.submitDisabled = true;
-        this.$baseMessage("奖项数量超过标准，请及时修改", "error");
-      }
-      if(this.noPrizeCount>0)
-      {
-        this.submitDisabled = true;
-      }
-    },
-
-    async getSubmitInfo() {
-      const { data } = await getSubmitInfoByCurrentUser();
-      this.submitInfo = data;
-      if (data.completeFilePath) {
-        this.disabled = true;
-      }
-    },
-
     async fetchData() {
       this.listLoading = true;
-
-      //存储queryform 使得刷新页面后还能保留查询条件
-      if(window.sessionStorage.getItem("queryForm"))
-      {
-        this.queryForm = JSON.parse(window.sessionStorage.getItem("queryForm"));
-        window.sessionStorage.removeItem("queryForm");
-      }
+      this.getOptions();
+      this.getCount();
       //TODO:这里把根据初审是否通过获取列表 改为了获取所有申请 论文评奖系统需求
       // 如果是成果奖的流程就改回 getlistbyispassed
-      // const { data } = await getListByIsPassed(this.queryForm);
-      const { data } = await getListByDiscipline(this.queryForm);
+      const { data } = await getListByFinal(this.queryForm);
+      // const { data } = await getListAll(this.queryForm);
       if (isNotNull(data)) {
         this.list = data.rows;
         this.total = data.total;
       }
-      this.getPrize1Stantard();
-      this.getPrize2Stantard();
-      this.getPrize3Stantard();
-      this.getCount();
-      this.getSubmitInfo();
-
-
-
       setTimeout(() => {
         this.listLoading = false;
       }, 300);
